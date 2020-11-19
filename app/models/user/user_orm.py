@@ -1,5 +1,5 @@
 
-from typing import List, Optional
+# from typing import List, Optional
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
@@ -7,6 +7,9 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+
+class UserToken(UserBase):
+    token: str
 
 class User(UserBase):
     id: int
