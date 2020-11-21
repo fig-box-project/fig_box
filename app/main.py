@@ -74,26 +74,27 @@ app.include_router(
     user_route,
     prefix=url_prefix + '/auth',
     tags=['USER'],)
-
 from .models.character.route import bp as chara_route
 app.include_router(
     chara_route,
     prefix=url_prefix + '/character',
-    tags=['CHARACTER'],)
+    tags=['character'],)
     # dependencies=[Depends(check_token)])
 from .models.article.route import bp as article_route
 app.include_router(
     article_route,
     prefix=url_prefix + '/article',
-    tags=['ARTICLE'],)
+    tags=['article'],)
+from .models.tree.route import bp as tree_route
+app.include_router(
+    tree_route,
+    prefix=url_prefix + '/category',
+    tags=['category'],)
 
 
-@app.get('/')
+@app.get('/',tags=['init'])
 def root():
     return {'state':'successss'}
 
-@app.get("/items/{item_id}",tags=['items'])
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
 
 

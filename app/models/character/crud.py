@@ -24,5 +24,5 @@ def delete(db: Session, id: int):
     if chara:
         db.delete(chara)
         # 只提交到缓存
-        db.flush()
+        db.commit()
         return chara

@@ -2,9 +2,9 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-class TreeBase(BaseModel):
+class CategoryBase(BaseModel):
     pass
 
-class TreeCU(TreeBase):
+class CategoryCU(CategoryBase):
     id: int
     name: str
