@@ -34,9 +34,8 @@ def update(db: Session, data: orm.ArticleUpdate):
     db.commit()
     return True
 
-def delete(db: Session, article: mdl.Article):
-    if article:
-        db.delete(article)
-        # 只提交到缓存
-        db.flush()
-        return article
+def delete(db: Session, article_id: int):
+    db.query(mdl.Article).filter(mdl.Article.id == article_id).delete()
+    # 只提交到缓存时使用flush
+    db.commit()
+    return article_id

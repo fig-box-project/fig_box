@@ -48,8 +48,8 @@ def delete(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     #
-    article = crud.get_owner_id(db, id)
-    if article.owner_id == now_user.id:
-        crud.delete(db,article)
+    article_owner_id = crud.get_owner_id(db, id)
+    if article_owner_id == now_user.id:
+        return crud.delete(db,id)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
