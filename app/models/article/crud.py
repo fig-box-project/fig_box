@@ -12,7 +12,7 @@ def get_charas(db: Session, skip = 0, limit=100):
     return db.query(mdl.Article).offset(skip).limit(limit).all()
 
 def get_user_articles(db: Session,user: User, skip = 0, limit=100):
-    return [ {"id":i.id,"title":i.title,"meta"} for i in user.articles]
+    return [ {"id":i.id,"title":i.title,"seo_meta":i.ceo_meta,"seo_title":i.ceo_title,"seo_keywords":i.seo_keywords,"seo_description":i.seo_description} for i in user.articles]
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
