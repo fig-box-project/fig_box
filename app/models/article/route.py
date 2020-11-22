@@ -49,7 +49,7 @@ def readone(
     db: Session=Depends(database.get_db),):
     # 
     if crud.get_owner_id(db,id) == now_user.id:
-        crud.read_one_page(db,id)
+        return crud.read_one_page(db,id)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
 
