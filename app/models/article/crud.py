@@ -2,17 +2,20 @@ from sqlalchemy.orm import Session
 from app.models.user.user import User
 from . import mdl, orm
 
-def read(db: Session, id: int):
+# 读取一个页面
+def read_one_page(db: Session, id: int):
     return db.query(mdl.Article).filter(mdl.Article.id == id).first()
 
+# 获取用户id
 def get_owner_id(db: Session, id: int):
     return db.query(mdl.Article).filter(mdl.Article.id == id).first().owner_id
 
-def get_charas(db: Session, skip = 0, limit=100):
+# 获取所有
+def get_all_articles(db: Session, skip = 0, limit=100):
     return db.query(mdl.Article).offset(skip).limit(limit).all()
 
 def get_user_articles(db: Session,user: User, skip = 0, limit=100):
-    return [ {
+    return [{
         "id":i.id,
         "title":i.title,
         "description":i.description,

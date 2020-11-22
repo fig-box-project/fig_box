@@ -42,7 +42,18 @@ def readeee(
     #
     return crud.get_user_articles(db,now_user)
 
-@bp.delete('/delete')
+@bp.get('/self/readone/{id}',description='读取自己的其中一篇文章')
+def readone(
+    id,
+    now_user:User = Depends(check_token),
+    db: Session=Depends(database.get_db),):
+    # 
+    if crud.get_owner_id(db,id) == now_user.id:
+        crud.read_one_page(db,id)
+    else:
+        raise HTTPException(status_code=403,detail='权限不足')
+
+@bp.delete('/delete/{id}')
 def delete(
     id:int, 
     now_user:User = Depends(check_token),

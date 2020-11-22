@@ -29,7 +29,7 @@ def update(
     else:
         raise HTTPException(status_code=403,detail='权限不足')
 
-@bp.delete('/delete')
+@bp.delete('/delete/{id}')
 def delete(
     id: int, 
     now_user:User = Depends(check_token),

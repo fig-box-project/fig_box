@@ -21,7 +21,7 @@ def create_category(tree:orm.CategoryCU,now_user:User = Depends(check_token),):
     else:
         raise HTTPException(status_code=403,detail='权限不足')
 
-@bp.put('/delete')
+@bp.put('/delete/{id}')
 def delete_category(id: int,now_user:User = Depends(check_token),):
     if now_user.character.can_edit_tree:
         rt = crud.delete(id)
