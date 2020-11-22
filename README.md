@@ -43,4 +43,4 @@ screen -d -r [pid(名字前的数字)]  //进入screen tt
 
 # git 强制更新
 git fetch --all
-git reset --hard origin/master
+sudo git reset --hard origin/master
