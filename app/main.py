@@ -9,6 +9,7 @@ from app.models.character import mdl as chara_mdl
 from app.models.user import user
 from app.models.article import mdl as dfsds
 
+import app.conf as conf
 
 database.Base.metadata.create_all(bind=database.engine)
 
@@ -68,7 +69,7 @@ def verify_token(token):
     return data['id']
 
 # 蓝图
-url_prefix = '/api/v1'
+url_prefix = conf.url_prefix
 from .models.user.user_route import router as user_route
 app.include_router(
     user_route,
