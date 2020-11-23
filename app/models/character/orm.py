@@ -6,6 +6,7 @@ class CharaBases(BaseModel):
     can_edit_auth: bool
     can_edit_tree: bool
     can_edit_article: bool
+    can_edit_all_article: bool
     can_edit_character: bool
 
 class CharacterCreate(CharaBases):

@@ -7,7 +7,7 @@ from app.models.user.user import User
 bp = APIRouter()
 
 
-@bp.post('/create',description="asdfsdfd")
+@bp.post('/create',description="创建角色")
 def create(
     chara:orm.CharaBases,
     now_user:User = Depends(check_token),

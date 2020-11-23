@@ -1,5 +1,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 class ArticleBase(BaseModel):
     title:           Optional[str] = None
@@ -17,7 +18,9 @@ class ArticleUpdate(ArticleBase):
 class Article(ArticleBase):
     id: int
     owner_id: int
-
+    create_date: datetime
+    update_date: datetime
+    status: int
     class Config:
         orm_mode= True
 
