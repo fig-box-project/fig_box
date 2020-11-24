@@ -83,7 +83,7 @@ def to_outline(
         raise HTTPException(status_code=403,detail='权限不足')
 
 # read
-@bp.get('/self/articles/{status}',description='读取自己的文章,注意在url中加入状态,trash垃圾箱 outline草稿箱 online已发布 noseacrh已发布不索引')
+@bp.get('/self/articles/{status}',description='读取自己的文章,注意在url中加入状态,trash垃圾箱 outline草稿箱 online已发布 noseacrh已发布不索引 all全部,索引分别为0,1,2,3,10')
 def read_self_all(
     status: ArticleStatus,
     now_user:User = Depends(check_token),
@@ -116,7 +116,7 @@ def read_one(
     else:
         raise HTTPException(status_code=403,detail='权限不足')
 
-@bp.delete('/delete/{id}')
+@bp.delete('/delete/{id}',description='假的删除,假的!')
 def delete(
     id:int, 
     now_user:User = Depends(check_token),
@@ -129,5 +129,21 @@ def delete(
         article_owner_id = crud.get_owner_id(db, id)
         if article_owner_id == now_user.id:
             return crud.delete(db,id)
+        else:
+            raise HTTPException(status_code=403,detail='权限不足')
+
+@bp.delete('/real_delete/{id}',description='真正删除,,(真的吗?)')
+def real_delete(
+    id:int, 
+    now_user:User = Depends(check_token),
+    db: Session=Depends(database.get_db)):
+    # 如果拥有编辑全部文章的权限
+    if now_user.character.can_edit_all_article:
+        return crud.real_delete(db,id)
+    else:
+        # 否则按正常套路来
+        article_owner_id = crud.get_owner_id(db, id)
+        if article_owner_id == now_user.id:
+            return crud.real_delete(db,id)
         else:
             raise HTTPException(status_code=403,detail='权限不足')
