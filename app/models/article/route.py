@@ -15,6 +15,7 @@ class ArticleStatus(str,Enum):
     outline  = 'outline'
     online   = 'online'
     noseacrh = 'noseacrh'
+    all      = 'all'
     def toInt(self):
         if self == self.trash:
             return 0
@@ -24,9 +25,11 @@ class ArticleStatus(str,Enum):
             return 2
         elif self == self.noseacrh:
             return 3
+        else:
+            return 10
 
 # create
-@bp.post('/create')
+@bp.post('/create',description='创建文章')
 def create(
     article:orm.ArticleCreate,
     now_user:User = Depends(check_token),
@@ -38,7 +41,7 @@ def create(
         raise HTTPException(status_code=403,detail='权限不足')
 
 # update
-@bp.put('/update')
+@bp.put('/update',description='更更更更更更新')
 def update(
     article:orm.ArticleUpdate,
     now_user:User = Depends(check_token),
@@ -53,6 +56,32 @@ def update(
         else:
             raise HTTPException(status_code=403,detail='权限不足')
 
+# release
+@bp.put('/release',description='发布,true为可检索false为不可检索')
+def release(
+    article:orm.ArticleRelease,
+    now_user:User = Depends(check_token),
+    db: Session=Depends(database.get_db)):
+    #
+    owner_id = crud.get_owner_id(db,article.id)
+    if owner_id == now_user.id: 
+        return crud.release(db,article)
+    else:
+        raise HTTPException(status_code=403,detail='权限不足')
+
+# release
+@bp.put('/to_outline',description='将文章变回草稿,不论它在哪')
+def to_outline(
+    article_id:int,
+    now_user:User = Depends(check_token),
+    db: Session=Depends(database.get_db)):
+    #
+    owner_id = crud.get_owner_id(db,article_id)
+    if owner_id == now_user.id: 
+        return crud.return_to_outline(db,article_id)
+    else:
+        raise HTTPException(status_code=403,detail='权限不足')
+
 # read
 @bp.get('/self/articles/{status}',description='读取自己的文章,注意在url中加入状态,trash垃圾箱 outline草稿箱 online已发布 noseacrh已发布不索引')
 def read_self_all(
@@ -64,8 +93,8 @@ def read_self_all(
     print(status.toInt())
     return crud.get_user_articles(db,now_user,status.toInt())
 
-# read
-@bp.get('/all/articles')
+# read_all
+@bp.get('/all/articles',description='读取所有的文章,admin的权限')
 def read_all_of_the_server(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db),

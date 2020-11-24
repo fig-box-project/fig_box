@@ -15,6 +15,10 @@ class ArticleCreate(ArticleBase):
 class ArticleUpdate(ArticleBase):
     id: int
 
+class ArticleRelease(BaseModel):
+    id: int
+    can_search: bool = True
+
 class Article(ArticleBase):
     id: int
     owner_id: int

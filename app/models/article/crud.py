@@ -16,8 +16,11 @@ def get_all_articles(db: Session, skip = 0, limit=100):
     return db.query(mdl.Article).offset(skip).limit(limit).all()
 
 # 获取草稿箱的文章
-def get_user_articles(db: Session,user: User,status = 1, skip = 0, limit=100):
-    return [i for i in user.articles if i.status == status]
+def get_user_articles(db: Session,user: User,status:int, skip = 0, limit=100):
+    if status == 10:
+        return user.articles
+    else:
+        return [i for i in user.articles if i.status == status]
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
@@ -39,13 +42,19 @@ def update(db: Session, data: orm.ArticleUpdate):
     db.commit()
     return True
 
-def release(db: Session, article_id: int,can_search: bool=True):
-    db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":2 if can_search else 3})
+# 发布
+def release(db: Session, article:orm.ArticleRelease):
+    db.query(mdl.Article).filter(mdl.Article.id == article.id).update({"status":2 if article.can_search else 3})
     db.commit()
-    return article_id
+    return article.id
+
+# 将文章转回草稿,无论是垃圾箱还是已发布
+def return_to_outline(db: Session,id: int):
+    db.query(mdl.Article).filter(mdl.Article.id == id).update({"status":1})
+    db.commit()
+    return id
 
 def delete(db: Session, article_id: int):
     db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":0})
-    # 只提交到缓存时使用flush
     db.commit()
     return article_id
