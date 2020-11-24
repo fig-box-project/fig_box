@@ -16,14 +16,8 @@ def get_all_articles(db: Session, skip = 0, limit=100):
     return db.query(mdl.Article).offset(skip).limit(limit).all()
 
 # 获取草稿箱的文章
-def get_user_articles(db: Session,user: User, skip = 0, limit=100):
-    return [{
-        "id":i.id,
-        "title":i.title,
-        "description":i.description,
-        "seo_title":i.seo_title,
-        "seo_keywords":i.seo_keywords,
-        "seo_description":i.seo_description} for i in user.articles if i.status == 1]
+def get_user_articles(db: Session,user: User,status = 1, skip = 0, limit=100):
+    return [i for i in user.articles if i.status == status]
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
