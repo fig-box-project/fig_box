@@ -10,7 +10,9 @@ class ArticleBase(BaseModel):
     seo_keywords:    Optional[str] = None
     seo_description: Optional[str] = None
 class ArticleCreate(ArticleBase):
-    pass
+    status: int
+    is_release: bool = False
+    can_search: bool = True
 
 class ArticleUpdate(ArticleBase):
     id: int

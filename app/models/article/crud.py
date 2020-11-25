@@ -24,7 +24,18 @@ def get_user_articles(db: Session,user: User,status:int, skip = 0, limit=100):
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
-    new_Article = mdl.Article(**data.dict())
+    # 对map进行预操作,以对应是否发布
+    data_map:dict = data.dict()
+    if data_map.pop('is_release'):
+        if data_map.pop('can_search'):
+            data_map['status']=2
+        else:
+            data_map['status']=3
+    else:
+        data_map.pop('is_release')
+        data_map['status']=1
+    # 用map新建对象,准备创建
+    new_Article = mdl.Article(**data_map)
     # 创建当时的时间戳
     new_Article.create_date = datetime.now()
     new_Article.update_date = datetime.now()
