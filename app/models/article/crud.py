@@ -32,7 +32,7 @@ def create(db: Session,data: orm.ArticleCreate,owner_id):
         else:
             data_map['status']=3
     else:
-        data_map.pop('is_release')
+        data_map.pop('can_search')
         data_map['status']=1
     # 用map新建对象,准备创建
     new_Article = mdl.Article(**data_map)
