@@ -16,6 +16,7 @@ def create(db: Session,chara_data: orm.CharaBases):
 
 def update(db: Session, chara_data: orm.CharaUpdate):
     db.query(mdl.Chara).filter(mdl.Chara.id == chara_data.id).update(chara_data.dict())
+    db.flush()
     db.cpmmit()
     return True
 

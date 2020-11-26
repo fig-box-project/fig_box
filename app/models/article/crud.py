@@ -50,12 +50,14 @@ def update(db: Session, data: orm.ArticleUpdate):
     # 增加一个更新时间戳来更新数据库
     new_data["update_date"] = datetime.now()
     db.query(mdl.Article).filter(mdl.Article.id == data.id).update(new_data)
+    db.flush()
     db.commit()
     return True
 
 # 发布
 def release(db: Session, article:orm.ArticleRelease):
     db.query(mdl.Article).filter(mdl.Article.id == article.id).update({"status":2 if article.can_search else 3})
+    db.flush()
     db.commit()
     return article.id
 
@@ -63,15 +65,18 @@ def release(db: Session, article:orm.ArticleRelease):
 def return_to_outline(db: Session,id: int):
     # 注意此处bug,可能被利用与恢复已完全删除的文件
     db.query(mdl.Article).filter(mdl.Article.id == id).update({"status":1})
+    db.flush()
     db.commit()
     return id
 
 def delete(db: Session, article_id: int):
     db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":0})
+    db.flush()
     db.commit()
     return article_id
 
 def real_delete(db: Session, article_id: int):
     db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":-1})
+    db.flush()
     db.commit()
     return article_id
