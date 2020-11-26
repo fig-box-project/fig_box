@@ -74,26 +74,31 @@ from .models.user.user_route import router as user_route
 app.include_router(
     user_route,
     prefix=url_prefix + '/auth',
-    tags=['USER'],)
+    tags=['用户'],)
 from .models.character.route import bp as chara_route
 app.include_router(
     chara_route,
     prefix=url_prefix + '/character',
-    tags=['character'],)
+    tags=['角色'],)
     # dependencies=[Depends(check_token)])
 from .models.article.route import bp as article_route
 app.include_router(
     article_route,
     prefix=url_prefix + '/article',
-    tags=['article'],)
+    tags=['文章'],)
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
     prefix=url_prefix + '/category',
-    tags=['category'],)
+    tags=['文章分类'],)
+from .models.editor.route import bp as editor_route
+app.include_router(
+    editor_route,
+    prefix=url_prefix + '/editor',
+    tags=['文件编辑'],)
 
 
-@app.get('/',tags=['init'])
+@app.get('/',tags=['测试'])
 def root():
     return {'state':'successss'}
 
