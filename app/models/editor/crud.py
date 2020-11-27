@@ -1,6 +1,6 @@
 import os
 
-directory_name = 'files'
+directory_name = 'files/'
 
 def write(file_path: str, data: str):
     with open(directory_name + file_path, 'w') as f:
@@ -16,6 +16,8 @@ def read(file_path: str):
         return f.read()
 
 def clean(file_path: str = directory_name):
+    if file_path[-1:] == "/":
+        file_path=file_path[:-1]
     for root, dirs, files in os.walk(file_path, topdown=False):
         if not files and not dirs:
             os.rmdir(root)
@@ -23,6 +25,8 @@ def clean(file_path: str = directory_name):
 
 
 def ls(file_path: str = directory_name):
+    if file_path[-1:] == "/":
+        file_path=file_path[:-1]
     rt = []
     with os.scandir(file_path) as d:
         for i in d:
