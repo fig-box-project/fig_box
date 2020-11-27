@@ -2,6 +2,9 @@ import os
 
 directory_name = 'files/'
 
+def check_path(path: str):
+    return os.path.exists(directory_name + path)
+
 def write(file_path: str, data: str):
     with open(directory_name + file_path, 'w') as f:
         f.write(data)

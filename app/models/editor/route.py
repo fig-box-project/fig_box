@@ -25,7 +25,10 @@ def read(file_path: str):
 @bp.post('/create/{directory:path}',description='创建文件夹路径')
 def create(directory: str):
     if directory[0] != '/':
-        return crud.create_directory(directory)
+        if crud.check_path(directory):
+            raise HTTPException(status_code=409,detail='文件或文件夹已存在')
+        else:
+            return crud.create_directory(directory)
     else:
         raise HTTPException(status_code=422,detail='斜杠太多')
 
