@@ -13,14 +13,16 @@ def get_owner_id(db: Session, id: int):
 
 # 管理员获取所有文章
 def get_all_articles(db: Session, skip = 0, limit=100):
+    # 注意未加入refresh
     return db.query(mdl.Article).offset(skip).limit(limit).all()
 
 # 获取文章
 def get_user_articles(db: Session,user: User,status:int, skip = 0, limit=100):
+    articles = db.query(mdl.Article).filter(mdl.Article.owner_id == user.id).all()
     if status == 10:
-        return [i for i in user.articles if i.status != -1]
+        return [i for i in articles if i.status != -1]
     else:
-        return [i for i in user.articles if i.status == status]
+        return [i for i in articles if i.status == status]
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
@@ -50,14 +52,12 @@ def update(db: Session, data: orm.ArticleUpdate):
     # 增加一个更新时间戳来更新数据库
     new_data["update_date"] = datetime.now()
     db.query(mdl.Article).filter(mdl.Article.id == data.id).update(new_data)
-    db.flush()
     db.commit()
     return True
 
 # 发布
 def release(db: Session, article:orm.ArticleRelease):
     db.query(mdl.Article).filter(mdl.Article.id == article.id).update({"status":2 if article.can_search else 3})
-    db.flush()
     db.commit()
     return article.id
 
@@ -65,18 +65,15 @@ def release(db: Session, article:orm.ArticleRelease):
 def return_to_outline(db: Session,id: int):
     # 注意此处bug,可能被利用与恢复已完全删除的文件
     db.query(mdl.Article).filter(mdl.Article.id == id).update({"status":1})
-    db.flush()
     db.commit()
     return id
 
 def delete(db: Session, article_id: int):
     db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":0})
-    db.flush()
     db.commit()
     return article_id
 
 def real_delete(db: Session, article_id: int):
     db.query(mdl.Article).filter(mdl.Article.id == article_id).update({"status":-1})
-    db.flush()
     db.commit()
     return article_id

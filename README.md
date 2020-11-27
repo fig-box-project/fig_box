@@ -24,6 +24,7 @@ nohup python3 run.py >> /www/wwwroot/log/flask.log 2>&1 &
 
 python3 -m venv tutorial-env
 source tutorial-env/bin/activate
+mkdir files
 
 source venv/bin/activate
 
