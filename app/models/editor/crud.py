@@ -4,13 +4,19 @@ import os
 directory_name = 'files/'
 
 # 存在则是
-def check_path(path: str):
+def check_path_has(path: str):
     return os.path.exists(directory_name + path)
+
+def check_path_is_dir(path: str):
+    return check_path_has(path) and os.path.isdir(directory_name + path)
 
 def write(file_path: str, data: str):
     with open(directory_name + file_path, 'w') as f:
         f.write(data)
     return True
+
+def rename(old_file_path: str,new_file_path: str):
+    os.rename(old_file_path,new_file_path)
 
 def create_directory(directory: str):
     os.makedirs(directory_name + directory, exist_ok=True)
@@ -28,6 +34,13 @@ def clean(file_path: str = directory_name):
             os.rmdir(root)
     return True
 
+def delete(file_path: str):
+    try:
+        os.remove(directory_name + file_path)
+        return True
+    except:
+        return False
+    
 
 def ls(file_path: str = directory_name):
     if file_path[-1:] == "/":
@@ -70,7 +83,7 @@ templates = Jinja2Templates(directory="files/templates")
 # 模版功能
 def render_test(request):
     test_path = 'index.html'
-    if check_path('templates/'+test_path):
+    if check_path_has('templates/'+test_path):
         test_data = {'name': '测试名称','request':request}
         return templates.TemplateResponse('index.html',test_data)
     else:

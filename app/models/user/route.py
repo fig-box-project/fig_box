@@ -27,7 +27,7 @@ def login(user:orm.UserCreate,db: Session=Depends(database.get_db)):
 
 @bp.post('/update',description='更新其它用户的资料权限等')
 def update(
-    aim_user:orm.UserCreate,
+    aim_user:orm.UserUpdate,
     now_user:mdl.User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     if now_user.character.can_edit_auth:
