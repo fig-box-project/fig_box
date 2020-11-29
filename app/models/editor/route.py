@@ -39,8 +39,8 @@ def clean():
     return crud.clean()
 
 @bp.delete('/delete',description='删除文件')
-def delete(directory: str=Body(...,embed=True)):
-    if crud.delete(directory):
+def delete(file_path: str=Body(...,embed=True)):
+    if crud.delete(file_path):
         return True
     else:
         raise HTTPException(status_code=404,detail='找不到资源')

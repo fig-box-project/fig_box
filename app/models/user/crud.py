@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, load_only
 from . import mdl, orm
 
 def get_user(db: Session, id: int):
@@ -6,7 +6,8 @@ def get_user(db: Session, id: int):
 
 # offset 是跳过多少条的意思,可以用来翻页用
 def get_users(db: Session,skip=0,limit=100):
-    return db.query(mdl.User).offset(skip).limit(limit).all()
+    fields = ['id','username','character_id']
+    return db.query(mdl.User).options(load_only(*fields)).offset(skip).limit(limit).all()
 
 # 检查是否已注册
 def isloged_user(db: Session,username:str):
