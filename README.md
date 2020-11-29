@@ -23,15 +23,13 @@ uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
 
 ----------------------------------------------------------------
 
-nohup python3 run.py >> /www/wwwroot/log/flask.log 2>&1 &
 
 python3 -m venv tutorial-env
 source tutorial-env/bin/activate
+pip3 install -r requirements.txt
 mkdir files
 
-source venv/bin/activate
-
-pip3 install -r requirements.txt
+<!-- source venv/bin/activate -->
 
 //安装screen请使用apt:
 apt-get update

@@ -37,7 +37,7 @@ def ls(file_path: str = directory_name):
         for i in d:
             appe = {}
             appe['name'] = i.name
-            appe['path'] = file_path + "/" + i.name
+            appe['path'] = (file_path + "/" + i.name)[6:]
             if i.is_dir():
                 appe['children'] = ls(file_path + "/" + i.name)
             else:
