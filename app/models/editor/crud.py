@@ -1,7 +1,9 @@
 import os
 
+
 directory_name = 'files/'
 
+# 存在则是
 def check_path(path: str):
     return os.path.exists(directory_name + path)
 
@@ -34,11 +36,11 @@ def ls(file_path: str = directory_name):
     with os.scandir(file_path) as d:
         for i in d:
             appe = {}
+            appe['name'] = i.name
+            appe['path'] = file_path + "/" + i.name
             if i.is_dir():
-                appe['name'] = i.name
                 appe['children'] = ls(file_path + "/" + i.name)
             else:
-                appe['name'] = i.name
                 appe['file'] = get_type(i.name)
                 
             rt.append(appe)
@@ -58,3 +60,18 @@ def get_type(file_name: str):
         return 'md'
     else:
         return 'txt'
+
+
+
+import jinja2
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+templates = Jinja2Templates(directory="files/templates")
+# 模版功能
+def render_test(request):
+    test_path = 'index.html'
+    if check_path('templates/'+test_path):
+        test_data = {'name': '测试名称','request':request}
+        return templates.TemplateResponse('index.html',test_data)
+    else:
+        return 'fail'

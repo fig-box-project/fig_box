@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends,Header,Body
+from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
 from . import crud
 from app.main import check_token
 from app.models.user.user import User
@@ -35,3 +35,9 @@ def create(directory: str=Body(...,embed=True)):
 @bp.post('/clean',description='清空空的文件夹')
 def clean():
     return crud.clean()
+
+
+# 模版功能
+@bp.get('/render/test')
+def render_test(request: Request):
+    return crud.render_test(request)
