@@ -34,6 +34,13 @@ def clean(file_path: str = directory_name):
             os.rmdir(root)
     return True
 
+def delete_directory(directory: str):
+    try:
+        os.rmdir(directory_name + directory)
+        return True
+    except:
+        return False
+
 def delete(file_path: str):
     try:
         os.remove(directory_name + file_path)

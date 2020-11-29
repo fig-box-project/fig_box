@@ -34,9 +34,16 @@ def create(directory: str=Body(...,embed=True)):
     else:
         raise HTTPException(status_code=422,detail='斜杠太多')
 
-@bp.post('/clean',description='清空空的文件夹')
+@bp.post('/clean',description='清空所有空的文件夹')
 def clean():
     return crud.clean()
+
+@bp.delete('/delete/directory',description='删除一个空的文件夹')
+def delete_directory(directory: str=Body(...,embed=True)):
+    if crud.delete_directory(directory):
+        return True
+    else:
+        raise HTTPException(status_code=403,detail='权限不足')
 
 @bp.delete('/delete',description='删除文件')
 def delete(file_path: str=Body(...,embed=True)):
