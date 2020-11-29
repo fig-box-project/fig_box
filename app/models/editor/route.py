@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
 from . import crud
 from app.main import check_token
-from app.models.user.user import User
+from app.models.user.mdl import User
 bp = APIRouter()
 
 @bp.post('/write',description='写')

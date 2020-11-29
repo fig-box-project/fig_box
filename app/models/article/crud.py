@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.user.user import User
+from app.models.user.mdl import User
 from . import mdl, orm
 from datetime import datetime
 

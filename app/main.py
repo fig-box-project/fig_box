@@ -6,7 +6,7 @@ from fastapi import FastAPI,Depends,Header,HTTPException
 from app.models import database
 
 from app.models.character import mdl as chara_mdl
-from app.models.user import user
+from app.models.user import mdl as user
 from app.models.article import mdl as dfsds
 
 import app.conf as conf
@@ -38,6 +38,7 @@ if db.query(user.User).count() == 0:
         can_edit_auth = True,
         can_edit_tree = True,
         can_edit_article = True,
+        can_edit_all_article = True,
         can_edit_character = True,
     )
     db.add(chara_admin)
@@ -70,7 +71,7 @@ def verify_token(token):
 
 # 蓝图
 url_prefix = conf.url_prefix
-from .models.user.user_route import router as user_route
+from .models.user.route import bp as user_route
 app.include_router(
     user_route,
     prefix=url_prefix + '/auth',

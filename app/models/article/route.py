@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.models import database
 from . import orm, crud
 from app.main import check_token
-from app.models.user.user import User
+from app.models.user.mdl import User
 bp = APIRouter()
 
 # bp.route('/view')
