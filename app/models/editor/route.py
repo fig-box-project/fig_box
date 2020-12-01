@@ -39,7 +39,7 @@ async def clean():
     return crud.clean()
 
 @bp.delete('/delete/directory',description='删除一个空的文件夹')
-def delete_directory(directory: str=Body(...,embed=True)):
+def delete_directory(directory: str):
     if crud.delete_directory(directory):
         return True
     else:

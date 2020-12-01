@@ -98,6 +98,9 @@ app.include_router(
     prefix=url_prefix + '/editor',
     tags=['文件编辑'],)
 
+# for modules>
+
+# <for modules
 
 @app.get('/',tags=['测试'])
 def root():
