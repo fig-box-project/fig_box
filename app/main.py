@@ -97,6 +97,11 @@ app.include_router(
     editor_route,
     prefix=url_prefix + '/editor',
     tags=['文件编辑'],)
+from .models.module.route import bp as module_route
+app.include_router(
+    module_route,
+    prefix=url_prefix + '/module',
+    tags=['模组・插件'],)
 
 # for modules>
 

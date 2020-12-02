@@ -57,6 +57,6 @@ def rename(old_file_path: str=Body(...), new_file_path: str=Body(...)):
     crud.rename(old_file_path,new_file_path)
 
 # 模版功能
-@bp.get('/render/test')
-def render_test(request: Request):
-    return crud.render_test(request)
+@bp.get('/render/{p:path}')
+def render_test(request: Request,p:str):
+    return crud.render_test(request,p)

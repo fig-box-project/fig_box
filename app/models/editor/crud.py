@@ -88,10 +88,10 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 templates = Jinja2Templates(directory="files/templates")
 # 模版功能
-def render_test(request):
-    test_path = 'index.html'
-    if check_path_has('templates/'+test_path):
+def render_test(request,p:str):
+    # test_path = 'index.html'
+    if check_path_has('templates/'+p):
         test_data = {'name': '测试名称','request':request}
-        return templates.TemplateResponse('index.html',test_data)
+        return templates.TemplateResponse(p,test_data)
     else:
         return 'fail'
