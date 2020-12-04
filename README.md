@@ -26,10 +26,10 @@ uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
 ----------------------------------------------------------------
 
 
-python3 -m venv tutorial-env
-source tutorial-env/bin/activate
-pip3 install -r requirements.txt
-mkdir files
+>sudo python3 -m venv tutorial-env
+>source tutorial-env/bin/activate
+>pip3 install -r requirements.txt
+>mkdir files
 
 <!-- source venv/bin/activate -->
 
