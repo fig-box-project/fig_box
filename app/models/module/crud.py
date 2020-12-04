@@ -19,11 +19,16 @@ def install_module(module:orm.ModuleInstall):
             is_inposi = False
             continue
         elif is_inposi:
-            lines[i] = '# test str\n'
+            lines[i] = '\n# test str\n'
+            is_inposi = False
+            continue
     with open(main_file_path,'w') as w:
         w.write(''.join(lines))
     return cofig_posi
 
 def use_module(module:orm.ModuleUse):
-    pass
+    if check_has_module(module):
+        pass
     
+def check_has_module(module:orm.ModuleUse):
+    pass
