@@ -5,12 +5,16 @@ import fileinput
 main_file_path = "app/main.py"
 
 def install_module(module:orm.ModuleInstall):
+    cofig_posi = {}
     with open(main_file_path,'r') as r:
         lines = r.readlines()
-    for i in lines:
-        if i == '# for modules>\n':
-            return True
-    for i in range(114):
-        if i == 105:
-            return lines[i]
-    return {'count':len(lines),} 
+    for i in range(len(lines)):
+        if lines[i] == '# for modules>\n':
+            cofig_posi['head'] = i
+        elif lines[i] == '# <for modules\n':
+            cofig_posi['foot'] = i
+    return config_posi
+
+def use_module(module:orm.ModuleUse):
+    pass
+    
