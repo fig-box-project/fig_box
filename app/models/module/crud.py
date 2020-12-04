@@ -21,7 +21,7 @@ def install_module(module:orm.ModuleInstall):
         elif is_inposi:
             lines[i] = '# test str\n'
     with open(main_file_path,'w') as w:
-        w.wirte(''.join(lines))
+        w.write(''.join(lines))
     return cofig_posi
 
 def use_module(module:orm.ModuleUse):
