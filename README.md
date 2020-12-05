@@ -41,6 +41,8 @@ screen -S name  //创建 名为name的 screen
 screen -ls  //列出所有screen
 screen -d -r [pid(名字前的数字)]  //进入screen tt
 
+rm -rf files 强行删除文件夹
+mkdir files 创建文件夹
 
 > ctrl a d 退出screen
 > exit 关闭screen窗口
