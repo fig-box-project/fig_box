@@ -6,7 +6,7 @@ class ModuleBase(BaseModel):
     pass
 
 class Module(ModuleBase):
-    name: str
+    name: str = 'comment'
     version: str = '~'
 
 class ModuleStatus(ModuleBase):
