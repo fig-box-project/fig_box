@@ -86,7 +86,7 @@ def check_module(module:orm.Module):
     return None
 
 def set_module(module:orm.ModuleStatus):
-    line_data = [module.name,module.version,module.status]
+    line_data = [module.name,module.version,str(module.status) + ' ']
     path = 'app/modules.mods'
     set_params(path,module.name+' '+module.version,line_data)
 
