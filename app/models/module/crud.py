@@ -4,31 +4,89 @@ import fileinput
 
 main_file_path = "app/main.py"
 
-def install_module(module:orm.ModuleInstall):
-    cofig_posi = {}
+def install_module(module:orm.Module):
+    pass
+
+def use_module(module:orm.Module):
+    moduleStatus = check_module(module)
+    if moduleStatus != None:
+        if moduleStatus.status == False:
+            # use
+            insert_code_main(module)
+            print('used')
+            pass
+
+# 获取模组的tag
+def get_module_tag(module:orm.Module):
+    path = 'app/models/' + get_module_name(module) + '/config.conf'
+    return get_params(path,'api_tag')[1]
+
+# 获取模组的唯一名字,当为master时不变,当有版本时将_+版本号
+def get_module_name(module:orm.Module):
+    if module.version == '~':
+        return module.name
+    else:
+        version = module.version.split('.')[2]
+        return module.name + '_' + version
+
+# 插入代码到main文件
+def insert_code_main(module:orm.Module):
+    name = get_module_name(module)
+    tag = get_module_tag(module)
+    code = \
+f''' # {name}
+from .models.module.route import bp as {name}_route
+app.include_router(
+    {name}_route,
+    prefix=url_prefix + '/{name}',
+    tags=['{tag}'],)
+'''
+    insert_str_main(code)
+
+
+# 插入文字到main文件
+def insert_str_main(s: str):
     is_inposi = False
     with open(main_file_path,'r') as r:
         lines = r.readlines()
     for i in range(len(lines)):
         if lines[i] == '# for modules>\n':
-            cofig_posi['head'] = i
             is_inposi = True
+            continue
+        elif is_inposi:
+            lines[i] = '\n\n' + s
+            break
+    with open(main_file_path,'w') as w:
+        w.write(''.join(lines))
+
+# 备用方法,用来获取模组在main的代码区间
+def get_posi_main():
+    cofig_posi = {}
+    with open(main_file_path,'r') as r:
+        lines = r.readlines()
+    for i in range(len(lines)):
+        if lines[i] == '# for modules>\n':
+            cofig_posi['head'] = i
             continue
         elif lines[i] == '# <for modules\n':
             cofig_posi['foot'] = i
-            is_inposi = False
-            continue
-        elif is_inposi:
-            lines[i] = '\n# test str\n'
-            is_inposi = False
-            continue
-    with open(main_file_path,'w') as w:
-        w.write(''.join(lines))
+            break
     return cofig_posi
 
-def use_module(module:orm.ModuleUse):
-    if check_has_module(module):
-        pass
-    
-def check_has_module(module:orm.ModuleUse):
-    pass
+# 可用于获取模组状态
+def check_module(module:orm.Module):
+    # 打开标识所有模组的文件
+    path = 'app/modules.mods'
+    li = get_params(path,module.name + ' ' + module.version)
+    if li[1] == module.version:
+        return orm.ModuleStatus(**module.dict(),status = li[2]=='True')
+    return None
+
+def get_params(path: str,posi: str):
+    with open(path,'r') as r:
+        lines = r.readlines()
+    for line in lines:
+        # 历遍所有行,
+        if line[:len(posi)] == posi:
+            return line.split(' ')
+    return None
