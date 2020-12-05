@@ -11,7 +11,7 @@ def unuse_module(module:orm.Module):
     delete_code_main(module)
     moduleStatus = orm.ModuleStatus(**module.dict(),status=False)
     set_module(moduleStatus)
-    return true
+    return True
 
 # 使用模组--------------------------------
 def use_module(module:orm.Module):
@@ -71,7 +71,7 @@ def del_module_area_main(name:str):
         elif lines[i] == f'# <{name}\n':
             foot = i
             break
-    del lines[head:foot]
+    del lines[head:foot+1]
     with open(main_file_path,'w') as w:
         w.write(''.join(lines))
 
