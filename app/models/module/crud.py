@@ -7,16 +7,25 @@ main_file_path = "app/main.py"
 def install_module(module:orm.Module):
     use_module(module)
 
+def unuse_module(module:orm.Module):
+    delete_code_main(module)
+    moduleStatus = orm.ModuleStatus(**module.dict(),status=False)
+    set_module(moduleStatus)
+    return true
+
+# 使用模组--------------------------------
 def use_module(module:orm.Module):
-    moduleStatus = check_module(module)
-    if moduleStatus != None:
-        if moduleStatus.status == False:
-            # use
-            insert_code_main(module)
-            # 更改状态并保存
-            moduleStatus.status = True
-            set_module(moduleStatus)
-            print('used')
+    insert_code_main(module)
+    # 更改状态并保存
+    moduleStatus = orm.ModuleStatus(**module.dict(),status=True)
+    set_module(moduleStatus)
+    return True
+
+def get_module_status(module:orm.Module):
+    sta_module = check_module(module)
+    if sta_module == None:
+        return None
+    return check_module(module).status
 
 # 获取模组的tag
 def get_module_tag(module:orm.Module):
@@ -36,15 +45,35 @@ def insert_code_main(module:orm.Module):
     name = get_module_name(module)
     tag = get_module_tag(module)
     code = \
-f'''# {name}
+f'''# {name}>
 from .models.module.route import bp as {name}_route
 app.include_router(
     {name}_route,
     prefix=url_prefix + '/{name}',
     tags=['{tag}'],)
+# <{name}
 '''
     insert_str_main(code)
 
+# 从main删除代码--------------------------------
+def delete_code_main(module:orm.Module):
+    name = get_module_name(module)
+    del_module_area_main(name)
+
+# 删除模组所在的区间
+def del_module_area_main(name:str):
+    with open(main_file_path,'r') as r:
+        lines = r.readlines()
+    for i in range(len(lines)):
+        if lines[i] == f'# {name}>\n':
+            head = i
+            continue
+        elif lines[i] == f'# <{name}\n':
+            foot = i
+            break
+    del lines[head:foot]
+    with open(main_file_path,'w') as w:
+        w.write(''.join(lines))
 
 # 插入文字到main文件
 def insert_str_main(s: str):
