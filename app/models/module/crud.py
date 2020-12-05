@@ -46,7 +46,7 @@ def insert_code_main(module:orm.Module):
     tag = get_module_tag(module)
     code = \
 f'''# {name}>
-from .models.module.route import bp as {name}_route
+from .models.{name}.route import bp as {name}_route
 app.include_router(
     {name}_route,
     prefix=url_prefix + '/{name}',
