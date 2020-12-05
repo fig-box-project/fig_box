@@ -13,8 +13,10 @@ def use_module(module:orm.Module):
         if moduleStatus.status == False:
             # use
             insert_code_main(module)
+            # 更改状态并保存
+            moduleStatus.status = True
+            set_module(moduleStatus)
             print('used')
-            pass
 
 # 获取模组的tag
 def get_module_tag(module:orm.Module):
@@ -54,7 +56,7 @@ def insert_str_main(s: str):
             is_inposi = True
             continue
         elif is_inposi:
-            lines[i] = '\n\n' + s
+            lines[i] = '\n' + s
             break
     with open(main_file_path,'w') as w:
         w.write(''.join(lines))
@@ -73,6 +75,7 @@ def get_posi_main():
             break
     return cofig_posi
 
+
 # 可用于获取模组状态
 def check_module(module:orm.Module):
     # 打开标识所有模组的文件
@@ -82,6 +85,12 @@ def check_module(module:orm.Module):
         return orm.ModuleStatus(**module.dict(),status = li[2]=='True')
     return None
 
+def set_module(module:orm.ModuleStatus):
+    line_data = [module.name,module.version,module.status]
+    path = 'app/modules.mods'
+    set_params(path,module.name+' '+module.version,line_data)
+
+# 获取文件内的参数
 def get_params(path: str,posi: str):
     with open(path,'r') as r:
         lines = r.readlines()
@@ -90,3 +99,16 @@ def get_params(path: str,posi: str):
         if line[:len(posi)] == posi:
             return line.split(' ')
     return None
+
+# 设置文件内的参数
+def set_params(path: str,posi:str,line_data:list):
+    line_str = ' '.join(line_data) + '\n'
+    with open(path,'r') as r:
+        lines = r.readlines()
+    for i in range(len(lines)):
+        # 历遍所有行,
+        if lines[i][:len(posi)] == posi:
+            lines[i] = line_str
+            break
+    with open(path,'w') as w:
+        w.write(''.join(lines))
