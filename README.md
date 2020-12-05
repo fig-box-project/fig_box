@@ -20,16 +20,19 @@
 501 目前未实现的API
 
 
-uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
+sudo uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
 
 
 ----------------------------------------------------------------
 
 
-python3 -m venv tutorial-env
-source tutorial-env/bin/activate
-pip3 install -r requirements.txt
-mkdir files
+>sudo python3 -m venv tutorial-env 
+
+>source tutorial-env/bin/activate 
+
+>pip3 install -r requirements.txt 
+
+>mkdir files
 
 <!-- source venv/bin/activate -->
 
@@ -48,5 +51,5 @@ mkdir files 创建文件夹
 > exit 关闭screen窗口
 
 # git 强制更新
-git fetch --all
+sudo git fetch --all
 sudo git reset --hard origin/master

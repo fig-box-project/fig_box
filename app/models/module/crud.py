@@ -5,12 +5,30 @@ import fileinput
 main_file_path = "app/main.py"
 
 def install_module(module:orm.ModuleInstall):
+    cofig_posi = {}
+    is_inposi = False
     with open(main_file_path,'r') as r:
         lines = r.readlines()
-    for i in lines:
-        if i == '# for modules>\n':
-            return True
-    for i in range(114):
-        if i == 105:
-            return lines[i]
-    return {'count':len(lines),} 
+    for i in range(len(lines)):
+        if lines[i] == '# for modules>\n':
+            cofig_posi['head'] = i
+            is_inposi = True
+            continue
+        elif lines[i] == '# <for modules\n':
+            cofig_posi['foot'] = i
+            is_inposi = False
+            continue
+        elif is_inposi:
+            lines[i] = '\n# test str\n'
+            is_inposi = False
+            continue
+    with open(main_file_path,'w') as w:
+        w.write(''.join(lines))
+    return cofig_posi
+
+def use_module(module:orm.ModuleUse):
+    if check_has_module(module):
+        pass
+    
+def check_has_module(module:orm.ModuleUse):
+    pass
