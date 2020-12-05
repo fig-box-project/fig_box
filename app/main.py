@@ -90,7 +90,7 @@ app.include_router(
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
-    prefix=url_prefix + '/category',
+    prefix=url_prefix + '/category/articles',
     tags=['文章分类'],)
 from .models.editor.route import bp as editor_route
 app.include_router(

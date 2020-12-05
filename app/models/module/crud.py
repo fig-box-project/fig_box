@@ -5,7 +5,7 @@ import fileinput
 main_file_path = "app/main.py"
 
 def install_module(module:orm.Module):
-    pass
+    use_module(module)
 
 def use_module(module:orm.Module):
     moduleStatus = check_module(module)

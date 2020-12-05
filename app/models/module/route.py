@@ -5,5 +5,5 @@ from app.models.user.mdl import User
 bp = APIRouter()
 
 @bp.post('/install')
-def install(module:orm.ModuleInstall):
+def install(module:orm.Module):
     return crud.install_module(module)
