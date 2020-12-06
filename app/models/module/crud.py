@@ -1,6 +1,5 @@
 from app.models.user.mdl import User
 from . import orm
-import fileinput
 
 main_file_path = "app/main.py"
 
