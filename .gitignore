@@ -1,5 +1,5 @@
 /__pycache__
 /files
-/aaa_mod
+app/ins_modes
 db.sqlite
 *.pyc
