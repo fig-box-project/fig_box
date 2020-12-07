@@ -1,8 +1,9 @@
 from app.models.user.mdl import User
-from . import orm, crud
+from . import orm, crud,crud_use
 import requests
 import zipfile
 import os
+import shutil
 
 main_file_path = "app/main.py"
 module_path = "app/insmodes"
@@ -10,11 +11,24 @@ download_path="downloads"
 store_path = download_path + "/store.conf"
 url = "https://github.com/fast-mode/comment/archive/main.zip"
 def install_module(module:orm.Module):
-    return download_module(module)
+    download_module(module)
+    unzip(module)
+    crud_use.use_module(module)
+
+# 卸载
+def uninstall_module(module:orm.Module):
+    crud_use.unuse_module(module)
+    delete_module(module)
 
 def update_store():
     url = crud.get_params(store_path,'path')[1]
     download_file(url, store_path)
+
+# 删除zip,模组目录
+def delete_module(module:orm.Module):
+    os.remove(download_path+'/'+crud.get_module_name(module)+'.zip')
+    # 删除文件夹
+    shutil.rmtree(module_path+'/'+crud.get_module_name(module))
 
 # 下载zip
 def download_module(module:orm.Module):
@@ -23,7 +37,7 @@ def download_module(module:orm.Module):
     download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
     return True
 
-# 解压zip
+# 解压zip,重命名
 def unzip(module:orm.Module):
     zipFile = zipfile.ZipFile(download_path+'/'+crud.get_module_name(module)+'.zip','r')
     for file in zipFile.namelist():

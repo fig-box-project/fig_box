@@ -8,6 +8,10 @@ bp = APIRouter()
 def install(module:orm.Module):
     return crud_install.install_module(module)
 
+@bp.post('/uninstall')
+def uninstall(module:orm.Module):
+    return crud_install.uninstall_module(module)
+
 @bp.post('/use')
 def use(module:orm.Module):
     status = crud_use.get_module_status(module)
@@ -29,6 +33,6 @@ def unuse(module:orm.Module):
         raise HTTPException(status_code=404,detail='需要禁用的模组不存在')
 
 @bp.post('/update-store')
-def update_store(module:orm.Module):
-    # crud_install.update_store()
-    crud_install.unzip(module)
+def update_store():
+    crud_install.update_store()
+
