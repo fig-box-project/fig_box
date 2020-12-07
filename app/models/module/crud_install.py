@@ -1,6 +1,5 @@
 from app.models.user.mdl import User
-from . import orm, crud,crud_use
-import requests
+from . import orm, crud,crud_use,crud_store
 import zipfile
 import os
 import shutil
@@ -8,7 +7,6 @@ import shutil
 main_file_path = "app/main.py"
 module_path = "app/insmodes"
 download_path="downloads"
-store_path = download_path + "/store.conf"
 url = "https://github.com/fast-mode/comment/archive/main.zip"
 def install_module(module:orm.Module):
     download_module(module)
@@ -20,9 +18,7 @@ def uninstall_module(module:orm.Module):
     crud_use.unuse_module(module)
     delete_module(module)
 
-def update_store():
-    url = crud.get_params(store_path,'path')[1]
-    download_file(url, store_path)
+
 
 # 删除zip,模组目录
 def delete_module(module:orm.Module):
@@ -34,7 +30,7 @@ def delete_module(module:orm.Module):
 def download_module(module:orm.Module):
     url = get_module_url(module)
     print(url)
-    download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
+    crud.download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
     return True
 
 # 解压zip,重命名
@@ -48,22 +44,10 @@ def unzip(module:orm.Module):
 
 def get_module_url(module:orm.Module):
     if module.version == '~':
-        url = crud.get_params(store_path,'mod ' + module.name)[3]
+        url = crud.get_params(crud_store.store_path,'mod ' + module.name)[3]
         # 添加zip文件地址的后缀
         url += '/archive/main.zip'
         return url
     else:
         return None
 
-def download_file(url:str,path: str,func=None):
-    res = requests.get(url,stream=True)
-    total_size = int(res.headers.get('content-length'))
-    with open(path, 'wb') as dl:
-        i = 0
-        for chunk in res.iter_content(chunk_size=1024):
-            if chunk:
-                dl.write(chunk)
-            # 如果函数存在则给其百分比
-            if func != None:
-                func(i/total_size)
-                i+=1

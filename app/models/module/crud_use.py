@@ -4,18 +4,24 @@ from . import orm, crud
 main_file_path = "app/main.py"
 
 def unuse_module(module:orm.Module):
-    delete_code_main(module)
-    moduleStatus = orm.ModuleStatus(**module.dict(),status=False)
-    set_module(moduleStatus)
-    return True
+    if get_module_status(module) == True:
+        delete_code_main(module)
+        moduleStatus = orm.ModuleStatus(**module.dict(),status=False)
+        set_module(moduleStatus)
+        return True
+    else:
+        return False
 
 # 使用模组--------------------------------
 def use_module(module:orm.Module):
-    insert_code_main(module)
-    # 更改状态并保存
-    moduleStatus = orm.ModuleStatus(**module.dict(),status=True)
-    set_module(moduleStatus)
-    return True
+    if get_module_status(module) == False:
+        insert_code_main(module)
+        # 更改状态并保存
+        moduleStatus = orm.ModuleStatus(**module.dict(),status=True)
+        set_module(moduleStatus)
+        return True
+    else:
+        return False
 
 def get_module_status(module:orm.Module):
     sta_module = check_module(module)
