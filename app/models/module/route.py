@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
-from . import crud, orm
+from . import crud, orm, crud_install
 from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
 
 @bp.post('/install')
 def install(module:orm.Module):
-    return crud.install_module(module)
+    return crud_install.install_module(module)
 
 @bp.post('/use')
 def use(module:orm.Module):
@@ -27,3 +27,7 @@ def unuse(module:orm.Module):
         raise HTTPException(status_code=409,detail='已经禁用了')
     else:
         raise HTTPException(status_code=404,detail='需要禁用的模组不存在')
+
+@bp.post('/update-store')
+def update_store():
+    crud_install.update_store()

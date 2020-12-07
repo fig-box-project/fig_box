@@ -3,9 +3,6 @@ from . import orm
 
 main_file_path = "app/main.py"
 
-def install_module(module:orm.Module):
-    use_module(module)
-
 def unuse_module(module:orm.Module):
     delete_code_main(module)
     moduleStatus = orm.ModuleStatus(**module.dict(),status=False)
