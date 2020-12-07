@@ -1,8 +1,11 @@
 from app.models.user.mdl import User
 from . import orm, crud
 import requests
+import zipfile
+import os
 
 main_file_path = "app/main.py"
+module_path = "app/insmodes"
 download_path="downloads"
 store_path = download_path + "/store.conf"
 url = "https://github.com/fast-mode/comment/archive/main.zip"
@@ -13,11 +16,21 @@ def update_store():
     url = crud.get_params(store_path,'path')[1]
     download_file(url, store_path)
 
+# 下载zip
 def download_module(module:orm.Module):
     url = get_module_url(module)
     print(url)
     download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
     return True
+
+# 解压zip
+def unzip(module:orm.Module):
+    zipFile = zipfile.ZipFile(download_path+'/'+crud.get_module_name(module)+'.zip','r')
+    for file in zipFile.namelist():
+        zipFile.extract(file,module_path)
+    zipFile.close()
+    # 重命名
+    os.rename(module_path+'/'+module.name+'-main',module_path+'/'+crud.get_module_name(module))
 
 def get_module_url(module:orm.Module):
     if module.version == '~':

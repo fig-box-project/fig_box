@@ -1,6 +1,6 @@
 /__pycache__
 /files
 /downloads
-app/ins_modes
+app/insmodes
 db.sqlite
 *.pyc
