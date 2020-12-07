@@ -11,6 +11,7 @@ from app.models.article import mdl as dfsds
 
 import app.conf as conf
 
+# もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
 database.Base.metadata.create_all(bind=database.engine)
 
 # database.Base.metadata.query
