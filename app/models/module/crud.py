@@ -22,6 +22,17 @@ def get_params(path: str,posi: str):
             return line.split(' ')
     return None
 
+# 获取所有列表的参数
+def get_params_list(path: str,posi: str):
+    rt = []
+    with open(path,'r') as r:
+        lines = r.readlines()
+    for line in lines:
+        # 历遍所有行,
+        if line[:len(posi)] == posi:
+            rt.append(line.split(' '))
+    return rt
+
 # 设置文件内的参数
 def set_params(path: str,posi:str,line_data:list):
     line_str = ' '.join(line_data) + '\n'

@@ -5,6 +5,9 @@ from datetime import datetime
 class ModuleBase(BaseModel):
     pass
 
+class Store(BaseModel):
+    url: str
+
 class Module(ModuleBase):
     name: str = 'comment'
     version: str = '~'
