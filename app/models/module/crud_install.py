@@ -8,8 +8,17 @@ main_file_path = "app/main.py"
 module_path = "app/insmodes"
 download_path="downloads"
 url = "https://github.com/fast-mode/comment/archive/main.zip"
+
+# 安装模组
 def install_module(module:orm.Module):
     download_module(module)
+    unzip(module)
+    crud_use.use_module(module)
+
+# 重装
+def reinstall_module(module:orm.Module):
+    crud_use.unuse_module(module)
+    delete_directory(module)
     unzip(module)
     crud_use.use_module(module)
 
@@ -18,12 +27,13 @@ def uninstall_module(module:orm.Module):
     crud_use.unuse_module(module)
     delete_module(module)
 
-
-
 # 删除zip,模组目录
 def delete_module(module:orm.Module):
     os.remove(download_path+'/'+crud.get_module_name(module)+'.zip')
-    # 删除文件夹
+    delete_directory(module)
+    
+# 删除文件夹
+def delete_directory(module:orm.Module):
     shutil.rmtree(module_path+'/'+crud.get_module_name(module))
 
 # 下载zip

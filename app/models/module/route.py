@@ -12,6 +12,12 @@ def install(module:orm.Module):
 def uninstall(module:orm.Module):
     return crud_install.uninstall_module(module)
 
+@bp.post('/reinstall')
+def reinstall(module:orm.Module):
+    return crud_install.reinstall_module(module)
+
+# use----------------------------------------------------------------
+
 @bp.post('/use')
 def use(module:orm.Module):
     status = crud_use.get_module_status(module)
@@ -32,7 +38,10 @@ def unuse(module:orm.Module):
     else:
         raise HTTPException(status_code=404,detail='需要禁用的模组不存在')
 
-# store
+
+# store----------------------------------------------------------------
+
+
 @bp.post('/store/update')
 def update_store():
     crud_store.update_store()
