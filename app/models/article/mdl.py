@@ -20,3 +20,9 @@ class Article(Base):
 
     owner_id           = Column(Integer,ForeignKey('users.id'))
     owner              = relationship("User",back_populates = "articles")
+
+    # 想在网页上显示什么内容
+    def keys(self):
+        return ('title','link')
+    def __getitem__(self, item):
+        return getattr(self, item)

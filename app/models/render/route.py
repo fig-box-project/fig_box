@@ -12,6 +12,10 @@ bp = APIRouter()
 def render_test(request: Request,p:str):
     return crud.render_test(request,p)
 
+@bp.get('/article/{link}')
+def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
+    return crud.view_article(link,db,request)
+
 @bp.get('/site/sitemap.xml')
 def site_sitemap():
     return crud.render_sitemap()

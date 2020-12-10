@@ -19,6 +19,14 @@ def render_test(request,p:str):
     else:
         return 'fail'
 
+def view_article(link:str,db: Session,request):
+    article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
+    if article != None:
+        data = dict(article)
+        print(data)
+        data['request'] = request
+        return templates.TemplateResponse("view.html", data)
+
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
     # return templates.TemplateResponse(templates_path + '/sitemap.xml',{},media_type='application/xml')
@@ -33,7 +41,7 @@ def create_sitemap(db: Session):
         # print(i.link)
         code = \
 f'''<url>
-<loc>https://www.abc.com/article/{i.link}</loc>
+<loc>http://127.0.0.1:5000/article/{i.link}</loc>
 <priority>1.00</priority>
 <lastmod>2020-12-09</lastmod>
 <changefreq>daily</changefreq>
