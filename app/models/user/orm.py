@@ -3,13 +3,15 @@
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
-    username: str
+    username: str = "admin"
 
 class UserCreate(UserBase):
     password: str
 
-class UserToken(UserBase):
-    token: str
+class UserLogin(UserBase):
+    password: str = "admin"
+# class UserToken(UserBase):
+#     token: str
 
 class UserUpdate(UserBase):
     id: int

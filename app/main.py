@@ -104,6 +104,10 @@ app.include_router(
     module_route,
     prefix=url_prefix + '/module',
     tags=['模组・插件'],)
+from .models.render.route import bp as render_route
+app.include_router(
+    render_route,
+    tags=['渲染'],)
 
 # for modules>
 

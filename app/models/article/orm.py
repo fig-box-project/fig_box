@@ -16,6 +16,7 @@ class ArticleCreate(ArticleBase):
 
 class ArticleUpdate(ArticleBase):
     id: int
+    link: Optional[str] = None
 
 class ArticleRelease(BaseModel):
     id: int
@@ -23,6 +24,7 @@ class ArticleRelease(BaseModel):
 
 class Article(ArticleBase):
     id: int
+    link: str
     owner_id: int
     create_date: datetime
     update_date: datetime

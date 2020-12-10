@@ -5,6 +5,7 @@ from app.models.database import Base
 class Article(Base):
     __tablename__ = "articles"
     id                 = Column(Integer, primary_key=True)
+    link               = Column(String, unique=True,index=True)
     title              = Column(String(64), index=True)
     content            = Column(String)
 

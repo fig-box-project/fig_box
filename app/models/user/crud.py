@@ -27,7 +27,7 @@ def create_user(db: Session,user: orm.UserCreate):
     return db_user
 
 # 登录
-def login_user(db: Session,user_data: orm.UserCreate):
+def login_user(db: Session,user_data: orm.UserLogin):
     user = db.query(mdl.User).filter_by(username=user_data.username).first()
     if not user:
         return False,"找不到用户"
