@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session, load_only
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
+from . import conf
 
 from app.models.article import mdl
 
@@ -41,7 +42,7 @@ def create_sitemap(db: Session):
         # print(i.link)
         code = \
 f'''<url>
-<loc>http://127.0.0.1:5000/article/{i.link}</loc>
+<loc>{conf.sitemap_url}/article/{i.link}</loc>
 <priority>1.00</priority>
 <lastmod>2020-12-09</lastmod>
 <changefreq>daily</changefreq>
