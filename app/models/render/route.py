@@ -17,8 +17,8 @@ def render_article(link:str,request: Request,db: Session=Depends(database.get_db
     rt = crud.view_article(link,db,request)
     if rt != None:
         return rt
-    else:
-        raise HTTPException(status_code=400,detail='找不到页面')
+    # else:
+        # raise HTTPException(status_code=400,detail='找不到页面')
 
 @bp.get('/site/sitemap.xml')
 def site_sitemap():

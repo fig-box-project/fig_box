@@ -28,7 +28,7 @@ def view_article(link:str,db: Session,request):
         data['request'] = request
         return templates.TemplateResponse("article/show.html", data)
     else:
-        return None
+        return templates.TemplateResponse('404.html',{})
 
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')

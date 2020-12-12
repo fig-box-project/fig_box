@@ -29,7 +29,7 @@ def get_user_articles(db: Session,user: User,status:int, skip = 0, limit=100):
 def create(db: Session,data: orm.ArticleCreate,owner_id):
     # 对map进行预操作,以对应是否发布
     data_map:dict = data.dict()
-    data_map['link'] = str(random.randint(0,100000000))
+    data_map['link'] = 'gg' + str(random.randint(0,100))
     if data_map.pop('is_release'):
         if data_map.pop('can_search'):
             data_map['status']=2
