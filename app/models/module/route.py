@@ -47,11 +47,11 @@ def unuse(module:orm.Module):
 def update_store():
     crud_store.update_store()
 
-@bp.post('/store/view')
+@bp.get('/store/view')
 def view_store():
     return crud_store.view_store()
 
-@bp.post('/store/change')
+@bp.put('/store/change')
 def change_store(store:orm.Store):
     return crud_store.change_url(store.url)
 
