@@ -1,7 +1,21 @@
 import os
+import time
+from fastapi import UploadFile
 
 
 directory_name = 'files/'
+
+# 上传图片
+async def create_file(file:UploadFile,path:str):
+    if check_path_has(path):
+        start = time.time()
+        path = directory_name + path + '/' + file.filename
+        res = await file.read()
+        with open(path, 'wb') as f:
+            f.write(res)
+        return {'time':time.time() - start,'filename':file.filename}
+    else:
+        return None
 
 # 存在则是
 def check_path_has(path: str):

@@ -1,8 +1,17 @@
-from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
+from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile
 from . import crud
 from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
+
+
+@bp.post('/file/upload',description = '上传文件')
+async def upload(file_path: str=Body(...),file: UploadFile = File(...)):
+    rt = await crud.create_file(file,file_path)
+    if rt == None:
+        raise HTTPException(status_code=404,detail='路径不存在')
+    else:
+        return rt
 
 @bp.post('/write',description='写')
 def write(file_path: str=Body(...), data: str=Body(...)):
