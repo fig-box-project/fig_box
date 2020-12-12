@@ -12,9 +12,13 @@ bp = APIRouter()
 def render_test(request: Request,p:str):
     return crud.render_test(request,p)
 
-@bp.get('/article/{link}')
+@bp.get('/article/{link}',description='对于文章的渲染')
 def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
-    return crud.view_article(link,db,request)
+    rt = crud.view_article(link,db,request)
+    if rt != None:
+        return rt
+    else:
+        raise HTTPException(status_code=400,detail='找不到页面')
 
 @bp.get('/site/sitemap.xml')
 def site_sitemap():

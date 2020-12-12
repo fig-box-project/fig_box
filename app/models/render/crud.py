@@ -20,13 +20,15 @@ def render_test(request,p:str):
     else:
         return 'fail'
 
+
 def view_article(link:str,db: Session,request):
     article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
     if article != None:
         data = article.__dict__
-        print(data)
         data['request'] = request
         return templates.TemplateResponse("article/show.html", data)
+    else:
+        return None
 
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
