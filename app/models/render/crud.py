@@ -26,7 +26,7 @@ def view_article(link:str,db: Session,request):
         data = article.__dict__
         print(data)
         data['request'] = request
-        return templates.TemplateResponse("view.html", data)
+        return templates.TemplateResponse("article/show.html", data)
 
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
