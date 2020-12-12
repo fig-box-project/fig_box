@@ -22,7 +22,7 @@ class Article(Base):
     owner              = relationship("User",back_populates = "articles")
 
     # 想在网页上显示什么内容
-    def keys(self):
-        return ('title','link')
-    def __getitem__(self, item):
-        return getattr(self, item)
+    # def keys(self):
+    #     return ('title','link')
+    # def __getitem__(self, item):
+    #     return getattr(self, item)

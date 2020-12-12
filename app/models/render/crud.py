@@ -23,7 +23,7 @@ def render_test(request,p:str):
 def view_article(link:str,db: Session,request):
     article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
     if article != None:
-        data = dict(article)
+        data = article.__dict__
         print(data)
         data['request'] = request
         return templates.TemplateResponse("view.html", data)
