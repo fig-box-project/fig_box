@@ -32,12 +32,6 @@ def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
     # return templates.TemplateResponse(templates_path + '/sitemap.xml',{},media_type='application/xml')
 
-def reset_siteurl(url:str):
-    conf_url = ''
-    with open(conf_url,'w') as w:
-        w.write('sitemap_url = \'{}\''.format(url)
-        
-    
 def create_sitemap(db: Session):
     fields = ['link']
     datas = db.query(mdl.Article).options(load_only(*fields)).all()
