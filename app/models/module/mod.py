@@ -1,5 +1,6 @@
 from enum import Enum
-from . import crud_install
+import zipfile
+import os
 
 class Status(Enum):
     UNFIND  = 0
@@ -23,6 +24,8 @@ class Module:
     name: str
     version: str
     status: Status
+    url: str
+    description: str
     def __init__(self, name: str, version: str):
         self.name = name
         self.version = version
@@ -36,6 +39,14 @@ class Module:
             return Status.UNUSED
         else:
             return Status.USED
+    def get_url(self):
+        if self.version == '~':
+            url = Tool.get_params('downloads/store.conf','mod ' + self.name)[3]
+            # 添加zip文件地址的后缀
+            url += '/archive/main.zip'
+            return url
+        else:
+            return None
     # 安装
     def install(self):
         if self.status == Status.INCLOUD:
@@ -49,6 +60,12 @@ class Module:
         pass
     def uninstall(self):
         pass
+    # 下载zip
+    def download_module(self):
+        url = get_module_url(module)
+        print(url)
+        crud.download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
+        return True
     
 
 class Tool:
@@ -62,3 +79,15 @@ class Tool:
             if line[:len(posi)] == posi:
                 return line.split(' ')
         return None
+    
+    # 解压zip,重命名
+    @staticmethod
+    def unzip(oldpath: str, newpath: str,newname: str):
+        zipFile = zipfile.ZipFile(oldpath,'r')
+        for file in zipFile.namelist():
+            zipFile.extract(file,newpath)
+        namelist = zipFile.namelist()
+        print(namelist)
+        zipFile.close()
+        # 重命名
+        os.rename(newpath+'/'+namelist[0],newpath+'/'+newname)
