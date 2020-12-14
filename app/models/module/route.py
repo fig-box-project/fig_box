@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
-from . import orm, crud_install,crud_use,crud_store
+from . import orm, mod
 from app.main import check_token
 from app.models.user.mdl import User
 
@@ -7,37 +7,45 @@ bp = APIRouter()
 
 @bp.post('/install')
 def install(module:orm.Module):
-    return crud_install.install_module(module)
+    module_bag = mod.get_module_bag(module.name)
+    module = module_bag.main_module
+    if module.status == mod.Status.INCLOUD:
+        module.install()
+        return True
+    else:
+        raise HTTPException(status_code=400)
 
 @bp.post('/uninstall')
 def uninstall(module:orm.Module):
-    return crud_install.uninstall_module(module)
-
-@bp.post('/reinstall')
-def reinstall(module:orm.Module):
-    return crud_install.reinstall_module(module)
+    module_bag = mod.get_module_bag(module.name)
+    module = module_bag.main_module
+    if module.status == mod.Status.USED or module.status == mod.Status.UNUSED:
+        module.uninstall()
+    else:
+        raise HTTPException(status_code=400)
 
 # use----------------------------------------------------------------
 
-@bp.post('/use')
+@bp.post('/use',description='使用模组')
 def use(module:orm.Module):
-    status = crud_use.get_module_status(module)
-    if status == False:
-        return crud_use.use_module(module)
-    elif status == True:
-        raise HTTPException(status_code=409,detail='已经使用了')
+    module_bag = mod.get_module_bag(module.name)
+    module = module_bag.main_module
+    if module.status == mod.Status.UNUSED:
+        module.use()
     else:
-        raise HTTPException(status_code=404,detail='需要使用的模组不存在')
+        raise HTTPException(status_code=400)
+    #     raise HTTPException(status_code=409,detail='已经使用了')
+    # else:
+    #     raise HTTPException(status_code=404,detail='需要使用的模组不存在')
 
-@bp.post('/unuse')
+@bp.post('/unuse',description='禁用模组')
 def unuse(module:orm.Module):
-    status = crud_use.get_module_status(module)
-    if status == True:
-        return crud_use.unuse_module(module)
-    elif status == False:
-        raise HTTPException(status_code=409,detail='已经禁用了')
+    module_bag = mod.get_module_bag(module.name)
+    module = module_bag.main_module
+    if module.status == mod.Status.USED:
+        module.unuse()
     else:
-        raise HTTPException(status_code=404,detail='需要禁用的模组不存在')
+        raise HTTPException(status_code=400)
 
 
 # store----------------------------------------------------------------
@@ -45,13 +53,10 @@ def unuse(module:orm.Module):
 
 @bp.post('/store/update')
 def update_store():
-    crud_store.update_store()
+    mod.store.update()
 
 @bp.get('/store/view')
 def view_store():
-    return crud_store.view_store()
+    return mod.store.view()
 
-@bp.put('/store/change')
-def change_store(store:orm.Store):
-    return crud_store.change_url(store.url)
 

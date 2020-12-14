@@ -6,11 +6,13 @@ import requests
 
 module_bags = {}
 def get_module_bag(name: str):
-    if name in module_bags:
-        return module_bags[name]
-    else:
-        pass
-        
+    if name in module_bags == False:
+        m = ModuleBag(name)
+        if m.is_exist() == False:
+            return None
+        else:
+            module_bags[name] = m
+    return module_bags[name]
 
 class Status(Enum):
     UNFIND  = 0
@@ -179,9 +181,16 @@ class ModuleBag:
     version_map = {}
     def __init__(self, name: str):
         self.name = name
-        self.main_module = Module(name,'~')
-    def is_exist(self):
+        if self.is_exist():
+            self.main_module = Module(name,'~')
+    
+    # 获取某版本的模组
+    def get_module_in_version(self,version: str):
         pass
+
+    # 检测是否存在
+    def is_exist(self):
+        return self.name in store.get_goods()
 
 
 class Store:
@@ -200,8 +209,15 @@ class Store:
         return self._goods
             # return [{'name':i[1],'description':''} for i in list]
     
+    # 用于api的查看
+    def view(self):
+        self.check_file()
+        list = Tool.get_params_list(self.store_path,'mod ')
+        return [{'name':i[1],'status':True,'description':'说明巴拉巴拉'} for i in list]
+
     # 更新一下商店
     def update(self):
+        self.check_file()
         url = Tool.get_params(self.store_path,'path')[1]
         Tool.download_file(url, self.store_path)
 
@@ -213,7 +229,6 @@ class Store:
             return True
         else:
             return False
-
 
 store = Store()
 
