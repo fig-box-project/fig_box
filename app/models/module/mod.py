@@ -51,7 +51,7 @@ class Module:
                     self._status = Status.INCLOUD
                 else:
                     self._status = Status.UNFIND
-            elif para[2] == 'False':
+            elif para[1] == 'False':
                 self._status = Status.UNUSED
             else:
                 self._status = Status.USED
@@ -152,6 +152,8 @@ class Module:
             del lines[head:foot+1]
             with open("app/main.py",'w') as w:
                 w.write(''.join(lines))
+            # 更改状态
+            self.status = Status.UNUSED
         
     # 获取api的标签
     def get_tag(self):
