@@ -6,7 +6,7 @@ import requests
 
 module_bags = {}
 def get_module_bag(name: str):
-    if name in module_bags == False:
+    if name not in module_bags:
         m = ModuleBag(name)
         if m.is_exist() == False:
             return None
@@ -29,30 +29,37 @@ class Module:
     name: str
     version: str
     unique_name: str
-    status: Status = None
+    _status: Status = None
     url: str = ''
     # 不要调用
-    tag: str 
+    tag: str = ''
     description: str
     def __init__(self, name: str, version: str):
         self.name = name
         self.version = version
+        self.url = self.get_url()
         self.unique_name = name + (version if version != '~' else '')
-        self.status = property(self.get_status,self.set_status)
     
     # status的get
-    def get_status(self):
-        path = 'app/modules.mods'
-        para = Tool.get_params(path,self.unique_name)
-        if para == None:
-            return Status.INCLOUD
-        elif para[2] == 'False':
-            return Status.UNUSED
-        else:
-            return Status.USED
+    @property
+    def status(self):
+        if self._status == None:
+            path = 'app/modules.mods'
+            para = Tool.get_params(path,self.unique_name)
+            if para == None:
+                if self.name in store.get_goods():
+                    self._status = Status.INCLOUD
+                else:
+                    self._status = Status.UNFIND
+            elif para[2] == 'False':
+                self._status = Status.UNUSED
+            else:
+                self._status = Status.USED
+        return self._status
     
     # status的set
-    def set_status(self, status):
+    @status.setter
+    def status(self, status):
         path = 'app/modules.mods'
         if self.status == status:
             return
@@ -69,10 +76,10 @@ class Module:
         else:
             # 当本身不存在时,
             if status == Status.UNUSED:
-                Tool.add_line(path,self.unique_name + 'False')
+                Tool.add_line(path,self.unique_name + ' False \n')
             elif status == Status.USED:
-                Tool.add_line(path,self.unique_name + 'True')
-        self.status = status
+                Tool.add_line(path,self.unique_name + ' True \n')
+        self._status = status
 
     # 获取下载地址
     def get_url(self):
@@ -115,7 +122,7 @@ class Module:
             # 往main文件里注入代码
             name = self.unique_name
             tag = self.get_tag()
-            code = f'# {name}>\nfrom .insmodes.{name}.route import bp as {name}_route\napp.include_router(\n    {name}_route,\n    prefix=url_prefix + \'/{name}\',\n    tags=[\'{tag}\'],)\n# <{name}'
+            code = f'# {name}>\nfrom .insmodes.{name}.route import bp as {name}_route\napp.include_router(\n    {name}_route,\n    prefix=url_prefix + \'/{name}\',\n    tags=[\'{tag}\'],)\n# <{name}\n'
             # 在文件中插入代码
             with open("app/main.py",'r') as r:
                 lines = r.readlines()
@@ -285,10 +292,9 @@ class Tool:
 
     # 增加一行
     @staticmethod
-    def add_line(path: str,line_data:list):
-        line_data.append('')
+    def add_line(path: str,line:str):
         with open(path,'a')as f:
-            f.write(''.join(line_data))
+            f.write(line)
 
     # 解压zip,重命名
     @staticmethod
@@ -296,23 +302,18 @@ class Tool:
         zipFile = zipfile.ZipFile(oldpath,'r')
         for file in zipFile.namelist():
             zipFile.extract(file,newpath)
-        namelist = zipFile.namelist()
-        print(namelist)
+        directory_name = zipFile.namelist()[0][:-1]
         zipFile.close()
         # 重命名
-        os.rename(newpath+'/'+namelist[0],newpath+'/'+newname)
+        os.rename(newpath + directory_name,newpath + newname)
     
     # 下载文件
     @staticmethod
-    def download_file(url:str,path: str,func=None):
+    def download_file(url:str,path: str):
+        print(url)
         res = requests.get(url,stream=True)
-        total_size = int(res.headers.get('content-length'))
         with open(path, 'wb') as dl:
-            i = 0
             for chunk in res.iter_content(chunk_size=1024):
                 if chunk:
                     dl.write(chunk)
                 # 如果函数存在则给其百分比
-                if func != None:
-                    func(i/total_size)
-                    i+=1
