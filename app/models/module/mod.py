@@ -4,6 +4,14 @@ import os
 import shutil
 import requests
 
+module_bags = {}
+def get_module_bag(name: str):
+    if name in module_bags:
+        return module_bags[name]
+    else:
+        pass
+        
+
 class Status(Enum):
     UNFIND  = 0
     INCLOUD = 1
@@ -14,13 +22,6 @@ class RunStatus(Enum):
     SUCCESS = 0
     DID     = 1
     FAILURE = 2
-
-class ModuleBag:
-    name: str
-    main_version_status:Status
-    def __init__(self, name: str):
-        pass
-
 
 class Module:
     name: str
@@ -36,6 +37,8 @@ class Module:
         self.version = version
         self.unique_name = name + (version if version != '~' else '')
         self.status = property(self.get_status,self.set_status)
+    
+    # status的get
     def get_status(self):
         path = 'app/modules.mods'
         para = Tool.get_params(path,self.unique_name)
@@ -45,6 +48,8 @@ class Module:
             return Status.UNUSED
         else:
             return Status.USED
+    
+    # status的set
     def set_status(self, status):
         path = 'app/modules.mods'
         if self.status == status:
@@ -67,15 +72,16 @@ class Module:
                 Tool.add_line(path,self.unique_name + 'True')
         self.status = status
 
-
+    # 获取下载地址
     def get_url(self):
         if self.version == '~':
-            url = Tool.get_params('downloads/store.conf','mod ' + self.name)[3]
+            url = Tool.get_params(store.store_path,'mod ' + self.name)[3]
             # 添加zip文件地址的后缀
             url += '/archive/main.zip'
             return url
         else:
             return None
+    
     # 安装
     def install(self):
         if self.status == Status.INCLOUD:
@@ -107,15 +113,7 @@ class Module:
             # 往main文件里注入代码
             name = self.unique_name
             tag = self.get_tag()
-            code = \
-f'''# {name}>
-from .insmodes.{name}.route import bp as {name}_route
-app.include_router(
-    {name}_route,
-    prefix=url_prefix + '/{name}',
-    tags=['{tag}'],)
-# <{name}
-'''
+            code = f'# {name}>\nfrom .insmodes.{name}.route import bp as {name}_route\napp.include_router(\n    {name}_route,\n    prefix=url_prefix + \'/{name}\',\n    tags=[\'{tag}\'],)\n# <{name}'
             # 在文件中插入代码
             with open("app/main.py",'r') as r:
                 lines = r.readlines()
@@ -174,9 +172,64 @@ app.include_router(
             return 'app/insmodes/'
         return 'app/insmodes/' + self.unique_name
 
+# 模组的一整个包
+class ModuleBag:
+    name: str
+    main_module: Module
+    version_map = {}
+    def __init__(self, name: str):
+        self.name = name
+        self.main_module = Module(name,'~')
+    def is_exist(self):
+        pass
+
+
+class Store:
+    # 商店的文件地址
+    store_path = "downloads/store.conf"
+    # 商店物品的集合
+    _goods = set()
+    # 获取商店所有的东西
+    def get_goods(self):
+        if len(self._goods) > 0:
+            return self._goods
+        self.check_file()
+        list = Tool.get_params_list(self.store_path,'mod ')
+        for i in list:
+            self._goods.add(i[1])
+        return self._goods
+            # return [{'name':i[1],'description':''} for i in list]
     
+    # 更新一下商店
+    def update(self):
+        url = Tool.get_params(self.store_path,'path')[1]
+        Tool.download_file(url, self.store_path)
+
+    # True为创建了,否则为无创建,在每个api动作前都运行下这个
+    def check_file(self):
+        if os.path.exists(self.store_path) == False:
+            os.mkdir('downloads')
+            Tool.download_file('https://raw.githubusercontent.com/fast-mode/store/main/store.conf', self.store_path)
+            return True
+        else:
+            return False
+
+
+store = Store()
 
 class Tool:
+    # 获取所有列表的参数
+    @staticmethod
+    def get_params_list(path: str,posi: str):
+        rt = []
+        with open(path,'r') as r:
+            lines = r.readlines()
+        for line in lines:
+            # 历遍所有行,
+            if line[:len(posi)] == posi:
+                rt.append(line.split(' '))
+        return rt
+
     # 获取文件内的参数
     @staticmethod
     def get_params(path: str,posi: str):
