@@ -46,15 +46,4 @@ def set_params(path: str,posi:str,line_data:list):
     with open(path,'w') as w:
         w.write(''.join(lines))
 
-def download_file(url:str,path: str,func=None):
-    res = requests.get(url,stream=True)
-    total_size = int(res.headers.get('content-length'))
-    with open(path, 'wb') as dl:
-        i = 0
-        for chunk in res.iter_content(chunk_size=1024):
-            if chunk:
-                dl.write(chunk)
-            # 如果函数存在则给其百分比
-            if func != None:
-                func(i/total_size)
-                i+=1
+

@@ -1,6 +1,7 @@
 from enum import Enum
 import zipfile
 import os
+import requests
 
 class Status(Enum):
     UNFIND  = 0
@@ -23,16 +24,18 @@ class ModuleBag:
 class Module:
     name: str
     version: str
+    unique_name: str
     status: Status
     url: str
     description: str
     def __init__(self, name: str, version: str):
         self.name = name
         self.version = version
+        self.unique_name = name + (version if version != '~' else '')
         self.status = self.get_status()
     def get_status(self):
         path = 'app/modules.mods'
-        para = self.get_params(path,self.name + ' ' + self.version)
+        para = Tool.get_params(path,self.name + ' ' + self.version)
         if para == None:
             return Status.INCLOUD
         elif para[2] == 'False':
@@ -50,22 +53,46 @@ class Module:
     # 安装
     def install(self):
         if self.status == Status.INCLOUD:
-            crud_install.install_module()
-        else:
+            # 下载
+            self.download_module()
+            # 解压
+            self.unzip()
+            # 使用
+            self.use()
+            # 设置状态为已使用
             pass
+        elif self.status == Status.UNFIND:
+            return RunStatus.FAILURE
+        else:
+            return RunStatus.DID
 
-    def user(self):
+    # 卸载
+    def uninstall(self):
+        # 禁用
+        self.unuse()
+        # 删除各种文件
+        # 设置状态为云端
+    def use(self):
         pass
     def unuse(self):
         pass
-    def uninstall(self):
-        pass
-    # 下载zip
+    def unzip(self):
+        Tool.unzip(self.get_zip_path(),self.get_mod_path(True),self.unique_name)
+
+    # 下载zip,下载完后将以唯一名称进行保存在downloads中
     def download_module(self):
-        url = get_module_url(module)
-        print(url)
-        crud.download_file(url,download_path+'/'+crud.get_module_name(module)+'.zip')
-        return True
+        Tool.download_file(self.url,self.get_zip_path())
+
+    # 获取压缩包地址
+    def get_zip_path(self):
+        return 'downloads/'+ self.unique_name +'.zip'
+
+    # 获取安装后的文件夹位置
+    def get_mod_path(self,isFather:bool):
+        if isFather:
+            return 'app/insmodes/'
+        return 'app/insmodes/' + self.unique_name
+
     
 
 class Tool:
@@ -91,3 +118,18 @@ class Tool:
         zipFile.close()
         # 重命名
         os.rename(newpath+'/'+namelist[0],newpath+'/'+newname)
+    
+    # 下载文件
+    @staticmethod
+    def download_file(url:str,path: str,func=None):
+        res = requests.get(url,stream=True)
+        total_size = int(res.headers.get('content-length'))
+        with open(path, 'wb') as dl:
+            i = 0
+            for chunk in res.iter_content(chunk_size=1024):
+                if chunk:
+                    dl.write(chunk)
+                # 如果函数存在则给其百分比
+                if func != None:
+                    func(i/total_size)
+                    i+=1
