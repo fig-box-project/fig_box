@@ -170,6 +170,25 @@ class Category:
                 obj['children'].pop(i)
         self.data= self.data
 
+    def update_name(self,id: int,name: str):
+        # 从数据库中找出该分类
+        cate = self.db.query(mdl.Category).filter_by(id=id).first()
+        father_ids = cate.father_ids
+        father_id_list = father_ids.split(',')
+        # 更新下数据库中的
+        cate.name = name
+        self.db.commit()
+        # 找出该分类
+        obj = self.data
+        for i in range(1,len(father_id_list)):
+            index = int(father_id_list[i])
+            obj = self.search(obj,index)
+            if obj is None:return None
+        for i in range(len(obj['children'])):
+            if obj['children'][i]['id'] == id:
+                obj['children'][i]['name'] = name
+                break
+        self.data= self.data
 
     def search(self,obj,id):
         for o in obj['children']:
