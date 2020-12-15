@@ -5,7 +5,9 @@ from app.models.database import Base
 class Category(Base):
     __tablename__ = 'category'
     id                 = Column(Integer, primary_key=True)
+    name               = Column(String)
     father_ids         = Column(String)
+    
     link               = Column(String, unique=True,index=True)
     title              = Column(String(64), index=True)
     content            = Column(String)
@@ -20,4 +22,3 @@ class Category(Base):
     seo_description    = Column(String(400))
 
     owner_id           = Column(Integer,ForeignKey('users.id'))
-    owner              = relationship("User",back_populates = "articles")

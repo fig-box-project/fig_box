@@ -125,10 +125,62 @@ class Category:
             self.db.refresh(data)
             cate_id = data.id
             # 插入到json
-            new_cate = {'name':name,'id':cate_id}
+            new_cate = {'name':name,'id':cate_id,'children':[]}
             self.data['children'].append(new_cate)
             # 上面没调用seter,所以
             self.data = self.data
-            
+        else:
+            # 从数据获取祖先的id们
+            father_ids = self.db.query(mdl.Category).filter(mdl.Category.id==father_id).first().father_ids
+            father_id_list = father_ids.split(',')
+            # 找出对应的父obj以作准备,如果找不到就立即跳出程序
+            obj = self.data
+            for i in range(1,len(father_id_list)):
+                index = int(father_id_list[i])
+                obj = self.search(obj,index)
+                if obj is None:return None
+            obj = self.search(obj,father_id)
+            if obj is None:return None
+            # 插入数据库并获取新id
+            data.father_ids= father_ids + "," + str(father_id)
+            self.db.add(data)
+            self.db.commit()
+            self.db.refresh(data)
+            cate_id = data.id
+            # 将数据插入到json文件
+            obj['children'].append({'name':name,'id':cate_id,'children':[]})
+            self.data = self.data
+
+    def remove(self,id: int):
+        # 从数据库中找出该分类
+        cate = self.db.query(mdl.Category).filter_by(id=id).first()
+        father_ids = cate.father_ids
+        father_id_list = father_ids.split(',')
+        # 从数据库删除
+        self.db.delete(cate)
+        self.db.commit()
+        # 从json删除
+        obj = self.data
+        for i in range(1,len(father_id_list)):
+            index = int(father_id_list[i])
+            obj = self.search(obj,index)
+            if obj is None:return None
+        for i in range(len(obj['children'])):
+            if obj['children'][i]['id'] == id:
+                obj['children'].pop(i)
+        self.data= self.data
+
+
+    def search(self,obj,id):
+        for o in obj['children']:
+            if o['id'] == id:
+                return o
+        
+category :Category = None
+def get_category(db: Session):
+    global category
+    if category is None:
+        category = Category(db)
+    return category
 
 
