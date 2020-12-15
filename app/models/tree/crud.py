@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from . import orm, conf
+from . import orm, conf, mdl
 import json
 
 def read_all():
@@ -93,3 +93,42 @@ def update_tree(tree_map:dict,id,name):
                     tree_map[k] = has
                     return tree_map
     return None
+
+class Category:
+    _data:dict = {}
+    db: Session
+    def __init__(self,db: Session):
+        self.db = db
+
+    # get data
+    @property
+    def data(self):
+        if len(self._data) == 0:
+            with open(conf.tree_path,'r') as f:
+                json_str = f.read()
+            self._data = json.loads(json_str)
+        return self._data
+    
+    # set data
+    @data.setter
+    def data(self, data):
+        with open(conf.tree_path,'w') as f:
+            f.write(json.dumps(data))
+        self._data = data
+
+    def insert(self,father_id: int,name: str,data:mdl.Category):
+        if father_id == 0:
+            # 尝试加到数据库
+            data.father_ids = '0'
+            self.db.add(data)
+            self.db.commit()
+            self.db.refresh(data)
+            cate_id = data.id
+            # 插入到json
+            new_cate = {'name':name,'id':cate_id}
+            self.data['children'].append(new_cate)
+            # 上面没调用seter,所以
+            self.data = self.data
+            
+
+
