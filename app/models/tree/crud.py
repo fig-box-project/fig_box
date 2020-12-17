@@ -94,6 +94,20 @@ def update_tree(tree_map:dict,id,name):
                     return tree_map
     return None
 
+class Leaf:
+    id: int = 0
+    name: str = ""
+    children: list = []
+    description: str = ""
+    def getMap(self):
+        return self.__dict__
+    def get_update_map(self,old_data:dict):
+        if self.name != "":
+            old_data["name"] = self.name
+        if self.description != "":
+            old_data["description"] = self.description
+        return old_data
+
 class Category:
     _data:dict = {}
     db: Session
@@ -116,16 +130,16 @@ class Category:
             f.write(json.dumps(data))
         self._data = data
 
-    def insert(self,father_id: int,name: str,data:mdl.Category):
+    def insert(self,father_id: int,leaf:Leaf,data:mdl.Category):
         if father_id == 0:
             # 尝试加到数据库
             data.father_ids = '0'
             self.db.add(data)
             self.db.commit()
             self.db.refresh(data)
-            cate_id = data.id
+            leaf.id = data.id
             # 插入到json
-            new_cate = {'name':name,'id':cate_id,'children':[]}
+            new_cate = leaf.getMap()
             self.data['children'].append(new_cate)
             # 上面没调用seter,所以
             self.data = self.data
@@ -146,9 +160,9 @@ class Category:
             self.db.add(data)
             self.db.commit()
             self.db.refresh(data)
-            cate_id = data.id
+            leaf.id = data.id
             # 将数据插入到json文件
-            obj['children'].append({'name':name,'id':cate_id,'children':[]})
+            obj['children'].append(leaf.getMap())
             self.data = self.data
 
     def remove(self,id: int):
@@ -170,13 +184,13 @@ class Category:
                 obj['children'].pop(i)
         self.data= self.data
 
-    def update_name(self,id: int,name: str):
+    def update_json(self,leaf:Leaf):
         # 从数据库中找出该分类
         cate = self.db.query(mdl.Category).filter_by(id=id).first()
         father_ids = cate.father_ids
         father_id_list = father_ids.split(',')
         # 更新下数据库中的
-        cate.name = name
+        cate.name = leaf.name if leaf.name !="" else cate.name
         self.db.commit()
         # 找出该分类
         obj = self.data
@@ -186,10 +200,10 @@ class Category:
             if obj is None:return None
         for i in range(len(obj['children'])):
             if obj['children'][i]['id'] == id:
-                obj['children'][i]['name'] = name
+                obj['children'][i] = leaf.get_update_map(obj['children'][i])
                 break
         self.data= self.data
-
+    def update_database()
     def search(self,obj,id):
         for o in obj['children']:
             if o['id'] == id:
