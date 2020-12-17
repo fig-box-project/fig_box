@@ -30,6 +30,7 @@ sudo uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
 
 >source tutorial-env/bin/activate 
 
+>yum install python3-devel
 >pip3 install -r requirements.txt 
 
 >mkdir files
