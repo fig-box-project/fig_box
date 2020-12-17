@@ -89,8 +89,7 @@ def read_self_all(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db),
     ):
-    #
-    print(status.toInt())
+    # print(status.toInt())
     return crud.get_user_articles(db,now_user,status.toInt())
 
 # read_all
