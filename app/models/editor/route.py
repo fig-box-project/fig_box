@@ -24,7 +24,11 @@ def write(file_path: str=Body(...), data: str=Body(...)):
 
 @bp.get('/ls',description='是ls 用于查看文件列表')
 def ls():
-    return crud.ls()
+    rt = crud.ls()
+    if rt != None:
+        return rt
+    else:
+        raise HTTPException(status_code=404)
 
 @bp.get('/read',description='读取文件内容')
 def read(file_path: str):

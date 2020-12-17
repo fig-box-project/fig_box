@@ -67,18 +67,20 @@ def ls(file_path: str = directory_name):
     if file_path[-1:] == "/":
         file_path=file_path[:-1]
     rt = []
-    with os.scandir(file_path) as d:
-        for i in d:
-            appe = {}
-            appe['name'] = i.name
-            appe['path'] = (file_path + "/" + i.name)[6:]
-            if i.is_dir():
-                appe['children'] = ls(file_path + "/" + i.name)
-            else:
-                appe['file'] = get_type(i.name)
-                
-            rt.append(appe)
-    return rt
+    if check_path_has(file_path):
+        with os.scandir(file_path) as d:
+            for i in d:
+                appe = {}
+                appe['name'] = i.name
+                appe['path'] = (file_path + "/" + i.name)[6:]
+                if i.is_dir():
+                    appe['children'] = ls(file_path + "/" + i.name)
+                else:
+                    appe['file'] = get_type(i.name)
+                    
+                rt.append(appe)
+        return rt
+    return None
 
 def get_type(file_name: str):
     suffix = os.path.splitext(file_name)[-1][1:]
