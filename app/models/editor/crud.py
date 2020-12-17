@@ -33,6 +33,8 @@ def rename(old_file_path: str,new_file_path: str):
     os.rename(old_file_path,new_file_path)
 
 def create_directory(directory: str):
+    if check_path_has("files") == False:
+        os.makedirs("files", exist_ok=True)
     os.makedirs(directory_name + directory, exist_ok=True)
     return True
 
