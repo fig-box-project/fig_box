@@ -203,7 +203,9 @@ class Category:
                 obj['children'][i] = leaf.get_update_map(obj['children'][i])
                 break
         self.data= self.data
-    def update_database()
+    def update_database(self,data:mdl.Category):
+        pass
+
     def search(self,obj,id):
         for o in obj['children']:
             if o['id'] == id:
@@ -215,5 +217,4 @@ def get_category(db: Session):
     if category is None:
         category = Category(db)
     return category
-
 

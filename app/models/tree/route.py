@@ -20,4 +20,5 @@ def delete_category(id: int,db: Session=Depends(database.get_db),): # now_user:U
 
 @bp.put('/update/name')
 def update_category(tree:orm.CategoryCU,db: Session=Depends(database.get_db),):# now_user:User = Depends(check_token),
-    crud.get_category(db).update_name(tree.id,tree.name)
+    # crud.get_category(db).update_name(tree.id,tree.name)
+    pass
