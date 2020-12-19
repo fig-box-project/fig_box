@@ -21,4 +21,4 @@ class Category(Base):
     seo_keywords       = Column(String(256))
     seo_description    = Column(String(400))
 
-    owner_id           = Column(Integer,ForeignKey('users.id'))
+    # owner_id           = Column(Integer,ForeignKey('users.id'),default=0)

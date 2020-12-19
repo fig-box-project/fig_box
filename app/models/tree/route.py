@@ -6,19 +6,26 @@ from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
 
-@bp.get('/read')
+@bp.get('/read/json')
 def read_category(db: Session=Depends(database.get_db),):# now_user:User = Depends(check_token),
     return crud.get_category(db).data
 
-@bp.post('/create')
-def create_category(tree:orm.CategoryCU,db: Session=Depends(database.get_db),): # now_user:User = Depends(check_token),
-    crud.get_category(db).insert(tree.id,"test",mdl.Category(name="test"))
+@bp.get('read/database/{id}')
+def read_database(id: int,db: Session=Depends(database.get_db)):
+    return crud.get_category(db).read_database(id)
+
+@bp.post('/create/{father_id}')
+def create_category(father_id: int,leaf:orm.LeafCreate,data:orm.CatecoryData,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
+    crud.get_category(db).insert(father_id,leaf,data)
     
 @bp.delete('/remove/{id}')
-def delete_category(id: int,db: Session=Depends(database.get_db),): # now_user:User = Depends(check_token),
+def delete_category(id: int,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
     crud.get_category(db).remove(id)
 
-@bp.put('/update/name')
-def update_category(tree:orm.CategoryCU,db: Session=Depends(database.get_db),):# now_user:User = Depends(check_token),
-    # crud.get_category(db).update_name(tree.id,tree.name)
-    pass
+@bp.put('/update/json')
+def update_json(leaf:orm.LeafUpdate,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
+    crud.get_category(db).update_json(leaf)
+
+@bp.put('/update/database')
+def update_database(data:orm.CatecoryDataUpdate,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
+    crud.get_category(db).update_database(data)
