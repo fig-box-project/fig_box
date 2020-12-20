@@ -10,7 +10,7 @@ bp = APIRouter()
 def read_category(db: Session=Depends(database.get_db),):# now_user:User = Depends(check_token),
     return crud.get_category(db).data
 
-@bp.get('read/database/{id}')
+@bp.get('/read/database/{id}')
 def read_database(id: int,db: Session=Depends(database.get_db)):
     return crud.get_category(db).read_database(id)
 

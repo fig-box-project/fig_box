@@ -8,7 +8,9 @@ class LeafBase(BaseModel):
 
 class LeafCreate(LeafBase):
     def getMap(self):
-        return self.__dict__
+        ma = self.__dict__
+        ma['children'] =[]
+        return ma
 
 class LeafUpdate(LeafBase):
     id: int = 0
