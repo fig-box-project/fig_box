@@ -20,7 +20,7 @@ class LeafUpdate(LeafBase):
         return old_data
 
 class CatecoryData(BaseModel):
-    link: str
+    link: Optional[str] = None
     name: str
     content: str
 
