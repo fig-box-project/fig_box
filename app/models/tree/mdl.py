@@ -8,7 +8,7 @@ class Category(Base):
     father_ids         = Column(String)
     
     link               = Column(String, unique=False,index=True) # unique要改True
-    title              = Column(String(64), index=True)
+    name              = Column(String(64), index=True)
     content            = Column(String)
 
     create_date        = Column(DateTime)

@@ -21,7 +21,7 @@ class LeafUpdate(LeafBase):
 
 class CatecoryData(BaseModel):
     link: str
-    title: str
+    name: str
     content: str
 
     status:bool = True
