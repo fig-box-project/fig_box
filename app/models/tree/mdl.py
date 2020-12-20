@@ -5,10 +5,9 @@ from app.models.database import Base
 class Category(Base):
     __tablename__ = 'category'
     id                 = Column(Integer, primary_key=True)
-    name               = Column(String)
     father_ids         = Column(String)
     
-    link               = Column(String, unique=True,index=True)
+    link               = Column(String, unique=False,index=True) # unique要改True
     title              = Column(String(64), index=True)
     content            = Column(String)
 

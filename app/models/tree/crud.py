@@ -89,7 +89,7 @@ class Category:
         father_ids = cate.father_ids
         father_id_list = father_ids.split(',')
         # 更新下数据库中的
-        cate.name = leaf.name if leaf.name !="" else cate.name
+        cate.title = leaf.name if leaf.name !="" else cate.title
         # self.db.query(mdl.Category).filter_by(id=leaf.id).update({'name':leaf.name})
         self.db.commit()
         # 找出该分类

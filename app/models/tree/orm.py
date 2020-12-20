@@ -20,8 +20,6 @@ class LeafUpdate(LeafBase):
         return old_data
 
 class CatecoryData(BaseModel):
-    name: str
-    
     link: str
     title: str
     content: str
