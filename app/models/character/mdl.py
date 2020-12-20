@@ -13,4 +13,4 @@ class Character(Base):
     __tablename__ = "characters"
     id                    = Column(Integer, primary_key=True)
     name                  = Column(String(64))
-    auths                 = Column(String())
+    auths                 = Column(String()) # 以逗号分割读取到内存
