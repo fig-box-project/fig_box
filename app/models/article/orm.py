@@ -6,6 +6,7 @@ class ArticleBase(BaseModel):
     title:           Optional[str] = None
     content:         Optional[str] = None
     description:     Optional[str] = None
+    category_id:     Optional[int] = None
     seo_title:       Optional[str] = None
     seo_keywords:    Optional[str] = None
     seo_description: Optional[str] = None
