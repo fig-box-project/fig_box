@@ -61,7 +61,9 @@ test_mode = True
 def check_token(token: str=Header(...)):
     global test_mode
     if test_mode:
-        return db.query(user.User).filter_by(id=0).first()
+        user_o = db.query(user.User).filter(user.User.id==1).first()
+        # print(user_o.id)
+        return user_o
     user_id = verify_token(token)
     if user_id == None:
         raise HTTPException(status_code=400,detail='token error')

@@ -20,7 +20,7 @@
 501 目前未实现的API
 
 
-sudo uvicorn app.main:app --port 5000 --host 0.0.0.0 --reload
+sudo uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
 
 Centos 系统的端口开启
 systemctl stop firewalld.service    关闭防火墙
