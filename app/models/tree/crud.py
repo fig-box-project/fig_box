@@ -117,6 +117,19 @@ class Category:
         for o in obj['children']:
             if o['id'] == id:
                 return o
+    
+    # 递归搜索id
+    def get_obj(self,id: int,obj=None):
+        if obj is None:
+            obj = self.data
+        for i in range(len(obj['children'])):
+            rt = self.get_obj(id,obj['children'][i])
+            if rt is not None:
+                return rt
+            if obj['children'][i]['id'] == id:
+                return obj['children'][i]
+        return None
+
         
 category :Category = None
 def get_category(db: Session):
@@ -125,3 +138,16 @@ def get_category(db: Session):
         category = Category(db)
     return category
 
+id_name_map = {}
+def id_to_name(db: Session, id: int):
+    if id == 0:
+        return "root"
+    if id not in id_name_map:
+        o = get_category(db).get_obj(id)
+        if o is not None:
+            id_name_map[id] = o['name']
+            return o['name']
+        else:
+            return None
+    else:
+        return id_name_map[id]
