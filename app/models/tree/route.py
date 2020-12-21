@@ -22,10 +22,6 @@ def create_category(father_id: int,leaf:orm.LeafCreate,data:orm.CatecoryData,db:
 def delete_category(id: int,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
     crud.get_category(db).remove(id)
 
-@bp.put('/update/json')
-def update_json(leaf:orm.LeafUpdate,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
-    crud.get_category(db).update_json(leaf)
-
-@bp.put('/update/database')
-def update_database(data:orm.CatecoryDataUpdate,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
-    crud.get_category(db).update_database(data)
+@bp.put('/update')
+def update_json(leaf:orm.Update,db: Session=Depends(database.get_db),now_user:User = Depends(check_token),):
+    crud.get_category(db).update(leaf)

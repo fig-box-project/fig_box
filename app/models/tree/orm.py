@@ -12,8 +12,15 @@ class LeafCreate(LeafBase):
         ma['children'] =[]
         return ma
 
-class LeafUpdate(LeafBase):
+class Update(LeafBase):
     id: int = 0
+
+    link: Optional[str] = None
+    content: str
+    status:bool = True
+    seo_title: str
+    seo_keywords: str
+    seo_description: str
     def get_update_map(self,old_data:dict):
         if self.name != "":
             old_data["name"] = self.name
@@ -32,6 +39,3 @@ class CatecoryData(BaseModel):
     seo_title: str
     seo_keywords: str
     seo_description: str
-
-class CatecoryDataUpdate(CatecoryData):
-    id: int

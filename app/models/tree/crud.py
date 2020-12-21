@@ -34,9 +34,6 @@ class Category:
         if father_id == 0:
             # 尝试加到数据库
             data.father_ids = '0'
-            self.db.add(data)
-            self.db.commit()
-            self.db.refresh(data)
             # 插入到json
             obj = self.data
         else:
@@ -53,9 +50,10 @@ class Category:
             if obj is None:return None
             # 插入数据库并获取新id
             data.father_ids= father_ids + "," + str(father_id)
-            self.db.add(data)
-            self.db.commit()
-            self.db.refresh(data)
+        data.create_date = datetime.now()
+        self.db.add(data)
+        self.db.commit()
+        self.db.refresh(data)
         # 将数据插入到json文件
         new_cate = leaf.getMap()
         new_cate['id'] = data.id
@@ -81,7 +79,7 @@ class Category:
                 obj['children'].pop(i)
         self.data= self.data
 
-    def update_json(self,leaf:orm.LeafUpdate):
+    def update(self,leaf:orm.Update):
         if leaf.id == 0:
             return "can no 0"
         # 从数据库中找出该分类
@@ -91,7 +89,6 @@ class Category:
         # 更新下数据库中的
         cate.name = leaf.name if leaf.name !="" else cate.name
         # self.db.query(mdl.Category).filter_by(id=leaf.id).update({'name':leaf.name})
-        self.db.commit()
         # 找出该分类
         obj = self.data
         for i in range(1,len(father_id_list)):
@@ -104,13 +101,11 @@ class Category:
                 obj['children'][i] = leaf.get_update_map(obj['children'][i])
                 break
         self.data= self.data
-    
-    # 更新数据库结构
-    def update_database(self,api_data:orm.CatecoryDataUpdate):
-        new_data = api_data.dict()
+        # 更新数据库
+        new_data = leaf.dict()
         # 增加一个更新时间戳来更新数据库
         new_data["update_date"] = datetime.now()
-        self.db.query(mdl.Category).filter_by(id = api_data.id).update(new_data)
+        self.db.query(mdl.Category).filter_by(id = leaf.id).update(new_data)
         self.db.commit()
 
     def search(self,obj,id):
