@@ -116,6 +116,10 @@ from .models.render.route import bp as render_route
 app.include_router(
     render_route,
     tags=['渲染'],)
+from .models.jsaver.route import bp as jsaver_route
+app.include_router(
+    jsaver_route,
+    tags=['json储存'],)
 
 # for modules>
 
