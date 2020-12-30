@@ -11,12 +11,15 @@ def read(name: str):
 
 # 上传图片
 async def create_file(file:UploadFile,name:str):
-    if not os.path.exists('files/photos/'+name):
-        start = time.time()
-        path = 'files/photos/'+name
-        res = await file.read()
+    start = time.time()
+    res = await file.read()
+    length = len(res)
+    if length > 5000000:
+        return "over"
+    path = 'files/photos/'+name
+    if not os.path.exists(path):
         with open(path, 'wb') as f:
             f.write(res)
-        return {'time':time.time() - start,'filename':name}
+        return {'time':time.time() - start,'filename':name,'size':length}
     else:
         return None
