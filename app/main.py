@@ -119,7 +119,12 @@ app.include_router(
 from .models.jsaver.route import bp as jsaver_route
 app.include_router(
     jsaver_route,
+    prefix=url_prefix + '/customfields',
     tags=['json储存'],)
+from .models.photo.route import bp as photo_route
+app.include_router(
+    photo_route,
+    tags=['图床'],)
 
 # for modules>
 

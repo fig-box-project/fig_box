@@ -6,6 +6,7 @@ directory_name = 'files/templates/jsaver/'
 class Jsaver:
     cache = {}
     def __init__(self):
+        # 创建齐文件夹
         os.makedirs("files", exist_ok=True)
         os.makedirs("files/templates", exist_ok=True)
         os.makedirs("files/templates/jsaver", exist_ok=True)
