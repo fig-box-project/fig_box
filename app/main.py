@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException
+from fastapi.responses import HTMLResponse
 
 # 引用一下mdl才能创建该数据表
 from app.models.character import mdl as chara_mdl
@@ -130,9 +131,9 @@ app.include_router(
 
 # <for modules
 
-@app.get('/',tags=['测试'])
+@app.get('/',tags=['测试'],response_class=HTMLResponse)
 def root():
-    return {'state':'successss'}
+    return "<a href=\"docs\">api</a>"
 
 
 
