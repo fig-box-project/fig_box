@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile
-from . import crud
+from . import crud, orm
 from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
@@ -9,5 +9,5 @@ def read(name: str):
     return crud.jsaver.read(name)
 
 @bp.post("/write")
-def write(name: str, json_str: str):
-    crud.jsaver.write(name, json_str)
+def write(data:orm.JsaverWrite):
+    crud.jsaver.write(data.name, data.json_str)
