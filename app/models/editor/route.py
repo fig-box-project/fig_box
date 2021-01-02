@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile
 from . import crud
+import app.conf as conf
 from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
@@ -12,6 +13,11 @@ bp = APIRouter()
 #         raise HTTPException(status_code=404,detail='路径不存在')
 #     else:
 #         return rt
+
+@bp.get('/templates/link')
+def get_link():
+    return conf.domain_port + "/api/v1/editor/packup/templates"
+    
 @bp.get('/packup/templates',description="打包压缩")
 def packup():
     return crud.pack_up()
