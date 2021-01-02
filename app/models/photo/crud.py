@@ -14,6 +14,10 @@ async def create_file(file:UploadFile,name:str):
     start = time.time()
     res = await file.read()
     length = len(res)
+    # 检查后缀
+    if name.split(".")[-1] not in ("jpg","jpeg","gif","png","bmp","webp"):
+        return "false"
+    # 检查大小
     if length > 5000000:
         return "over"
     path = 'files/photos/'+name

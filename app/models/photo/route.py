@@ -11,11 +11,13 @@ def photo(name: str):
     return crud.read(name)
 
 @bp.post(conf.url_prefix + '/photo/upload',description = '上传文件')
-async def upload(data:orm.PhotoUpload,file: UploadFile = File(...)):
-    rt = await crud.create_file(file,data.name)
+async def upload(name: str = Body(...), file: UploadFile = File(...)):
+    rt = await crud.create_file(file,name)
     if rt == None:
         raise HTTPException(status_code=404,detail='已存在图片')
     elif rt == "over":
         raise HTTPException(status_code=406,detail="图片过大")
+    elif rt == "false":
+        raise HTTPException(status_code=406,detail="格式不正确")
     else:
         return rt
