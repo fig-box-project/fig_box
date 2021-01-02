@@ -20,10 +20,10 @@ async def create_file(file:UploadFile,name:str):
     # 检查大小
     if length > 5000000:
         return "over"
-    path = 'files/photos/'+name
-    if not os.path.exists(path):
-        with open(path, 'wb') as f:
-            f.write(res)
-        return {'time':time.time() - start,'filename':name,'size':length}
-    else:
-        return None
+    while os.path.exists('files/photos/'+name):
+        name_split = name.split(".")
+        name_split[-2] += "_"
+        name = ".".join(name_split)
+    with open('files/photos/'+name, 'wb') as f:
+        f.write(res)
+    return {'time':time.time() - start,'filename':name,'size':length}
