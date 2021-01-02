@@ -30,6 +30,9 @@ def pack_up():
         zip.close()
     return FileResponse(directory_name + "templates.zip",media_type='application/zip')
 
+def del_zip(path: str):
+    if os.path.exists(directory_name + "templates.zip") and path.split("/")[0]=="templates":
+        os.remove(directory_name + "templates.zip")
 
 # 存在则是
 def check_path_has(path: str):
@@ -41,10 +44,12 @@ def check_path_is_dir(path: str):
 def write(file_path: str, data: str):
     with open(directory_name + file_path, 'w') as f:
         f.write(data)
+    del_zip(file_path)
     return True
 
 def rename(old_file_path: str,new_file_path: str):
     os.rename(old_file_path,new_file_path)
+    del_zip(old_file_path)
 
 def create_directory(directory: str):
     if check_path_has("files") == False:
@@ -74,6 +79,7 @@ def delete_directory(directory: str):
 def delete(file_path: str):
     try:
         os.remove(directory_name + file_path)
+        del_zip(file_path)
         return True
     except:
         return False
