@@ -5,13 +5,16 @@ from app.models.user.mdl import User
 bp = APIRouter()
 
 
-@bp.post('/file/upload',description = '上传文件')
-async def upload(file_path: str=Body(...),file: UploadFile = File(...)):
-    rt = await crud.create_file(file,file_path)
-    if rt == None:
-        raise HTTPException(status_code=404,detail='路径不存在')
-    else:
-        return rt
+# @bp.post('/file/upload',description = '上传文件')
+# async def upload(file_path: str=Body(...),file: UploadFile = File(...)):
+#     rt = await crud.create_file(file,file_path)
+#     if rt == None:
+#         raise HTTPException(status_code=404,detail='路径不存在')
+#     else:
+#         return rt
+@bp.get('/packup/templates',description="打包压缩")
+def packup():
+    return crud.pack_up()
 
 @bp.post('/write',description='写')
 def write(file_path: str=Body(...), data: str=Body(...)):

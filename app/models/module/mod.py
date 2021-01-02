@@ -161,6 +161,7 @@ class Module:
             self.tag = Tool.get_params(self.get_mod_path(False)+'/config.conf','api_tag')[1]
         return self.tag
 
+    # 解压
     def unzip(self):
         Tool.unzip(self.get_zip_path(),self.get_mod_path(True),self.unique_name)
 

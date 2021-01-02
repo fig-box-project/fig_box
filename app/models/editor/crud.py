@@ -1,21 +1,35 @@
 import os
 import time
 from fastapi import UploadFile
+from starlette.responses import FileResponse
+import zipfile
 
 
 directory_name = 'files/'
 
 # 上传图片
-async def create_file(file:UploadFile,path:str):
-    if check_path_has(path):
-        start = time.time()
-        path = directory_name + path + '/' + file.filename
-        res = await file.read()
-        with open(path, 'wb') as f:
-            f.write(res)
-        return {'time':time.time() - start,'filename':file.filename}
-    else:
-        return None
+# async def create_file(file:UploadFile,path:str):
+#     if check_path_has(path):
+#         start = time.time()
+#         path = directory_name + path + '/' + file.filename
+#         res = await file.read()
+#         with open(path, 'wb') as f:
+#             f.write(res)
+#         return {'time':time.time() - start,'filename':file.filename}
+#     else:
+#         return None
+# 打包下载
+def pack_up():
+    # 不存在则打包
+    if not os.path.exists(directory_name + "templates.zip"):
+        zip = zipfile.ZipFile(directory_name+"templates.zip","w",zipfile.ZIP_DEFLATED)
+        for path,dirs,files in os.walk(directory_name + "templates"):
+            file_path = path.replace(directory_name+"templates","")
+            for file in files:
+                zip.write(os.path.join(path,file),os.path.join(file_path,file))
+        zip.close()
+    return FileResponse(directory_name + "templates.zip",media_type='application/zip')
+
 
 # 存在则是
 def check_path_has(path: str):
