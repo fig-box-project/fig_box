@@ -37,20 +37,7 @@ if db.query(user.User).count() == 0:
     )
     test_user.hash_password("test")
     db.add(test_user)
-    # add characters
-    chara_admin = chara_mdl.Chara(
-        name="admin",
-        can_edit_auth = True,
-        can_edit_tree = True,
-        can_edit_article = True,
-        can_edit_all_article = True,
-        can_edit_character = True,
-    )
-    db.add(chara_admin)
-    chara_normal = chara_mdl.Chara(
-        name="normal",
-    )
-    db.add(chara_normal)
+    
     db.commit()
 
 

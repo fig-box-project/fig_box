@@ -1,6 +1,15 @@
 from sqlalchemy.orm import Session
 from . import mdl, orm
 
+
+# 分辨器
+class Recognizer:
+    cache = {1:{1},2:{8}}
+    def check_auth(self,chara:int, auth:int):
+        if chara == 1:
+            return True
+        return auth in self.cache[chara]
+
 def get_chara(db: Session, id: int):
     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()
 
