@@ -7,7 +7,6 @@ from fastapi import FastAPI,Depends,Header,HTTPException
 from fastapi.responses import HTMLResponse
 
 # 引用一下mdl才能创建该数据表
-from app.models.character import mdl as chara_mdl
 from app.models.user import mdl as user
 from app.models.article import mdl as dfsds
 from app.models.tree import mdl as asdfsd

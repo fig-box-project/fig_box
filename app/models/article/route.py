@@ -35,7 +35,7 @@ def create(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     #  
-    if now_user.character.can_edit_article:
+    if now_user.check_auth(9):
         return crud.create(db,article,now_user.id)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
@@ -47,7 +47,7 @@ def update(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     # 如果有编辑所有权限
-    if now_user.character.can_edit_all_article:
+    if now_user.check_auth(9):
         return crud.update(db,article)
     else:
         owner_id = crud.get_owner_id(db,article.id)
@@ -99,7 +99,7 @@ def read_all_of_the_server(
     db: Session=Depends(database.get_db),
     ):
     #
-    if now_user.character.can_edit_all_article:
+    if now_user.check_auth(11):
         return crud.get_all_articles(db)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
@@ -121,7 +121,7 @@ def delete(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     # 如果拥有编辑全部文章的权限
-    if now_user.character.can_edit_all_article:
+    if now_user.check_auth(9):
         return crud.delete(db,id)
     else:
         # 否则按正常套路来
@@ -137,7 +137,7 @@ def real_delete(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     # 如果拥有编辑全部文章的权限
-    if now_user.character.can_edit_all_article:
+    if now_user.check_auth(9):
         return crud.real_delete(db,id)
     else:
         # 否则按正常套路来

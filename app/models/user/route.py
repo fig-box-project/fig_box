@@ -27,7 +27,7 @@ def update(
     aim_user:orm.UserUpdate,
     now_user:mdl.User = Depends(check_token),
     db: Session=Depends(database.get_db)):
-    if now_user.character.can_edit_auth:
+    if now_user.check_auth(3):
         return crud.update_user_character(db,aim_user)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
@@ -36,7 +36,7 @@ def update(
 def view_all_user(
     user:mdl.User = Depends(check_token),
     db: Session=Depends(database.get_db)):
-    if user.character.can_edit_auth:
+    if user.check_auth(3):
         return crud.get_users(db)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
