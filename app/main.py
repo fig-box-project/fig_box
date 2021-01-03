@@ -20,17 +20,6 @@ database.Base.metadata.create_all(bind=database.engine)
 db: Session = sessionmaker(bind=database.engine)()
 if db.query(user.User).count() == 0:
     print("---create datas---")
-    # add characters
-    chara_admin = chara_mdl.Character(
-        name="admin",
-        auths="1"
-    )
-    db.add(chara_admin)
-    chara_normal = chara_mdl.Character(
-        name="normal",
-        auths="8"
-    )
-    db.add(chara_normal)
     # add admin
     admin_user = user.User(
         username="admin",
