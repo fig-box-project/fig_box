@@ -12,19 +12,18 @@ class User(Base):
     username        = Column(String(32), index=True)
     password_hash   = Column(String(128))
 
-    character_id    = Column(Integer)
+    character_id    = Column(Integer, default=2)
 
     articles        = relationship("Article",back_populates='owner')
 
-    # 删
-    # def get_token(self,expires_in=3600):
-    #     try:
-    #         data = jwt.encode(
-    #             {'id':self.id, 'exp':time.time()+expires_in},
-    #             'my god love me forever tom', algorithm='HS256')
-    #     except:
-    #         return "error"
-    #     return data
+    def get_token(self,expires_in=3600):
+        try:
+            data = jwt.encode(
+                {'id':self.id, 'exp':time.time()+expires_in},
+                'my god love me forever tom', algorithm='HS256')
+        except:
+            return "error"
+        return data
     
     def check_auth(self,auth:int):
         return recognizer.check_auth(self.character_id,auth)

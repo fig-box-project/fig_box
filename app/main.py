@@ -43,7 +43,7 @@ if db.query(user.User).count() == 0:
 
 app = FastAPI()
 
-test_mode = True
+test_mode = False
 # 进入路由时检测token
 def check_token(token: str=Header(...)):
     global test_mode

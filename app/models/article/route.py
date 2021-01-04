@@ -35,7 +35,7 @@ def create(
     now_user:User = Depends(check_token),
     db: Session=Depends(database.get_db)):
     #  
-    if now_user.check_auth(9):
+    if now_user.check_auth(8):
         return crud.create(db,article,now_user.id)
     else:
         raise HTTPException(status_code=403,detail='权限不足')
