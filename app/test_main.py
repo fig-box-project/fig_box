@@ -15,7 +15,7 @@ def test_login():
     print(token)
     assert response.status_code == 200
 
-
+# 创建文章功能
 def test_create_article():
     response = client.post(
         conf.url_prefix + '/article/create',
@@ -38,6 +38,7 @@ def test_create_article():
     article_id = dict(response.json())["id"]
     assert response.status_code == 200
 
+# 删除文章功能
 def test_delete_article():
     global article_id
     print(article_id)
@@ -46,6 +47,12 @@ def test_delete_article():
         headers={"token":token})
     assert response.status_code == 200
 
+# 普通用户不能查看所有文章
+def test_cant_view_all_articles():
+    response = client.get(
+        conf.url_prefix + '/article/all/articles',
+        headers={"token":token})
+    assert response.status_code == 403
 
 def test_admin_login():
     response = client.post(
