@@ -58,7 +58,7 @@ def create(db: Session,data: orm.ArticleCreate,owner_id):
     # 改用id作为连接
     new_Article.link = str(new_Article.id)
     db.commit()
-    return new_Article
+    return {"id": new_Article.id}
 
 def update(db: Session, data: orm.ArticleUpdate):
     new_data = data.dict()

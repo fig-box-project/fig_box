@@ -23,9 +23,15 @@ def test_create_article():
         "title": "string",
         "content": "string",
         "description": "string",
-        "seo_title": "string",
+        "category_id": 0,
+        "image":"ss",
+        "seo_title":"string",
         "seo_keywords": "string",
-        "seo_description": "string"},
+        "seo_description": "string",
+        "status":0,
+        "is_release": "false",
+        "can_search": "true",
+        },
         headers={"token":token})
     print(response.json())
     global article_id
