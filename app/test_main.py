@@ -1,11 +1,15 @@
 from fastapi.testclient import TestClient
 from .main import app
 import app.conf as conf
+import random
 
 client = TestClient(app)
 token = ""
 article_id = None
 
+# <><><><><>测试用户功能<><><><><><>
+
+# 测试用户的文章创建测试
 def test_login():
     response = client.post(
         conf.url_prefix + '/auth/login',
@@ -63,6 +67,20 @@ def test_admin_login():
     print(token)
     assert response.status_code == 200
 
+# <><><><><><><>创建用户的功能测试<><><><><><><><><>
+def test_create_user_409():
+    response = client.post(
+        conf.url_prefix + '/auth/register',
+        json={"username":"admin", "password":"admin"})
+    assert response.status_code == 409
+
+def test_create_user():
+    c_username = "user"+str(random.randint(0,255))
+    response = client.post(
+        conf.url_prefix + '/auth/register',
+        json={"username":c_username, "password":"admin"})
+    assert response.status_code == 200
+# <><><><><><><>创建角色的功能测试<><><><><><><><><>
 
 # def create_character():
 #     response = client.post(

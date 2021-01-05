@@ -12,7 +12,7 @@ def create_user(user:orm.UserCreate,db: Session=Depends(database.get_db)):
     if crud.isloged_user(db,user.username) == False:
         return crud.create_user(db,user)
     else:
-        raise HTTPException(status_code=400,detail='User already exists')
+        raise HTTPException(status_code=409,detail='User already exists')
 
 @bp.post('/login',description='登录')
 def login(user:orm.UserLogin,db: Session=Depends(database.get_db)):
