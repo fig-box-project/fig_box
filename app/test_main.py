@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from .main import app
 import app.conf as conf
 import random
+import json
 
 client = TestClient(app)
 token = ""
@@ -58,6 +59,7 @@ def test_cant_view_all_articles():
         headers={"token":token})
     assert response.status_code == 403
 
+# <><><><><><><>超级用户功能测试<><><><><><><><>
 def test_admin_login():
     response = client.post(
         conf.url_prefix + '/auth/login',
@@ -67,6 +69,32 @@ def test_admin_login():
     print(token)
     assert response.status_code == 200
 
+def test_create_file():
+    jstr = """
+        {
+        "leaf": {
+            "name": "test",
+            "description": "test"
+        },
+        "data": {
+            "link": "string",
+            "name": "string",
+            "content": "string",
+            "status": true,
+            "image": "string",
+            "description": "string",
+            "seo_title": "string",
+            "seo_keywords": "string",
+            "seo_description": "string"
+        }
+        }
+    """
+    global token
+    response = client.post(
+        conf.url_prefix + '/category/articles/create/0',
+        headers={"token":token},
+        json=json.loads(jstr))
+    assert response.status_code == 200
 # <><><><><><><>创建用户的功能测试<><><><><><><><><>
 def test_create_user_409():
     response = client.post(
@@ -80,6 +108,13 @@ def test_create_user():
         conf.url_prefix + '/auth/register',
         json={"username":c_username, "password":"admin"})
     assert response.status_code == 200
+    # 禁止查看所有文章功能
+    token = response.json()["token"]
+    response = client.get(
+        conf.url_prefix + '/article/all/articles',
+        headers={"token":token})
+    assert response.status_code == 403
+
 # <><><><><><><>创建角色的功能测试<><><><><><><><><>
 
 # def create_character():
