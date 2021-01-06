@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from . import orm, conf, mdl
 from datetime import datetime
+import os
 import json
 
 class Category:
@@ -8,6 +9,9 @@ class Category:
     db: Session
     def __init__(self,db: Session):
         self.db = db
+        if not os.path.exists("tree.json"):
+            with open("tree.json", 'w') as f:
+                f.write("{\"id\": 0, \"children\": []}")
 
     # get data
     @property
