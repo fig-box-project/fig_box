@@ -108,6 +108,10 @@ def test_create_user():
         conf.url_prefix + '/auth/register',
         json={"username":c_username, "password":"admin"})
     assert response.status_code == 200
+    # 登录
+    response = client.post(
+        conf.url_prefix + '/auth/login',
+        json={"username":c_username, "password":"admin"})
     # 禁止查看所有文章功能
     token = response.json()["token"]
     response = client.get(
