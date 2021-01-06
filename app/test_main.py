@@ -96,10 +96,9 @@ def test_create_file():
         json=json.loads(jstr))
     assert response.status_code == 200
     # 查看有没有增加成功
-    response = client.post(
+    response = client.get(
         conf.url_prefix + '/category/articles/read/json')
-    v = json.loads(response.request.body)
-    assert v['children']['name'] == 'test'
+    assert response.json()['children'][0]['name'] == 'test'
 # <><><><><><><>创建用户的功能测试<><><><><><><><><>
 def test_create_user_409():
     response = client.post(
