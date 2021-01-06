@@ -95,6 +95,11 @@ def test_create_file():
         headers={"token":token},
         json=json.loads(jstr))
     assert response.status_code == 200
+    # 查看有没有增加成功
+    response = client.post(
+        conf.url_prefix + '/category/articles/read/json')
+    v = json.loads(response.request.body)
+    assert v['children']['name'] == 'test'
 # <><><><><><><>创建用户的功能测试<><><><><><><><><>
 def test_create_user_409():
     response = client.post(
@@ -112,17 +117,10 @@ def test_create_user():
     response = client.post(
         conf.url_prefix + '/auth/login',
         json={"username":c_username, "password":"admin"})
+    assert response.status_code == 200
     # 禁止查看所有文章功能
     token = response.json()["token"]
     response = client.get(
         conf.url_prefix + '/article/all/articles',
         headers={"token":token})
     assert response.status_code == 403
-
-# <><><><><><><>创建角色的功能测试<><><><><><><><><>
-
-# def create_character():
-#     response = client.post(
-#         conf.url_prefix + '/auth/login',
-#         json={"username":"admin", "password":"admin"}
-#     )
