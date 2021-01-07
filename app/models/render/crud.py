@@ -24,7 +24,8 @@ def render_test(request,p:str):
 def view_article(link:str,db: Session,request):
     article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
     if article != None:
-        data = article.__dict__
+        data = {}
+        data['page_data'] = article.__dict__
         data['request'] = request
         return templates.TemplateResponse("article/show.html", data)
     else:
