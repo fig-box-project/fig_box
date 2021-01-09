@@ -3,7 +3,7 @@
 ## 获取文章数据
 
 > 直接使用类似 `{{ pagedata.title }}` 的来进行获取文章数据<br>
-获取id时就 `{{ page_data.id }}`<br>
+获取id时就 `{{ pagedata.id }}`<br>
 
 <br>
 
