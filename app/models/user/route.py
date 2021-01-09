@@ -8,8 +8,8 @@ bp = APIRouter()
 
 @bp.get('/check',description='')
 def check(username,db: Session=Depends(database.get_db)):
-    if crud.isloged_user(db,username):
-        return True
+    if not crud.isloged_user(db,username):
+        return '不存在'
     else:
         raise HTTPException(status_code=404,detail='存在')
 
