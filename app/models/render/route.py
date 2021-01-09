@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
-from . import crud
+from . import crud, cache
 from app.main import check_token
 from app.models.user.mdl import User
 
@@ -8,9 +8,18 @@ from app.models import database
 bp = APIRouter()
 
 # 模版功能
-@bp.get('/test/{p:path}')
+@bp.get('/testa/{p:path}')
 def render_test(request: Request,p:str):
     return crud.render_test(request,p)
+
+@bp.get('/cache_test')
+def cache_test():
+    cache.cache.get_article(1)
+    return cache.cache.get_article(2)
+
+@bp.get('/list_test')
+def list_test():
+    return crud.view_list(None, None)
 
 @bp.get('/article/{link}',description='对于文章的渲染')
 def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
@@ -19,6 +28,8 @@ def render_article(link:str,request: Request,db: Session=Depends(database.get_db
         return rt
     # else:
         # raise HTTPException(status_code=400,detail='找不到页面')
+
+
 
 @bp.get('/site/sitemap.xml')
 def site_sitemap():

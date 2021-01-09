@@ -20,7 +20,7 @@ def render_test(request,p:str):
     else:
         return 'fail'
 
-
+# 渲染文章
 def view_article(link:str,db: Session,request):
     article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
     if article != None:
@@ -32,6 +32,32 @@ def view_article(link:str,db: Session,request):
         return templates.TemplateResponse("article/show.html", data)
     else:
         return templates.TemplateResponse('404.html',{'request':request})
+
+# 渲染列表
+def view_list(db: Session,request):
+    data = {
+        "status": 1,
+        "create_date": "2021-01-04T18:56:33.125188",
+        "title": "string",
+        "link": "1",
+        "owner_id": 2,
+        "seo_keywords": "string",
+        "description": "string",
+        "category_id": 0,
+        "update_date": "2021-01-04T18:56:33.125217",
+        "id": 1,
+        "seo_description": "string",
+        "seo_title": "string",
+        "image": "string",
+        "category_name": "root"
+    }
+    rt = {}
+    rt['request'] = request
+    rt['listdata'] = [data,data,data,data,data,data]
+    return rt
+
+
+
 
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')

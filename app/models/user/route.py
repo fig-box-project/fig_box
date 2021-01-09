@@ -6,6 +6,12 @@ from app.main import check_token
 
 bp = APIRouter()
 
+@bp.get('/check',description='')
+def check(username,db: Session=Depends(database.get_db)):
+    if crud.isloged_user(db,username):
+        return True
+    else:
+        raise HTTPException(status_code=404,detail='存在')
 
 @bp.post('/register',description='注册',response_model=orm.User)
 def create_user(user:orm.UserCreate,db: Session=Depends(database.get_db)):
