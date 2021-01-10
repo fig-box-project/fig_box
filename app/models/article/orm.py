@@ -1,14 +1,15 @@
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
+from fastapi import Query
 
 class ArticleBase(BaseModel):
-    title:           str
-    content:         str
+    title:           str = Query(...,min_length=1)
+    content:         str = Query(...,min_length=1)
     description:     Optional[str] = None
     category_id:     Optional[int] = None
     image:           Optional[str] = None
-    seo_title:       str
+    seo_title:       str = Query(...,min_length=1)
     seo_keywords:    Optional[str] = None
     seo_description: Optional[str] = None
 class ArticleCreate(ArticleBase):
