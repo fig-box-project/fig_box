@@ -4,7 +4,7 @@ from datetime import datetime
 from fastapi import Query
 
 class ArticleBase(BaseModel):
-    title:           str = Query(...,min_length=1)
+    title:           str = Query(...,min_length=1) # 不能为空的意思
     content:         str = Query(...,min_length=1)
     description:     Optional[str] = None
     category_id:     Optional[int] = None

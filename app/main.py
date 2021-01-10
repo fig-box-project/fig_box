@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException
 from fastapi.responses import HTMLResponse
+from starlette.middleware.cors import CORSMiddleware # CORS 中间件
 
 # 引用一下mdl才能创建该数据表
 from app.models.user import mdl as user
@@ -42,6 +43,14 @@ if db.query(user.User).count() == 0:
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ["http://127.0.0.1","https://test.leesinhao.com"],
+    allow_credentials=True,
+    allow_methods=["*"],  # 设置允许跨域的http方法，比如 get、post、put等。
+    allow_headers=["*"]  #允许跨域的headers，可以用来鉴别来源等作用。
+)
 
 test_mode = True
 # 进入路由时检测token
