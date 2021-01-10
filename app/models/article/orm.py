@@ -3,12 +3,12 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class ArticleBase(BaseModel):
-    title:           Optional[str] = None
-    content:         Optional[str] = None
+    title:           str
+    content:         str
     description:     Optional[str] = None
     category_id:     Optional[int] = None
     image:           Optional[str] = None
-    seo_title:       Optional[str] = None
+    seo_title:       str
     seo_keywords:    Optional[str] = None
     seo_description: Optional[str] = None
 class ArticleCreate(ArticleBase):
