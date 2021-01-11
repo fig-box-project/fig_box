@@ -9,7 +9,10 @@ import app.conf as conf
 # 插入category_name到文章数据里
 def return_filter(article,db: Session):
     # 将图片名称转换为一个对象
-    article.image = {"name":article.image, "url":conf.domain_port + "/photo/" + article.image}
+    if article.image is not None:
+        article.image = {"name":article.image, "url":conf.domain_port + "/photo/" + article.image}
+    else:
+        article.image = {"name":"", "url":""}
     # 增加个分类名称的字段
     article.category_name = id_to_name(db, article.category_id)
     return article

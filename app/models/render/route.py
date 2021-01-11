@@ -13,7 +13,7 @@ bp = APIRouter()
 # 渲染图片
 @bp.get("/photo/{name}")
 def photo(name: str):
-    return photo_crud.read(name)
+    return crud.read(name)
 
 # 模版功能
 @bp.get('/testa/{p:path}')
@@ -25,9 +25,10 @@ def cache_test():
     cache.cache.get_article(1)
     return cache.cache.get_article(2)
 
-@bp.get('/list_test')
-def list_test():
-    return crud.view_list(None, None)
+# 渲染列表页
+@bp.get('/articles/{page}')
+def list_render(page:int,request: Request,db: Session=Depends(database.get_db)):
+    return crud.view_list(db,request)
 
 @bp.get('/article/{link}',description='对于文章的渲染')
 def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
