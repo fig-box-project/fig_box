@@ -72,8 +72,8 @@ def view_list(db: Session,request):
     }
     rt = {}
     rt['request'] = request
-    rt['listdata'] = [data,data,data,data,data,data]
-    return templates.TemplateResponse("article/list.html", data)
+    rt['listData'] = [data,data,data,data,data,data]
+    return templates.TemplateResponse("article/list.html", rt)
 
 
 
