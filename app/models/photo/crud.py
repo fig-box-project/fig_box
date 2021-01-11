@@ -6,9 +6,6 @@ from fastapi import UploadFile
 os.makedirs("files", exist_ok=True)
 os.makedirs("files/photos", exist_ok=True)
 
-def read(name: str):
-    return FileResponse('files/photos/'+name,media_type='image/jpeg')
-
 # 上传图片
 async def create_file(file:UploadFile,name:str):
     start = time.time()

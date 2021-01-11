@@ -8,8 +8,17 @@ from . import conf
 
 from app.models.article import mdl
 
+os.makedirs("files", exist_ok=True)
+os.makedirs("files/article", exist_ok=True)
+os.makedirs("files/sitemap", exist_ok=True)
+os.makedirs("files/photos", exist_ok=True)
+
 templates_path = "files/templates"
 templates = Jinja2Templates(directory=templates_path)
+
+# 读取照片
+def read(name: str):
+    return FileResponse('files/photos/'+name,media_type='image/jpeg')
 
 # 模版功能
 def render_test(request,p:str):

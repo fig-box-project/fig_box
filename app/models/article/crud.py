@@ -4,16 +4,20 @@ from app.models.tree.crud import id_to_name
 from . import mdl, orm
 from datetime import datetime
 import random
+import app.conf as conf
 
 # 插入category_name到文章数据里
-def insert_category_name(article,db: Session):
+def return_filter(article,db: Session):
+    # 将图片名称转换为一个对象
+    article.image = {"name":article.image, "url":conf.domain_port + "/photo/" + article.image}
+    # 增加个分类名称的字段
     article.category_name = id_to_name(db, article.category_id)
     return article
 
 # 读取一个页面
 def read_one_page(db: Session, id: int):
     rt = db.query(mdl.Article).filter(mdl.Article.id == id).first()
-    return insert_category_name(rt,db)
+    return return_filter(rt,db)
 
 # 获取用户id
 def get_owner_id(db: Session, id: int):
@@ -22,16 +26,16 @@ def get_owner_id(db: Session, id: int):
 # 管理员获取所有文章
 def get_all_articles(db: Session, skip = 0, limit=100):
     rt = db.query(mdl.Article).offset(skip).limit(limit).all()
-    rt = [insert_category_name(x,db) for x in rt]
+    rt = [return_filter(x,db) for x in rt]
     return rt
 
 # 获取文章
 def get_user_articles(db: Session,user: User,status:int, skip = 0, limit=100):
     articles = db.query(mdl.Article).filter(mdl.Article.owner_id == user.id).all()
     if status == 10:
-        return [insert_category_name(i,db) for i in articles if i.status != -1]
+        return [return_filter(i,db) for i in articles if i.status != -1]
     else:
-        return [insert_category_name(i,db) for i in articles if i.status == status]
+        return [return_filter(i,db) for i in articles if i.status == status]
 
 
 def create(db: Session,data: orm.ArticleCreate,owner_id):
