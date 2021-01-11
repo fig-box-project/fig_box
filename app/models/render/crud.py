@@ -42,8 +42,8 @@ def view_article(link:str,db: Session,request):
     if article != None:
         data = {}
         data['pageData'] = article.__dict__
-        data['prevData'] = data['pagedata']
-        data['nextData'] = data['pagedata']
+        data['prevData'] = article.__dict__
+        data['nextData'] = article.__dict__
         data['request'] = request
         return templates.TemplateResponse("article/show.html", data)
     else:
