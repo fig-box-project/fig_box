@@ -8,10 +8,17 @@ from . import conf
 
 from app.models.article import mdl
 
+# 创建需要的文件夹
 os.makedirs("files", exist_ok=True)
-os.makedirs("files/article", exist_ok=True)
+os.makedirs("files/templates", exist_ok=True)
+os.makedirs("files/templates/article", exist_ok=True)
 os.makedirs("files/sitemap", exist_ok=True)
 os.makedirs("files/photos", exist_ok=True)
+
+# 不存在则创建默认的404文件
+if not os.path.exists("files/templates/404.html"):
+    with open("files/templates/404.html", 'w') as f:
+        f.write("404")
 
 templates_path = "files/templates"
 templates = Jinja2Templates(directory=templates_path)
