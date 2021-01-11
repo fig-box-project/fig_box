@@ -25,9 +25,9 @@ def view_article(link:str,db: Session,request):
     article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
     if article != None:
         data = {}
-        data['pagedata'] = article.__dict__
-        data['prevdata'] = data['pagedata']
-        data['nextdata'] = data['pagedata']
+        data['pageData'] = article.__dict__
+        data['prevData'] = data['pagedata']
+        data['nextData'] = data['pagedata']
         data['request'] = request
         return templates.TemplateResponse("article/show.html", data)
     else:

@@ -2,8 +2,8 @@
 
 ## 获取文章数据
 
-> 直接使用类似 `{{ pagedata.title }}` 的来进行获取文章数据<br>
-获取id时就 `{{ pagedata.id }}`<br>
+> 直接使用类似 `{{ pageData.title }}` 的来进行获取文章数据<br>
+获取id时就 `{{ pageData.id }}`<br>
 
 <br>
 
@@ -14,8 +14,8 @@
 > 以下两种方法功能相同
 
 ```
-{{ article.title }}
-{{ article['title'] }}
+{{ pageData.title }}
+{{ pageData['title'] }}
 ```
 
 ## [for语法示例](http://docs.jinkan.org/docs/jinja2/templates.html#for)
