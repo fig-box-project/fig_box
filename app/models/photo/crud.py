@@ -2,6 +2,7 @@ import os
 from starlette.responses import FileResponse
 import time
 from fastapi import UploadFile
+import random
 
 os.makedirs("files", exist_ok=True)
 os.makedirs("files/photos", exist_ok=True)
@@ -19,7 +20,10 @@ async def create_file(file:UploadFile,name:str):
         return "over"
     while os.path.exists('files/photos/'+name):
         name_split = name.split(".")
-        name_split[-2] += "_"
+        if name_split[-2][-1] == "_" or name_split[-2].split("_")[-1].isdigit():
+            name_split[-2] += str(random.randint(0,9))
+        else:
+            name_split[-2] += "_"
         name = ".".join(name_split)
     with open('files/photos/'+name, 'wb') as f:
         f.write(res)
