@@ -1,5 +1,12 @@
 # 神社2语法
 
+## 文件名的约束
+
+* 文章等放在templates/article中
+* 详情页为templates/article/show.html
+* 列表页为templates/article/list.html
+* 404页面是templates/404.html
+
 ## 获取文章数据
 
 > 直接使用类似 `{{ pageData.title }}` 的来进行获取文章数据<br>
