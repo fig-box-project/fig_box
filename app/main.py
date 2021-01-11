@@ -43,11 +43,9 @@ if db.query(user.User).count() == 0:
 
 app = FastAPI()
 
-test_mode = conf.test_mode
 # 进入路由时检测token
 def check_token(token: str=Header(...)):
-    global test_mode
-    if test_mode:
+    if conf.auth_test_mode:
         user_o = db.query(user.User).filter(user.User.id==1).first()
         # print(user_o.id)
         return user_o
@@ -59,8 +57,9 @@ def check_token(token: str=Header(...)):
 
 # 进入路由时检查IP
 def check_ip(request: Request):
-    if request.client.host not in conf.allow_link_ip:
-        raise HTTPException(status_code=400,detail='unallow ip')
+    if conf.ip_test_mode == False:
+        if request.client.host not in conf.allow_link_ip:
+            raise HTTPException(status_code=400,detail='unallow ip')
 
 # 验证token
 def verify_token(token):

@@ -4,6 +4,9 @@ import app.conf as conf
 import random
 import json
 
+conf.auth_test_mode = False
+conf.ip_test_mode = True
+
 client = TestClient(app)
 token = ""
 article_id = None
