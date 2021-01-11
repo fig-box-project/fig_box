@@ -6,7 +6,7 @@ import app.conf as conf
 
 bp = APIRouter()
 
-@bp.post('/photo/upload',description = '上传文件')
+@bp.post('/upload',description = '上传文件')
 async def upload(name: str = Body(...), file: UploadFile = File(...)):
     rt = await crud.create_file(file,name)
     if rt == None:
