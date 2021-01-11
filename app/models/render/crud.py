@@ -46,10 +46,13 @@ def view_article(link:str,db: Session,request):
             data['prevData'] = article.__dict__
             data['nextData'] = article.__dict__
             data['request'] = request
+            print("正常")
             return templates.TemplateResponse("article/show.html", data)
         else:
+            print("检测出404")
             return templates.TemplateResponse('404.html',{'request':request})
     except Exception as e:
+        print("错误404")
         return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
 
 # 渲染列表

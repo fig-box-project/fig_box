@@ -20,6 +20,7 @@ async def create_file(file:UploadFile,name:str):
         return "over"
     while os.path.exists('files/photos/'+name):
         name_split = name.split(".")
+        # 
         if name_split[-2][-1] == "_" or name_split[-2].split("_")[-1].isdigit():
             name_split[-2] += str(random.randint(0,9))
         else:
