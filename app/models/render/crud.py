@@ -18,7 +18,7 @@ os.makedirs("files/photos", exist_ok=True)
 # 不存在则创建默认的404文件
 if not os.path.exists("files/templates/404.html"):
     with open("files/templates/404.html", 'w') as f:
-        f.write("404")
+        f.write("404 {% if err %}{{ err }}{% endif %}")
 
 templates_path = "files/templates"
 templates = Jinja2Templates(directory=templates_path)
@@ -38,16 +38,19 @@ def render_test(request,p:str):
 
 # 渲染文章
 def view_article(link:str,db: Session,request):
-    article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
-    if article != None:
-        data = {}
-        data['pageData'] = article.__dict__
-        data['prevData'] = article.__dict__
-        data['nextData'] = article.__dict__
-        data['request'] = request
-        return templates.TemplateResponse("article/show.html", data)
-    else:
-        return templates.TemplateResponse('404.html',{'request':request})
+    try:
+        article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
+        if article != None and os.path.exists("files/templates/article/show.html"):
+            data = {}
+            data['pageData'] = article.__dict__
+            data['prevData'] = article.__dict__
+            data['nextData'] = article.__dict__
+            data['request'] = request
+            return templates.TemplateResponse("article/show.html", data)
+        else:
+            return templates.TemplateResponse('404.html',{'request':request})
+    except Exception as e:
+        return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
 
 # 渲染列表
 def view_list(db: Session,request):
