@@ -3,9 +3,17 @@ from . import crud, cache
 from app.main import check_token
 from app.models.user.mdl import User
 
+# 加载图库的模组
+from app.models.photo import crud as photo_crud
+
 from sqlalchemy.orm import Session
 from app.models import database
 bp = APIRouter()
+
+# 渲染图片
+@bp.get("/photo/{name}")
+def photo(name: str):
+    return photo_crud.read(name)
 
 # 模版功能
 @bp.get('/testa/{p:path}')

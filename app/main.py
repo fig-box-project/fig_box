@@ -41,19 +41,9 @@ if db.query(user.User).count() == 0:
     
     db.commit()
 
-
-
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins = ["https://test.leesinhao.com"],
-    allow_credentials=True,
-    allow_methods=["*"],  # 设置允许跨域的http方法，比如 get、post、put等。
-    allow_headers=["*"]  #允许跨域的headers，可以用来鉴别来源等作用。
-)
-
-test_mode = True
+test_mode = conf.test_mode
 # 进入路由时检测token
 def check_token(token: str=Header(...)):
     global test_mode
@@ -66,6 +56,11 @@ def check_token(token: str=Header(...)):
         raise HTTPException(status_code=400,detail='token error')
     else:
         return db.query(user.User).filter_by(id=user_id).first()
+
+# 进入路由时检查IP
+def check_ip(request: Request):
+    if request.client.host not in conf.allow_link_ip:
+        raise HTTPException(status_code=400,detail='unallow ip')
 
 # 验证token
 def verify_token(token):
@@ -82,33 +77,39 @@ from .models.user.route import bp as user_route
 app.include_router(
     user_route,
     prefix=url_prefix + '/auth',
-    tags=['用户'],)
+    tags=['用户'],
+    dependencies=[Depends(check_ip)])
 from .models.character.route import bp as chara_route
 app.include_router(
     chara_route,
     prefix=url_prefix + '/character',
-    tags=['角色'],)
+    tags=['角色'],
+    dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)])
 from .models.article.route import bp as article_route
 app.include_router(
     article_route,
     prefix=url_prefix + '/article',
-    tags=['文章'],)
+    tags=['文章'],
+    dependencies=[Depends(check_ip)])
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
     prefix=url_prefix + '/category/articles',
-    tags=['文章分类'],)
+    tags=['文章分类'],
+    dependencies=[Depends(check_ip)])
 from .models.editor.route import bp as editor_route
 app.include_router(
     editor_route,
     prefix=url_prefix + '/editor',
-    tags=['文件编辑'],)
+    tags=['文件编辑'],
+    dependencies=[Depends(check_ip)])
 from .models.module.route import bp as module_route
 app.include_router(
     module_route,
     prefix=url_prefix + '/module',
-    tags=['模组・插件'],)
+    tags=['模组・插件'],
+    dependencies=[Depends(check_ip)])
 from .models.render.route import bp as render_route
 app.include_router(
     render_route,
@@ -117,11 +118,14 @@ from .models.jsaver.route import bp as jsaver_route
 app.include_router(
     jsaver_route,
     prefix=url_prefix + '/customfields',
-    tags=['json储存'],)
+    tags=['json储存'],
+    dependencies=[Depends(check_ip)])
 from .models.photo.route import bp as photo_route
 app.include_router(
     photo_route,
-    tags=['图床'],)
+    prefix=url_prefix + '/photo',
+    tags=['图床'],
+    dependencies=[Depends(check_ip)])
 
 # for modules>
 
