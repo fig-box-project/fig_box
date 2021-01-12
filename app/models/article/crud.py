@@ -22,6 +22,14 @@ def read_one_page(db: Session, id: int):
     rt = db.query(mdl.Article).filter(mdl.Article.id == id).first()
     return return_filter(rt,db)
 
+# 渲染用,用link读取一个页面
+def read_page_by_link(db: Session,link: str):
+    article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
+    if article is not None:
+        return article
+    else:
+        raise Exception("搜索文章时找不到连接为:{}的文章".format(link))
+
 # 获取用户id
 def get_owner_id(db: Session, id: int):
     return db.query(mdl.Article).filter(mdl.Article.id == id).first().owner_id

@@ -1,11 +1,9 @@
 import jwt
-from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
-from starlette.middleware.cors import CORSMiddleware # CORS 中间件
 
 
 # 引用一下mdl才能创建该数据表
@@ -132,7 +130,11 @@ app.include_router(
 
 @app.get('/',tags=['测试'],response_class=HTMLResponse)
 def root(request: Request):
-    return "<a href=\"docs\">api</a>" + request.client.host
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        print(request.environ['REMOTE_ADDR'])
+    else:
+        print(request.environ['HTTP_X_FORWARDED_FOR']) # if behind a proxy
+    return "<a href=\"docs\">api</a>" + request.client.host + " | " 
 
 
 

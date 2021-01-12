@@ -56,7 +56,7 @@ def view_article(link:str,db: Session,request):
         return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
 
 # 渲染列表
-def view_list(db: Session,request):
+def view_list(db: Session,request,begin_id:int,length:int):
     try:
         # 代码
         data = {
