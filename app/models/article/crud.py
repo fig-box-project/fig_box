@@ -77,6 +77,8 @@ def create(db: Session,data: orm.ArticleCreate,owner_id):
 
 def update(db: Session, data: orm.ArticleUpdate):
     new_data = data.dict()
+    if data.link == None:
+        del new_data["link"]
     # 增加一个更新时间戳来更新数据库
     new_data["update_date"] = datetime.now()
     db.query(mdl.Article).filter(mdl.Article.id == data.id).update(new_data)

@@ -130,10 +130,6 @@ app.include_router(
 
 @app.get('/',tags=['测试'],response_class=HTMLResponse)
 def root(request: Request):
-    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        print(request.environ['REMOTE_ADDR'])
-    else:
-        print(request.environ['HTTP_X_FORWARDED_FOR']) # if behind a proxy
     return "<a href=\"docs\">api</a>" + request.client.host + " | " 
 
 
