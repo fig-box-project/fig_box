@@ -30,7 +30,7 @@ def cache_test():
 def list_render(page:int,request: Request,db: Session=Depends(database.get_db)):
     return crud.view_list(db,request)
 
-@bp.get('/article/{start_id}/{length}',description='对于文章的渲染')
+@bp.get('/article/{link}',description='对于文章的渲染')
 def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
     rt = crud.view_article(link,db,request)
     if rt != None:
