@@ -123,6 +123,11 @@ app.include_router(
     prefix=url_prefix + '/photo',
     tags=['图床'],
     dependencies=[Depends(check_ip)])
+from .models.gitupdate.route import bp as gitupdate_route
+app.include_router(
+    gitupdate_route,
+    prefix=url_prefix + '/git',
+    tags=['git的钩子'])
 
 # for modules>
 

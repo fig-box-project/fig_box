@@ -3,7 +3,7 @@ import os
 
 bp = APIRouter()
 
-@bp.post("/git/listen")
+@bp.post("/listen")
 def read():
     codes = [
         "git pull"
