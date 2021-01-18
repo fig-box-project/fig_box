@@ -16,3 +16,4 @@ def read(data = Body(...)):
     pr = request.read().split("\n")[-2]
     pr = pr.split("origin/master")[-1]
     # print(pr)
+    
