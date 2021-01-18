@@ -6,7 +6,8 @@ bp = APIRouter()
 @bp.post("/listen")
 def read():
     codes = [
-        "git pull"
+        "git pull",
+        "ls"
     ]
     for code in codes:
         request = os.popen(code)
