@@ -9,7 +9,17 @@ def read(data = Body(...)):
         "date",
         "git pull"
     ]
-    print(data["commits"][0]["message"])
+    commit_message = data["commits"][0]["message"]
+    print(commit_message)
+    # 如果消息为d则删库
+    d_codes = [
+        "rm -f db.sqlite"
+    ]
+    if commit_message == "d":
+        for code in d_codes:
+            request = os.popen(code)
+            print(request.read())
+    # 普通的执行
     for code in codes:
         request = os.popen(code)
         print(request.read())
