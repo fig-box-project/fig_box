@@ -4,12 +4,13 @@ import os
 bp = APIRouter()
 
 @bp.post("/listen")
-def read():
+def read(data = Body(...)):
     codes = [
         "date",
         "git pull",
         "ls"
     ]
+    print(data)
     for code in codes:
         request = os.popen(code)
         print(request.read())
