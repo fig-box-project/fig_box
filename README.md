@@ -25,15 +25,23 @@
 501 目前未实现的API
 ```
 
-sudo uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
+### 启动命令
 
-Centos 系统的端口开启
+```
+sudo uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
+```
+
+### Centos 系统的端口开启
+
+```
 systemctl stop firewalld.service    关闭防火墙
 systemctl start firewalld.service   开启防火墙
 systemctl staus firewalld.service   查看防火墙状态
 firewall-cmd --zone=public --add-port=8080/tcp --permanent 开放指定端口
 firewall-cmd --reload      重启防火墙
 firewall-cmd --list-ports  查看开放了的端口
+```
+
 ----------------------------------------------------------------
 
 
