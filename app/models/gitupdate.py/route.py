@@ -4,7 +4,7 @@ import os
 bp = APIRouter()
 
 @bp.post("/git/listen")
-def read(name: str):
+def read():
     codes = [
         "git pull"
     ]
