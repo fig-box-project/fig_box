@@ -5,7 +5,7 @@ from starlette.responses import FileResponse
 import zipfile
 
 
-directory_name = 'files/'
+directory_name = 'files'
 
 # 上传图片
 # async def create_file(file:UploadFile,path:str):
@@ -19,16 +19,16 @@ directory_name = 'files/'
 #     else:
 #         return None
 # 打包下载
-def pack_up():
-    # 不存在则打包
-    if not os.path.exists(directory_name + "templates.zip"):
-        zip = zipfile.ZipFile(directory_name+"templates.zip","w",zipfile.ZIP_DEFLATED)
-        for path,dirs,files in os.walk(directory_name + "templates"):
-            file_path = path.replace(directory_name+"templates","")
-            for file in files:
-                zip.write(os.path.join(path,file),os.path.join(file_path,file))
-        zip.close()
-    return FileResponse(directory_name + "templates.zip",media_type='application/zip')
+# def pack_up():
+#     # 不存在则打包
+#     if not os.path.exists(directory_name + "templates.zip"):
+#         zip = zipfile.ZipFile(directory_name+"templates.zip","w",zipfile.ZIP_DEFLATED)
+#         for path,dirs,files in os.walk(directory_name + "templates"):
+#             file_path = path.replace(directory_name+"templates","")
+#             for file in files:
+#                 zip.write(os.path.join(path,file),os.path.join(file_path,file))
+#         zip.close()
+#     return FileResponse(directory_name + "templates.zip",media_type='application/zip')
 
 def del_zip(path: str):
     if os.path.exists(directory_name + "templates.zip") and path.split("/")[0]=="templates":
