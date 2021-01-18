@@ -7,8 +7,7 @@ bp = APIRouter()
 def read(data = Body(...)):
     codes = [
         "date",
-        "git pull",
-        "ls"
+        "git pull"
     ]
     print(data)
     for code in codes:
