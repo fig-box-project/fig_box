@@ -19,10 +19,6 @@ bp = APIRouter()
 def get_link():
     return conf.domain_port + "/api/v1/editor/packup/templates"
     
-@bp.get('/packup/templates',description="打包压缩")
-def packup():
-    return crud.editor.pack_up()
-
 @bp.post('/write',description='写')
 def write(file_path: str=Body(...), data: str=Body(...)):
     if file_path[0] != '/':

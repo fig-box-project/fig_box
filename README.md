@@ -1,11 +1,16 @@
 
-> 状态码
+
+### 状态码
+
+```
 201 成功创建资源
 202 异步代码处理中,请稍后再次拉取
 204 没有需要返回的数据
 206 只成功了一部分
+```
 
-> 400 未知错误
+```
+400 未知错误
 401 未放token
 402 未支付
 403 权限不足,禁止
@@ -18,7 +23,7 @@
 422 传值不正确
 423 资源被锁
 501 目前未实现的API
-
+```
 
 sudo uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
 
@@ -63,3 +68,6 @@ sudo git reset --hard origin/master
 
 # 获取github中所有的tag
 https://api.github.com/repos/normidar/my_fastapi/tags
+
+> 检查包的信息<br>
+pip3 show pyyaml

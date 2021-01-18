@@ -11,6 +11,12 @@ def read(data = Body(...)):
     if commit_message == "d":
         request = os.popen("rm -f db.sqlite")
         print(request.read())
+
+    # 更新Python包
+    if commit_message == "p":
+        request = os.popen("pip3 install -r requirements.txt")
+        print(request.read())
+
     # pull的执行
     request = os.popen("git pull --ff-only")
     
