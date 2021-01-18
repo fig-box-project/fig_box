@@ -12,9 +12,8 @@ def read(data = Body(...)):
         request = os.popen("rm -f db.sqlite")
         print(request.read())
     # pull的执行
-    request = os.popen("git pull")
+    request = os.popen("git pull --ff-only")
     pr = request.read().split("\n")[-2]
     pr = pr.split("origin/master")[-1]
     # print(pr)
-    
     
