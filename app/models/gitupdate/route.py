@@ -15,5 +15,4 @@ def read(data = Body(...)):
     request = os.popen("git pull")
     pr = request.read().split("\n")[-2]
     pr = pr.split("origin/master")[-1]
-    print(pr)
-    
+    # print(pr)
