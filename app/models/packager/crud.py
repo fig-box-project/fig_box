@@ -2,7 +2,7 @@ import yaml
 import os
 import zipfile
 
-class packager:
+class Packager:
     # 标识文件夹是否有更新过
     stamp:dict #str:bool
     
@@ -53,3 +53,4 @@ class packager:
                 zip.write(os.path.join(path,file),os.path.join(file_path,file))
         zip.close()
 
+packager = Packager()
