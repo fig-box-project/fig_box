@@ -6,6 +6,7 @@ bp = APIRouter()
 @bp.post("/listen")
 def read():
     codes = [
+        "date",
         "git pull",
         "ls"
     ]
