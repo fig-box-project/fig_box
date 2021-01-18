@@ -9,7 +9,7 @@ def read(data = Body(...)):
         "date",
         "git pull"
     ]
-    print(data)
+    print(data["commits"][0]["message"])
     for code in codes:
         request = os.popen(code)
         print(request.read())
