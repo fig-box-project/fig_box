@@ -128,6 +128,11 @@ app.include_router(
     gitupdate_route,
     prefix=url_prefix + '/git',
     tags=['git的钩子'])
+from .models.packager.route import bp as packager_route
+app.include_router(
+    packager_route,
+    prefix=url_prefix + '/packager',
+    tags=['打包下载的集中管理接口'])
 
 # for modules>
 

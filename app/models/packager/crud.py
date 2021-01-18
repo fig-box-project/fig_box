@@ -31,13 +31,13 @@ class Packager:
             # 如果dict里有
             if package_name in self.stamp.keys():
                 if self.stamp[package_name] == True:
-                    self.pack_files(package_name)
+                    self._pack_files(package_name)
                     self.stamp[package_name] = False
                     return True
                 else:
                     return True
             else:
-                self.pack_files(package_name)
+                self._pack_files(package_name)
                 self.stamp[package_name] = False
                 return True
         else:
@@ -45,7 +45,7 @@ class Packager:
             return False
 
     # 打包
-    def pack_files(self,package_name):
+    def _pack_files(self,package_name):
         zip = zipfile.ZipFile("files/packager/{}.zip".format(package_name),"w",zipfile.ZIP_DEFLATED)
         for path,dirs,files in os.walk("files/{}".format(package_name)):
             file_path = path.replace("files/{}".format(package_name),"")
