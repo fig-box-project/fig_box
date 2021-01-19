@@ -134,7 +134,20 @@ class Module:
                 w.write(''.join(lines))
             # 设置状态为已使用
             self.status = Status.USED
-
+    # 注入代码到文件
+    def insert_code(self,position_name,code,is_top=True):
+        with open("app/main.py",'r') as f:
+            lines = f.readlines()
+        for line in lines:
+            if is_top:
+                if line == "# {}>\n":
+                    line += code + "\n"
+            else:
+                if line == "# <{}\n":
+                    line = code + "\n" + line
+        with open("app/main.py",'w') as f:
+            f.write(''.join(lines))
+            
     # 禁用
     def unuse(self):
         if self.status == Status.USED:

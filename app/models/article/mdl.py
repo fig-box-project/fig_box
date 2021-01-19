@@ -20,8 +20,7 @@ class Article(Base):
     seo_keywords       = Column(String(256))
     seo_description    = Column(String(400))
 
-    owner_id           = Column(Integer,ForeignKey('users.id'))
-    owner              = relationship("User",back_populates = "articles")
+    owner_id           = Column(Integer)
 
     # 想在网页上显示什么内容
     # def keys(self):

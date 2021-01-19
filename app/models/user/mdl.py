@@ -14,8 +14,6 @@ class User(Base):
 
     character_id    = Column(Integer, default=2)
 
-    articles        = relationship("Article",back_populates='owner')
-
     def get_token(self,expires_in=3600):
         try:
             data = jwt.encode(

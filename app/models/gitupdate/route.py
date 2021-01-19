@@ -4,7 +4,7 @@ import os
 
 bp = APIRouter()
 
-@bp.post("/listen")
+@bp.post("/listen",description="TODO:拒绝从github以外的来源")
 def read(data = Body(...)):
     commit_message = data["commits"][0]["message"]
     print(commit_message)

@@ -1,3 +1,8 @@
+# 限制Python的内存使用上限..如出现问题就删
+import resource
+soft,hard = resource.getrlimit(resource.RLIMIT_AS)
+resource.setrlimit(resource.RLIMIT_AS,(int(hard * 0.9),hard))
+
 import jwt
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
@@ -7,15 +12,24 @@ from fastapi.responses import HTMLResponse
 
 
 # 引用一下mdl才能创建该数据表
+# Import mdl>
 from app.models.user import mdl as user
-from app.models.article import mdl as dfsds
-from app.models.tree import mdl as asdfsd
+from app.models.tree import mdl as tree_mdl
+# from app.models.article import mdl as article_mdl
+# <Import mdl
+tables = [
+# Tables>
+    user.User.__table__,
+    tree_mdl.Category.__table__,
+    # article_mdl.Article.__table__,
+# <Tables
+]
 
 import app.conf as conf
 
 # もしテーブルを選びたい時： create_all(bind=engine, tables=[User.__table__])
 # もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
-database.Base.metadata.create_all(bind=database.engine)
+database.Base.metadata.create_all(bind=database.engine,tables=tables)
 
 # database.Base.metadata.query
 # 初始化数据库
@@ -39,6 +53,7 @@ if db.query(user.User).count() == 0:
     
     db.commit()
 
+# app = FastAPI(docs_url=None, redoc_url=None) #关闭文档
 app = FastAPI()
 
 # 进入路由时检测token
