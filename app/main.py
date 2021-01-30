@@ -1,7 +1,7 @@
 # 限制Python的内存使用上限..如出现问题就删
-import resource
-soft,hard = resource.getrlimit(resource.RLIMIT_AS)
-resource.setrlimit(resource.RLIMIT_AS,(int(hard * 0.9),hard))
+# import resource
+# soft,hard = resource.getrlimit(resource.RLIMIT_AS)
+# resource.setrlimit(resource.RLIMIT_AS,(int(hard * 0.9),hard))
 
 import jwt
 from sqlalchemy.orm import Session
