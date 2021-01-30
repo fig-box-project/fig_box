@@ -59,7 +59,7 @@ class Editor:
                 appe = {}
                 appe['name'] = i.name
                 # 权宜之计 TODO
-                appe['path'] = ((file_path + "/").replace("templates/") + i.name)[6:]
+                appe['path'] = ((file_path + "/").replace("templates/","") + i.name)[6:]
                 if i.is_dir():
                     appe['children'] = self.ls(file_path + "/" + i.name)
                 else:
