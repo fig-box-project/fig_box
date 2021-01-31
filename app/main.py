@@ -58,7 +58,7 @@ if db.query(user.User).count() == 0:
 app = FastAPI(
     title = "F-Mod",
     description = "这是自由、易管理的高速模组化cms system.",
-    version = "α7"
+    version = "α8"
 )
 
 # 进入路由时检测token
