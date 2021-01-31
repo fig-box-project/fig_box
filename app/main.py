@@ -58,7 +58,7 @@ if db.query(user.User).count() == 0:
 app = FastAPI(
     title = "F-Mod",
     description = "这是自由、易管理的高速模组化cms system.",
-    version = "α8"
+    version = "α9"
 )
 
 # 进入路由时检测token
@@ -103,12 +103,12 @@ app.include_router(
     tags=['角色'],
     dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)])
-from .models.article.route import bp as article_route
-app.include_router(
-    article_route,
-    prefix=url_prefix + '/article',
-    tags=['文章'],
-    dependencies=[Depends(check_ip)])
+# from .models.article.route import bp as article_route
+# app.include_router(
+#     article_route,
+#     prefix=url_prefix + '/article',
+#     tags=['文章'],
+#     dependencies=[Depends(check_ip)])
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
