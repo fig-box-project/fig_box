@@ -35,7 +35,7 @@ def test_login():
 #         "image":"ss",
 #         "seo_title":"string",
 #         "seo_keywords": "string",
-#         "seo_description": "string",
+#         "seo_description": "string", 
 #         "status":0,
 #         "is_release": "false",
 #         "can_search": "true",
