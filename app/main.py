@@ -54,7 +54,12 @@ if db.query(user.User).count() == 0:
     db.commit()
 
 # app = FastAPI(docs_url=None, redoc_url=None) #关闭文档
-app = FastAPI()
+# 设置标题,说明,版本
+app = FastAPI(
+    title = "F-Mod",
+    description = "这是自由、易管理的高速模组化cms system.",
+    version = "α7"
+)
 
 # 进入路由时检测token
 def check_token(token: str=Header(...)):
