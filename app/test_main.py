@@ -24,36 +24,36 @@ def test_login():
     assert response.status_code == 200
 
 # 创建文章功能
-# def test_create_article():
-#     response = client.post(
-#         conf.url_prefix + '/article/create',
-#         json={
-#         "title": "string",
-#         "content": "string",
-#         "description": "string",
-#         "category_id": 0,
-#         "image":"ss",
-#         "seo_title":"string",
-#         "seo_keywords": "string",
-#         "seo_description": "string",
-#         "status":0,
-#         "is_release": "false",
-#         "can_search": "true",
-#         },
-#         headers={"token":token})
-#     print(response.json())
-#     global article_id
-#     article_id = dict(response.json())["id"]
-#     assert response.status_code == 200
+def test_create_article():
+    response = client.post(
+        conf.url_prefix + '/article/create',
+        json={
+        "title": "string",
+        "content": "string",
+        "description": "string",
+        "category_id": 0,
+        "image":"ss",
+        "seo_title":"string",
+        "seo_keywords": "string",
+        "seo_description": "string",
+        "status":0,
+        "is_release": "false",
+        "can_search": "true",
+        },
+        headers={"token":token})
+    print(response.json())
+    global article_id
+    article_id = dict(response.json())["id"]
+    assert response.status_code == 200
 
 # 删除文章功能
-# def test_delete_article():
-#     global article_id
-#     print(article_id)
-#     response = client.delete(
-#         conf.url_prefix + '/article/delete/'+str(article_id),
-#         headers={"token":token})
-#     assert response.status_code == 200
+def test_delete_article():
+    global article_id
+    print(article_id)
+    response = client.delete(
+        conf.url_prefix + '/article/delete/'+str(article_id),
+        headers={"token":token})
+    assert response.status_code == 200
 
 # 普通用户不能查看所有文章
 def test_cant_view_all_articles():
