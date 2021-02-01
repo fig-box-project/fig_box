@@ -8,16 +8,15 @@ from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
 
 # 获取设置
-with open("app/settings.yml", "r") as f:
+with open("settings.yml", "r") as f:
     settings = yaml.load(f.read())
 
+# TODO del
 print(settings)
 
 # 删除settings的模版
 del settings["mods"]["f-mod"]
 mods:dict = settings["mods"]
-
-
 
 # 引用一下mdl才能创建该数据表
 from app.models.user import mdl as user
@@ -119,7 +118,7 @@ app.include_router(
     prefix=url_prefix + '/character',
     tags=['角色'],
     dependencies=[Depends(check_ip)])
-    # dependencies=[Depends(check_token)])
+    # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
