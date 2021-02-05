@@ -6,3 +6,4 @@ app/insmodes
 app/modules.mods
 db.sqlite
 *.pyc
+/.idea
