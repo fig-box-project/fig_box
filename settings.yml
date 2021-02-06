@@ -15,6 +15,22 @@ mods:
     tags: 
     - 模组的名字
     
-
+# 用来存放站点地图所连接的数据库
+site_maps:
+  single_sites:
+    index: 
+    - link: /
+      lastmod: 2021-2-6
+      changefreq: weekly
+      priority: 1.0
+  db_sites: 
+    f-mod:
+      mdls: 
+      - table: F-mod
+        link_key: link
+        lastmod_key: update_date
+      priority: 0.9
+      changefreq: daily
+  
 
 
