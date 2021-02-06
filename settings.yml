@@ -29,6 +29,7 @@ site_maps:
       - table: F-mod
         link_key: link
         lastmod_key: update_date
+        prefix: fmod/ # 前缀
       priority: 0.9
       changefreq: daily
   
