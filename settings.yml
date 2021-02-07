@@ -8,8 +8,9 @@ allow_link_ip:
 - 35.241.66.226
 
 mods: 
-  f-mod: 
-    name: f-mod
+  fmod: 
+    name: fmod
+    status: unused
     version: 1
     has_mdl: False
     tags: 

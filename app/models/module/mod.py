@@ -3,6 +3,7 @@ import zipfile
 import os
 import shutil
 import requests
+from app.main import settings
 
 module_bags = {}
 def get_module_bag(name: str):
@@ -44,42 +45,43 @@ class Module:
     @property
     def status(self):
         if self._status == None:
-            path = 'app/modules.mods'
-            para = Tool.get_params(path,self.unique_name)
-            if para == None:
-                if self.name in store.get_goods():
-                    self._status = Status.INCLOUD
-                else:
-                    self._status = Status.UNFIND
-            elif para[1] == 'False':
+            try:
+                status = settings["mods"][self.name]["status"]
+            except Exception:
+                status = None
+
+            if status == "unused":
                 self._status = Status.UNUSED
-            else:
+            elif status == "used":
                 self._status = Status.USED
+            else:
+                self._status = Status.INCLOUD
         return self._status
     
     # status的set
     @status.setter
     def status(self, status):
-        path = 'app/modules.mods'
         if self.status == status:
             return
-        # 当是已下载的状态
-        if self.status == Status.USED or self.status == Status.UNUSED:
-            if status == Status.USED:
-                Tool.set_params(path,self.unique_name,[self.unique_name,'True'])
-            elif status == Status.UNUSED:
-                Tool.set_params(path,self.unique_name,[self.unique_name,'False'])
-            else:
-                # 当新状态不是已下载状态时
-                # 擦除行
-                Tool.del_line(path,self.unique_name + ' ')
-        else:
-            # 当本身不存在时,
-            if status == Status.UNUSED:
-                Tool.add_line(path,self.unique_name + ' False \n')
-            elif status == Status.USED:
-                Tool.add_line(path,self.unique_name + ' True \n')
-        self._status = status
+        
+        
+        # # 当是已下载的状态
+        # if self.status == Status.USED or self.status == Status.UNUSED:
+        #     if status == Status.USED:
+        #         Tool.set_params(path,self.unique_name,[self.unique_name,'True'])
+        #     elif status == Status.UNUSED:
+        #         Tool.set_params(path,self.unique_name,[self.unique_name,'False'])
+        #     else:
+        #         # 当新状态不是已下载状态时
+        #         # 擦除行
+        #         Tool.del_line(path,self.unique_name + ' ')
+        # else:
+        #     # 当本身不存在时,
+        #     if status == Status.UNUSED:
+        #         Tool.add_line(path,self.unique_name + ' False \n')
+        #     elif status == Status.USED:
+        #         Tool.add_line(path,self.unique_name + ' True \n')
+        # self._status = status
 
     # 获取下载地址
     def get_url(self):

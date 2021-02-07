@@ -1,18 +1,15 @@
 
 import jwt
-import yaml
+
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
 
-# 获取设置
-with open("settings.yml", "r") as f:
-    settings = yaml.load(f.read())
 
-# TODO del
-print(settings)
+
+
 
 # 删除settings的模版
 del settings["mods"]["f-mod"]
