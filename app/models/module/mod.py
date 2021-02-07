@@ -3,7 +3,7 @@ import zipfile
 import os
 import shutil
 import requests
-from app.main import settings
+from app.models.settings.crud import settings
 
 module_bags = {}
 def get_module_bag(name: str):
@@ -28,25 +28,20 @@ class RunStatus(Enum):
 
 class Module:
     name: str
-    version: str
-    unique_name: str
     _status: Status = None
     url: str = ''
     # 不要调用
     tag: str = ''
     description: str
-    def __init__(self, name: str, version: str):
+    def __init__(self, name: str):
         self.name = name
-        self.version = version
-        self.url = self.get_url()
-        self.unique_name = name + (version if version != '~' else '')
     
     # status的get
     @property
     def status(self):
         if self._status == None:
             try:
-                status = settings["mods"][self.name]["status"]
+                status = settings.value["mods"][self.name]["status"]
             except Exception:
                 status = None
 
@@ -54,8 +49,12 @@ class Module:
                 self._status = Status.UNUSED
             elif status == "used":
                 self._status = Status.USED
-            else:
+            elif status == "incloud":
                 self._status = Status.INCLOUD
+            elif status == "unfind":
+                self._status = Status.UNFIND
+            else:
+                raise ValueError
         return self._status
     
     # status的set
@@ -63,25 +62,14 @@ class Module:
     def status(self, status):
         if self.status == status:
             return
-        
-        
-        # # 当是已下载的状态
-        # if self.status == Status.USED or self.status == Status.UNUSED:
-        #     if status == Status.USED:
-        #         Tool.set_params(path,self.unique_name,[self.unique_name,'True'])
-        #     elif status == Status.UNUSED:
-        #         Tool.set_params(path,self.unique_name,[self.unique_name,'False'])
-        #     else:
-        #         # 当新状态不是已下载状态时
-        #         # 擦除行
-        #         Tool.del_line(path,self.unique_name + ' ')
-        # else:
-        #     # 当本身不存在时,
-        #     if status == Status.UNUSED:
-        #         Tool.add_line(path,self.unique_name + ' False \n')
-        #     elif status == Status.USED:
-        #         Tool.add_line(path,self.unique_name + ' True \n')
-        # self._status = status
+        self._status = status
+        if status == Status.INCLOUD:
+            settings.value["mods"][self.name]["status"] = "incloud"
+        elif status == Status.UNUSED:
+            settings.value["mods"][self.name]["status"] = "unused"
+        elif status == Status.USED:
+            settings.value["mods"][self.name]["status"] = "used"
+        settings.update()
 
     # 获取下载地址
     def get_url(self):
@@ -121,20 +109,6 @@ class Module:
     # 使用
     def use(self):
         if self.status == Status.UNUSED:
-            # 往main文件里注入代码
-            name = self.unique_name
-            tag = self.get_tag()
-            code = f'# {name}>\nfrom .insmodes.{name}.route import bp as {name}_route\napp.include_router(\n    {name}_route,\n    prefix=url_prefix + \'/{name}\',\n    tags=[\'{tag}\'],)\n# <{name}\n'
-            # 在文件中插入代码
-            with open("app/main.py",'r') as r:
-                lines = r.readlines()
-            for i in range(len(lines)):
-                if lines[i] == '# for modules>\n':
-                    lines[i+1] = '\n' + code
-                    break
-            with open("app/main.py",'w') as w:
-                w.write(''.join(lines))
-            # 设置状态为已使用
             self.status = Status.USED
 
     # 注入代码到文件 TODO:DID
@@ -171,12 +145,6 @@ class Module:
             # 更改状态
             self.status = Status.UNUSED
         
-    # 获取api的标签
-    def get_tag(self):
-        if self.tag == '':
-            self.tag = Tool.get_params(self.get_mod_path(False)+'/config.conf','api_tag')[1]
-        return self.tag
-
     # 解压
     def unzip(self):
         Tool.unzip(self.get_zip_path(),self.get_mod_path(True),self.unique_name)
