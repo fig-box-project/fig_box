@@ -1,0 +1,18 @@
+
+
+site_maps:
+  single_sites:
+    fmod: 
+    - link: /
+      lastmod: 2021-2-6
+      changefreq: weekly
+      priority: 1.0
+  db_sites: 
+    fmod:
+      mdls: 
+      - table: Fmod
+        link_key: link
+        lastmod_key: update_date
+        prefix: fmod/ # 前缀
+      priority: 0.9
+      changefreq: daily

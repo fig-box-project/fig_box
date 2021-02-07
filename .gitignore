@@ -2,7 +2,6 @@
 /files
 /downloads
 /tree.json
-app/insmodes
 app/modules.mods
 db.sqlite
 *.pyc
