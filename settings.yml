@@ -13,6 +13,7 @@ mods:
     status: unused
     version: 1
     has_mdl: False
+    route_prefix: fmod
     tags: 
     - 模组的名字
     

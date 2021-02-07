@@ -1,5 +1,5 @@
 import os
-from ...main import settings
+# from ...main import settings
 from sqlalchemy.orm import Session, load_only
 
 class SiteMap:

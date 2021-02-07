@@ -1,19 +1,14 @@
-
 import jwt
-
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
-
-
-
+from app.models.settings.crud import settings
 
 
 # 删除settings的模版
-del settings["mods"]["f-mod"]
-mods:dict = settings["mods"]
+mods:dict = settings.value["mods"]
 
 # 引用一下mdl才能创建该数据表
 from app.models.user import mdl as user
@@ -75,7 +70,7 @@ app = FastAPI(
 # 通过在路由函数中加入这个开启验证并获得用户: now_user:User = Depends(check_token)
 def check_token(token: str=Header(...)):
     # 在测试模式时总是进入管理员
-    if settings['auth_test_mode']:
+    if settings.value['auth_test_mode']:
         user_o = db.query(user.User).filter(user.User.id==1).first()
         return user_o
     # 否则检查token合法性
@@ -88,21 +83,21 @@ def check_token(token: str=Header(...)):
 
 # 进入路由时检查IP
 def check_ip(request: Request):
-    if settings['ip_test_mode'] == False:
+    if settings.value['ip_test_mode'] == False:
         # 如果ip不在允许的列表中时,不允许通过
-        if request.client.host not in settings['allow_link_ip']:
+        if request.client.host not in settings.value['allow_link_ip']:
             raise HTTPException(status_code=400,detail='unallow ip')
 
 # 验证token
 def verify_token(token):
     try:
-        data = jwt.decode(token, settings['token_key'],algorithms=['HS256'])
+        data = jwt.decode(token, settings.value['token_key'],algorithms=['HS256'])
     except:
         return None
     return data['id']
 
 # 蓝图
-url_prefix = settings['url_prefix']
+url_prefix = settings.value['url_prefix']
 from .models.user.route import bp as user_route
 app.include_router(
     user_route,
@@ -163,11 +158,11 @@ app.include_router(
 
 # 用于include入蓝图的文本
 include_str = """\
-from .insmodels.{0}.route import bp as {0}_route
+from .insmodes.{0}.route import bp as {0}_route
 app.include_router(
     {0}_route,
-    prefix=url_prefix + '/{0}',
-    tags=['{1}'],
+    prefix=url_prefix + '/{1}',
+    tags=[{2}],
     dependencies=[Depends(check_ip)])
 """
 
@@ -176,8 +171,8 @@ app.include_router(
 for k in mods.keys():
     # 编辑下tags
     tags_li = ['"' + x + '"' for x in mods[k]["tags"]]
-    # 注入字符串
-    s = include_str.format(k,",".join(tags_li))
+    # 注入模组名,路由前缀,分类标记
+    s = include_str.format(k, mods[k]["route_prefix"], ",".join(tags_li))
     print(s)
     # 引用下
     exec(s)
