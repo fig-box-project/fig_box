@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.orm import Session, load_only
-from ..settings.crud import settings
+from app.models.settings.crud import settings
 
 class SiteMap:
     # 初始化时创建sitemap文件夹下的东西
@@ -25,7 +25,7 @@ class SiteMap:
         # 收集数据库中的页面
         db_sites = site_maps["db_sites"]
         for k, v in db_sites.items():
-            exec("from app.insmodels.{0} import mdl as {0}_mdl".format(k))
+            exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
             for table in v["mdls"]:
                 # 读取数据库数据
                 fields = (table["link_key"], table["lastmod_key"])
@@ -44,14 +44,18 @@ class SiteMap:
         lines.append(first_line)
         for i in site_datas:
             code = \
-f'''<url>
-<loc>{settings.value["domain_port"]}/article/{i[0]}</loc>
-<lastmod>{i[1]}</lastmod>
-<changefreq>{i[2]}</changefreq>
-<priority>{i[3]}</priority>
-</url>
-'''
+f''' <url>
+  <loc>{settings.value["domain_port"]}{i[0]}</loc>'''
+            # 添加可选参数
+            if i[1] != None:
+                code += f"\n  <lastmod>{i[1]}</lastmod>"
+            if i[2] != None:
+                code += f"\n  <changefreq>{i[2]}</changefreq>"
+            if i[3] != None:
+                code += f"\n  <priority>{i[3]}</priority>"
+
+            code += "\n </url>"
             lines.append(code)
-        lines.append('</urlset>')
+        lines.append('\n</urlset>')
         with open('files/sitemap/sitemap.xml','w') as w:
             w.write(''.join(lines))
