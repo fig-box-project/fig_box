@@ -9,7 +9,7 @@ class Settings:
         else:
             # 获取设置
             with open(self.yaml_path, "r") as f:
-                self.value = yaml.load(f.read())
+                self.value: dict = yaml.load(f.read())
             # TODO del
             print(self.value)
     

@@ -9,13 +9,15 @@ allow_link_ip:
 
 mods: 
   fmod: 
-    name: fmod
     status: unused
+    name: fmod
     version: 1
-    has_mdl: False
-    route_prefix: fmod
-    tags: 
-    - 模组的名字
+    has_mdl: True
+    has_sitemap: True
+    route:
+      route_prefix: fmod
+      tags: 
+      - 模组的名字
     
 # 用来存放站点地图所连接的数据库
 site_maps:

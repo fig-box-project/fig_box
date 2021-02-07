@@ -1,5 +1,16 @@
 
 
+mod_settings: 
+  name: fmod
+  version: 1
+  has_mdl: True
+  has_sitemap: True
+  route:
+    route_prefix: fmod
+    tags: 
+    - 模组的名字
+
+
 site_maps:
   single_sites:
     fmod: 
@@ -11,7 +22,7 @@ site_maps:
     fmod:
       mdls: 
       - table: Fmod
-        link_key: link
+        link_key: name
         lastmod_key: update_date
         prefix: fmod/ # 前缀
       priority: 0.9

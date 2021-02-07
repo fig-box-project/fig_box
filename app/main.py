@@ -23,7 +23,7 @@ for k in mods.keys():
     if "has_mdl" in mods[k]:
         if mods[k]["has_mdl"] == True:
             # 引用下
-            exec("from app.insmodels.{0} import mdl as {0}_mdl".format(k))
+            exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
             # 加入下列表中等下读取
             tables_strs.append("{}_mdl.{}.__table__".format(k,k.capitalize()))
 
@@ -170,9 +170,9 @@ app.include_router(
 # 自动包括 
 for k in mods.keys():
     # 编辑下tags
-    tags_li = ['"' + x + '"' for x in mods[k]["tags"]]
+    tags_li = ['"' + x + '"' for x in mods[k]["route"]["tags"]]
     # 注入模组名,路由前缀,分类标记
-    s = include_str.format(k, mods[k]["route_prefix"], ",".join(tags_li))
+    s = include_str.format(k, mods[k]["route"]["route_prefix"], ",".join(tags_li))
     print(s)
     # 引用下
     exec(s)

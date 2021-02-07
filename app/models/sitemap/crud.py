@@ -1,6 +1,6 @@
 import os
-# from ...main import settings
 from sqlalchemy.orm import Session, load_only
+from ..settings.crud import settings
 
 class SiteMap:
     # 初始化时创建sitemap文件夹下的东西
@@ -9,12 +9,12 @@ class SiteMap:
         os.makedirs("files/sitemap", exist_ok=True)
         os.makedirs("files/sitemap/sites", exist_ok=True)
 
-    def create_sitemap(self,db: Session):
+    def create_sitemap(self,db: Session): # db在exec中被使用
         # 定义一个用于装sitemap数据的数组
         site_datas = []
 
         # 收集单页面
-        site_maps = settings["site_maps"]
+        site_maps = settings.value["site_maps"]
         single_sites = site_maps["single_sites"]
         for v in single_sites.values():
             for i in v:
@@ -45,7 +45,7 @@ class SiteMap:
         for i in site_datas:
             code = \
 f'''<url>
-<loc>{settings["domain_port"]}/article/{i[0]}</loc>
+<loc>{settings.value["domain_port"]}/article/{i[0]}</loc>
 <lastmod>{i[1]}</lastmod>
 <changefreq>{i[2]}</changefreq>
 <priority>{i[3]}</priority>
