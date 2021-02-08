@@ -74,6 +74,9 @@ mkdir files 创建文件夹
 sudo git fetch --all
 sudo git reset --hard origin/master
 
+# 获取库的下载地址
+https://github.com/normidar/my_fastapi/archive/master.zip
+
 # 获取github中所有的tag
 https://api.github.com/repos/normidar/my_fastapi/tags
 

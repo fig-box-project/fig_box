@@ -3,6 +3,7 @@ import zipfile
 import os
 import shutil
 import requests
+import json
 from app.models.settings.crud import settings
 
 class Status(Enum):
@@ -18,7 +19,6 @@ class RunStatus(Enum):
 class Module:
     name: str
     _status: Status = None
-    url: str = ''
     # 不要调用
     tag: str = ''
     description: str
@@ -57,33 +57,17 @@ class Module:
         elif status == Status.USED:
             settings.value["mods"][self.name]["status"] = "used"
         settings.update()
-
-    # 获取下载地址
-    def get_url(self):
-        if self.version == '~':
-            url = Tool.get_params(store.store_path,'mod ' + self.name)[3]
-            # 添加zip文件地址的后缀
-            url += '/archive/main.zip'
-            return url
-        else:
-            return None
     
     # 安装
-    def install(self):
-        if self.status == Status.INCLOUD:
-            # 下载
-            self.download_module()
-            # 解压
-            self.unzip()
-            #设置状态为未使用
-            self.status = Status.UNUSED
-            # 使用
-            self.use()
-        elif self.status == Status.UNFIND:
-            return RunStatus.FAILURE
-        else:
-            return RunStatus.DID
-
+    def download(self):
+        zip_path = 'files/downloads/'+ self.name +'.zip'
+        # 下载 TODO:url
+        Tool.download_file("url",self.get_zip_path())
+        # 解压
+        Tool.unzip(self.get_zip_path(),"app/insmodes",self.name)
+        #设置状态为未使用
+        self.status = Status.UNUSED
+        
     # 卸载
     def uninstall(self):
         # 禁用
@@ -105,28 +89,19 @@ class Module:
             # 更改状态
             self.status = Status.UNUSED
         
-    # 解压
-    def unzip(self):
-        Tool.unzip(self.get_zip_path(),self.get_mod_path(True),self.unique_name)
-
     # 删除压缩文件和文件夹
     def delete_module(self):
         os.remove(self.get_zip_path())
         shutil.rmtree(self.get_mod_path(False))
 
-    # 下载zip,下载完后将以唯一名称进行保存在downloads中
-    def download_module(self):
-        Tool.download_file(self.url,self.get_zip_path())
-
-    # 获取压缩包地址
-    def get_zip_path(self):
-        return 'downloads/'+ self.unique_name +'.zip'
-
 class Store:
-    # 商店的文件地址
-    store_path = "downloads/store.conf"
+    def __init__(self, name: str):
+        if name == '':
+            name = "fast-mode"
+        self.name = name
+
     # 商店物品的集合
-    _goods = set()
+    goods = set()
     # 获取商店所有的东西
     def get_goods(self):
         if len(self._goods) > 0:
@@ -137,29 +112,12 @@ class Store:
             self._goods.add(i[1])
         return self._goods
             # return [{'name':i[1],'description':''} for i in list]
-    
-    # 用于api的查看
-    def view(self):
-        self.check_file()
-        list = Tool.get_params_list(self.store_path,'mod ')
-        return [{'name':i[1],'status':True,'description':'说明巴拉巴拉'} for i in list]
 
-    # 更新一下商店
-    def update(self):
-        self.check_file()
-        url = Tool.get_params(self.store_path,'path')[1]
-        Tool.download_file(url, self.store_path)
-
-    # True为创建了,否则为无创建,在每个api动作前都运行下这个
-    def check_file(self):
-        if os.path.exists(self.store_path) == False:
-            os.mkdir('downloads')
-            Tool.download_file('https://raw.githubusercontent.com/fast-mode/store/main/store.conf', self.store_path)
-            return True
-        else:
-            return False
-
-store = Store()
+    def ls(self):
+        url = f"https://api.github.com/orgs/{self.name}/repos"
+        j = Tool.get_json(url)
+        rt = [x["name"] for x in j]
+        return rt
 
 class Tool:
     # 解压zip,重命名
@@ -183,3 +141,10 @@ class Tool:
                 if chunk:
                     dl.write(chunk)
                 # 如果函数存在则给其百分比
+    
+    # get请求并转换为json
+    @staticmethod
+    def get_json(url:str):
+        rt = requests.get(url).json()
+        return rt
+        

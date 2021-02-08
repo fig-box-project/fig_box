@@ -49,13 +49,8 @@ def unuse(module:orm.Module):
 
 # store----------------------------------------------------------------
 
-
-@bp.post('/store/update')
-def update_store():
-    mod.store.update()
-
-@bp.get('/store/view')
-def view_store():
-    return mod.store.view()
+@bp.get('/store/ls')
+def view_store(organization_name: str = ""):
+    return mod.Store(organization_name).ls()
 
 
