@@ -5,15 +5,9 @@ from app.models.user.mdl import User
 
 bp = APIRouter()
 
-@bp.post('/install')
-def install(module:orm.Module):
-    module_bag = mod.get_module_bag(module.name)
-    module = module_bag.main_module
-    if module.status == mod.Status.INCLOUD:
-        module.install()
-        return True
-    else:
-        raise HTTPException(status_code=400)
+@bp.post('/download')
+def download(module_name: str, store_name: str = 'fast-mode',):
+    mod.Module(module_name).download(store_name)
 
 @bp.post('/uninstall')
 def uninstall(module:orm.Module):

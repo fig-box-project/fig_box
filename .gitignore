@@ -3,6 +3,7 @@
 /downloads
 /tree.json
 app/modules.mods
+app/insmodes
 db.sqlite
 *.pyc
 /.idea

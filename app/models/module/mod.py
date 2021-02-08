@@ -29,13 +29,13 @@ class Module:
         except Exception:
             print("可能模组不存在")
     # 安装
-    def download(self):
+    def download(self, store: str):
         zip_path = 'files/downloads/'+ self.name +'.zip'
         # 下载 TODO:url
-        Tool.download_file("url",self.get_zip_path())
+        link = f"https://github.com/{store}/{self.name}/archive/main.zip"
+        Tool.download_file(link, zip_path)
         # 解压
-        Tool.unzip(self.get_zip_path(),"app/insmodes",self.name)
-        
+        Tool.unzip(zip_path,"app/insmodes/",self.name)
         
     # 卸载
     def uninstall(self):
@@ -65,19 +65,7 @@ class Store:
             name = "fast-mode"
         self.name = name
 
-    # 商店物品的集合
-    goods = set()
-    # 获取商店所有的东西
-    def get_goods(self):
-        if len(self._goods) > 0:
-            return self._goods
-        self.check_file()
-        list = Tool.get_params_list(self.store_path,'mod ')
-        for i in list:
-            self._goods.add(i[1])
-        return self._goods
-            # return [{'name':i[1],'description':''} for i in list]
-
+    # 获取商品列表
     def ls(self):
         url = f"https://api.github.com/orgs/{self.name}/repos"
         j = Tool.get_json(url)
