@@ -5,21 +5,10 @@ import shutil
 import requests
 from app.models.settings.crud import settings
 
-module_bags = {}
-def get_module_bag(name: str):
-    if name not in module_bags:
-        m = ModuleBag(name)
-        if m.is_exist() == False:
-            return None
-        else:
-            module_bags[name] = m
-    return module_bags[name]
-
 class Status(Enum):
     UNFIND  = 0
-    INCLOUD = 1
-    USED    = 2
-    UNUSED  = 3
+    USED    = 1
+    UNUSED  = 2
 
 class RunStatus(Enum):
     SUCCESS = 0
@@ -49,8 +38,6 @@ class Module:
                 self._status = Status.UNUSED
             elif status == "used":
                 self._status = Status.USED
-            elif status == "incloud":
-                self._status = Status.INCLOUD
             elif status == "unfind":
                 self._status = Status.UNFIND
             else:
@@ -63,8 +50,8 @@ class Module:
         if self.status == status:
             return
         self._status = status
-        if status == Status.INCLOUD:
-            settings.value["mods"][self.name]["status"] = "incloud"
+        if status == Status.UNFIND:
+            settings.value["mods"][self.name]["status"] = "unfind"
         elif status == Status.UNUSED:
             settings.value["mods"][self.name]["status"] = "unused"
         elif status == Status.USED:
@@ -104,44 +91,17 @@ class Module:
         # 删除各种文件
         self.delete_module()
         # 设置状态为云端
-        self.status = Status.INCLOUD
+        self.status = Status.UNFIND
 
     # 使用
     def use(self):
         if self.status == Status.UNUSED:
             self.status = Status.USED
 
-    # 注入代码到文件 TODO:DID
-    def insert_code(self,position_name,code,is_top=True):
-        with open("app/main.py",'r') as f:
-            lines = f.readlines()
-        for line in lines:
-            if is_top:
-                if line == "# {}>\n":
-                    line += code + "\n"
-            else:
-                if line == "# <{}\n":
-                    line = code + "\n" + line
-        with open("app/main.py",'w') as f:
-            f.write(''.join(lines))
-
     # 禁用
     def unuse(self):
         if self.status == Status.USED:
             name = self.unique_name
-            # 从main中删除代码
-            with open("app/main.py",'r') as r:
-                lines = r.readlines()
-            for i in range(len(lines)):
-                if lines[i] == f'# {name}>\n':
-                    head = i
-                    continue
-                elif lines[i] == f'# <{name}\n':
-                    foot = i
-                    break
-            del lines[head:foot+1]
-            with open("app/main.py",'w') as w:
-                w.write(''.join(lines))
             # 更改状态
             self.status = Status.UNUSED
         
@@ -161,31 +121,6 @@ class Module:
     # 获取压缩包地址
     def get_zip_path(self):
         return 'downloads/'+ self.unique_name +'.zip'
-
-    # 获取安装后的文件夹位置
-    def get_mod_path(self,isFather:bool):
-        if isFather:
-            return 'app/insmodes/'
-        return 'app/insmodes/' + self.unique_name
-
-# 模组的一整个包
-class ModuleBag:
-    name: str
-    main_module: Module
-    version_map = {}
-    def __init__(self, name: str):
-        self.name = name
-        if self.is_exist():
-            self.main_module = Module(name,'~')
-    
-    # 获取某版本的模组
-    def get_module_in_version(self,version: str):
-        pass
-
-    # 检测是否存在
-    def is_exist(self):
-        return self.name in store.get_goods()
-
 
 class Store:
     # 商店的文件地址
@@ -227,62 +162,6 @@ class Store:
 store = Store()
 
 class Tool:
-    # 获取所有列表的参数
-    @staticmethod
-    def get_params_list(path: str,posi: str):
-        rt = []
-        with open(path,'r') as r:
-            lines = r.readlines()
-        for line in lines:
-            # 历遍所有行,
-            if line[:len(posi)] == posi:
-                rt.append(line.split(' '))
-        return rt
-
-    # 获取文件内的参数
-    @staticmethod
-    def get_params(path: str,posi: str):
-        with open(path,'r') as r:
-            lines = r.readlines()
-        for line in lines:
-            # 历遍所有行,
-            if line[:len(posi)] == posi:
-                return line.split(' ')
-        return None
-
-    # 设置文件内的参数
-    @staticmethod
-    def set_params(path: str,posi:str,line_data:list):
-        line_str = ' '.join(line_data) + ' \n'
-        with open(path,'r') as r:
-            lines = r.readlines()
-        for i in range(len(lines)):
-            # 历遍所有行,
-            if lines[i][:len(posi)] == posi:
-                lines[i] = line_str
-                break
-        with open(path,'w') as w:
-            w.write(''.join(lines))
-
-    # 删除某行
-    @staticmethod
-    def del_line(path: str,posi: str):
-        with open(path,'r') as r:
-            lines = r.readlines()
-        for i in range(len(lines)):
-            # 历遍所有行,
-            if lines[i][:len(posi)] == posi:
-                lines[i] = ''
-                break
-        with open(path,'w') as w:
-            w.write(''.join(lines))
-
-    # 增加一行
-    @staticmethod
-    def add_line(path: str,line:str):
-        with open(path,'a')as f:
-            f.write(line)
-
     # 解压zip,重命名
     @staticmethod
     def unzip(oldpath: str, newpath: str,newname: str):
