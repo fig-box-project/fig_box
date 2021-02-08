@@ -1,4 +1,4 @@
-version = "α208"
+version = "α208:22"
 
 import jwt
 from sqlalchemy.orm import Session
