@@ -6,11 +6,6 @@ import requests
 import json
 from app.models.settings.crud import settings
 
-class Status(Enum):
-    UNFIND  = 0
-    USED    = 1
-    UNUSED  = 2
-
 class RunStatus(Enum):
     SUCCESS = 0
     DID     = 1
@@ -18,46 +13,21 @@ class RunStatus(Enum):
 
 class Module:
     name: str
-    _status: Status = None
-    # 不要调用
-    tag: str = ''
+    status: str
     description: str
     def __init__(self, name: str):
         self.name = name
-    
-    # status的get
-    @property
-    def status(self):
-        if self._status == None:
-            try:
-                status = settings.value["mods"][self.name]["status"]
-            except Exception:
-                status = None
-
-            if status == "unused":
-                self._status = Status.UNUSED
-            elif status == "used":
-                self._status = Status.USED
-            elif status == "unfind":
-                self._status = Status.UNFIND
-            else:
-                raise ValueError
-        return self._status
-    
-    # status的set
-    @status.setter
-    def status(self, status):
-        if self.status == status:
-            return
-        self._status = status
-        if status == Status.UNFIND:
-            settings.value["mods"][self.name]["status"] = "unfind"
-        elif status == Status.UNUSED:
-            settings.value["mods"][self.name]["status"] = "unused"
-        elif status == Status.USED:
-            settings.value["mods"][self.name]["status"] = "used"
-        settings.update()
-    
+        try:
+            status = settings.value["mods"][self.name]["status"]
+        except Exception:
+            status = None
+            
+    def update_status(self):
+        try:
+            settings.value["mods"][self.name]["status"] = self.status
+            settings.update()
+        except Exception:
+            print("可能模组不存在")
     # 安装
     def download(self):
         zip_path = 'files/downloads/'+ self.name +'.zip'
@@ -65,8 +35,7 @@ class Module:
         Tool.download_file("url",self.get_zip_path())
         # 解压
         Tool.unzip(self.get_zip_path(),"app/insmodes",self.name)
-        #设置状态为未使用
-        self.status = Status.UNUSED
+        
         
     # 卸载
     def uninstall(self):
@@ -75,19 +44,15 @@ class Module:
         # 删除各种文件
         self.delete_module()
         # 设置状态为云端
-        self.status = Status.UNFIND
+        self.status = "unfind"
 
     # 使用
     def use(self):
-        if self.status == Status.UNUSED:
-            self.status = Status.USED
+        self.status = "used"
 
     # 禁用
     def unuse(self):
-        if self.status == Status.USED:
-            name = self.unique_name
-            # 更改状态
-            self.status = Status.UNUSED
+        self.status = "unused"
         
     # 删除压缩文件和文件夹
     def delete_module(self):
