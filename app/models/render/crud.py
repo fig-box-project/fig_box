@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
 from . import conf
 
-from app.models.article import mdl
+# from app.models.article import mdl
 
 # 创建需要的文件夹
 os.makedirs("files", exist_ok=True)
@@ -37,23 +37,23 @@ def render_test(request,p:str):
         return 'fail'
 
 # 渲染文章
-def view_article(link:str,db: Session,request):
-    try:
-        article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
-        if article != None and os.path.exists("files/templates/article/show.html"):
-            data = {}
-            data['pageData'] = article.__dict__
-            data['prevData'] = article.__dict__
-            data['nextData'] = article.__dict__
-            data['request'] = request
-            print("正常")
-            return templates.TemplateResponse("article/show.html", data)
-        else:
-            print("检测出404" + str(article != None) + str(os.path.exists("files/templates/article/show.html")))
-            return templates.TemplateResponse('404.html',{'request':request,'err':"no error"})
-    except Exception as e:
-        print("错误404")
-        return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
+# def view_article(link:str,db: Session,request):
+#     try:
+#         article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
+#         if article != None and os.path.exists("files/templates/article/show.html"):
+#             data = {}
+#             data['pageData'] = article.__dict__
+#             data['prevData'] = article.__dict__
+#             data['nextData'] = article.__dict__
+#             data['request'] = request
+#             print("正常")
+#             return templates.TemplateResponse("article/show.html", data)
+#         else:
+#             print("检测出404" + str(article != None) + str(os.path.exists("files/templates/article/show.html")))
+#             return templates.TemplateResponse('404.html',{'request':request,'err':"no error"})
+#     except Exception as e:
+#         print("错误404")
+#         return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
 
 # 渲染列表
 def view_list(db: Session,request,begin_id:int,length:int):
@@ -85,25 +85,3 @@ def view_list(db: Session,request,begin_id:int,length:int):
 def render_sitemap():
     return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
     # return templates.TemplateResponse(templates_path + '/sitemap.xml',{},media_type='application/xml')
-
-def create_sitemap(db: Session):
-    fields = ['link']
-    datas = db.query(mdl.Article).options(load_only(*fields)).all()
-    lines = []
-    first_line = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'
-    lines.append(first_line)
-    for i in datas:
-        # print(i.link)
-        code = \
-f'''<url>
-<loc>{conf.sitemap_url}/article/{i.link}</loc>
-<priority>1.00</priority>
-<lastmod>2020-12-09</lastmod>
-<changefreq>daily</changefreq>
-</url>
-'''
-        lines.append(code)
-    last_line = '</urlset>'
-    lines.append(last_line)
-    with open('files/sitemap/sitemap.xml','w') as w:
-        w.write(''.join(lines))

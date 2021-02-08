@@ -28,8 +28,7 @@ def uninstall(module:orm.Module):
 
 @bp.post('/use',description='使用模组')
 def use(module:orm.Module):
-    module_bag = mod.get_module_bag(module.name)
-    module = module_bag.main_module
+    module = mod.Module(module.name,"~")
     if module.status == mod.Status.UNUSED:
         module.use()
     else:
@@ -50,13 +49,8 @@ def unuse(module:orm.Module):
 
 # store----------------------------------------------------------------
 
-
-@bp.post('/store/update')
-def update_store():
-    mod.store.update()
-
-@bp.get('/store/view')
-def view_store():
-    return mod.store.view()
+@bp.get('/store/ls')
+def view_store(organization_name: str = ""):
+    return mod.Store(organization_name).ls()
 
 

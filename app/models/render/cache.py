@@ -1,5 +1,5 @@
 from app.main import db
-from app.models.article import crud
+# from app.models.article import crud
 
 
 class Article:

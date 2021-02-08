@@ -1,31 +1,36 @@
-# 限制Python的内存使用上限..如出现问题就删
-# import resource
-# soft,hard = resource.getrlimit(resource.RLIMIT_AS)
-# resource.setrlimit(resource.RLIMIT_AS,(int(hard * 0.9),hard))
-
 import jwt
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
 from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
+from app.models.settings.crud import settings
 
+
+# 删除settings的模版
+mods:dict = settings.value["mods"]
 
 # 引用一下mdl才能创建该数据表
-# Import mdl>
 from app.models.user import mdl as user
 from app.models.tree import mdl as tree_mdl
-# from app.models.article import mdl as article_mdl
-# <Import mdl
-tables = [
-# Tables>
-    user.User.__table__,
-    tree_mdl.Category.__table__,
-    # article_mdl.Article.__table__,
-# <Tables
-]
 
-import app.conf as conf
+# 默认表
+tables_strs = ["user.User.__table__","tree_mdl.Category.__table__"]
+tables = []
+
+# 自动引用安装的库
+for k in mods.keys():
+    if "has_mdl" in mods[k]:
+        if mods[k]["has_mdl"] == True:
+            # 引用下
+            exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
+            # 加入下列表中等下读取
+            tables_strs.append("{}_mdl.{}.__table__".format(k,k.capitalize()))
+
+# 录入到tables中
+for t in tables_strs:
+    exec("tables.append({})".format(t))
+
 
 # もしテーブルを選びたい時： create_all(bind=engine, tables=[User.__table__])
 # もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
@@ -58,38 +63,41 @@ if db.query(user.User).count() == 0:
 app = FastAPI(
     title = "F-Mod",
     description = "这是自由、易管理的高速模组化cms system.",
-    version = "α7"
+    version = "α10"
 )
 
 # 进入路由时检测token
+# 通过在路由函数中加入这个开启验证并获得用户: now_user:User = Depends(check_token)
 def check_token(token: str=Header(...)):
-    if conf.auth_test_mode:
+    # 在测试模式时总是进入管理员
+    if settings.value['auth_test_mode']:
         user_o = db.query(user.User).filter(user.User.id==1).first()
-        # print(user_o.id)
         return user_o
-    user_id = verify_token(token)
-    if user_id == None:
-        raise HTTPException(status_code=400,detail='token error')
+    # 否则检查token合法性
     else:
-        return db.query(user.User).filter_by(id=user_id).first()
+        user_id = verify_token(token)
+        if user_id == None:
+            raise HTTPException(status_code=400,detail='token error')
+        else:
+            return db.query(user.User).filter_by(id=user_id).first()
 
 # 进入路由时检查IP
 def check_ip(request: Request):
-    if conf.ip_test_mode == False:
-        if request.client.host not in conf.allow_link_ip:
+    if settings.value['ip_test_mode'] == False:
+        # 如果ip不在允许的列表中时,不允许通过
+        if request.client.host not in settings.value['allow_link_ip']:
             raise HTTPException(status_code=400,detail='unallow ip')
 
 # 验证token
 def verify_token(token):
     try:
-        data = jwt.decode(token, 'my god love me forever tom',
-                            algorithms=['HS256'])
+        data = jwt.decode(token, settings.value['token_key'],algorithms=['HS256'])
     except:
         return None
     return data['id']
 
 # 蓝图
-url_prefix = conf.url_prefix
+url_prefix = settings.value['url_prefix']
 from .models.user.route import bp as user_route
 app.include_router(
     user_route,
@@ -102,13 +110,7 @@ app.include_router(
     prefix=url_prefix + '/character',
     tags=['角色'],
     dependencies=[Depends(check_ip)])
-    # dependencies=[Depends(check_token)])
-from .models.article.route import bp as article_route
-app.include_router(
-    article_route,
-    prefix=url_prefix + '/article',
-    tags=['文章'],
-    dependencies=[Depends(check_ip)])
+    # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
 from .models.tree.route import bp as tree_route
 app.include_router(
     tree_route,
@@ -154,9 +156,26 @@ app.include_router(
     prefix=url_prefix + '/packager',
     tags=['打包下载的集中管理接口'])
 
-# for modules>
+# 用于include入蓝图的文本
+include_str = """\
+from .insmodes.{0}.route import bp as {0}_route
+app.include_router(
+    {0}_route,
+    prefix=url_prefix + '/{1}',
+    tags=[{2}],
+    dependencies=[Depends(check_ip)])
+"""
 
-# <for modules
+# TODO: test
+# 自动包括 
+for k in mods.keys():
+    # 编辑下tags
+    tags_li = ['"' + x + '"' for x in mods[k]["route"]["tags"]]
+    # 注入模组名,路由前缀,分类标记
+    s = include_str.format(k, mods[k]["route"]["route_prefix"], ",".join(tags_li))
+    print(s)
+    # 引用下
+    exec(s)
 
 @app.get('/',tags=['测试'],response_class=HTMLResponse)
 def root(request: Request):
