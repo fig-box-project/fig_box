@@ -1,3 +1,5 @@
+version = "α208"
+
 import jwt
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
@@ -63,7 +65,7 @@ if db.query(user.User).count() == 0:
 app = FastAPI(
     title = "F-Mod",
     description = "这是自由、易管理的高速模组化cms system.",
-    version = "α11"
+    version = version
 )
 
 # 进入路由时检测token
