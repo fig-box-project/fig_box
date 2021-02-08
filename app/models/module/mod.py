@@ -39,12 +39,12 @@ class Module:
         
     # 卸载
     def uninstall(self):
+        zip_path = 'files/downloads/'+ self.name +'.zip'
         # 禁用
         self.unuse()
         # 删除各种文件
-        self.delete_module()
-        # 设置状态为云端
-        self.status = "unfind"
+        os.remove(zip_path)
+        shutil.rmtree("app/insmodes/" + self.name)
 
     # 使用
     def use(self):
@@ -54,11 +54,6 @@ class Module:
     def unuse(self):
         self.status = "unused"
         
-    # 删除压缩文件和文件夹
-    def delete_module(self):
-        os.remove(self.get_zip_path())
-        shutil.rmtree(self.get_mod_path(False))
-
 class Store:
     def __init__(self, name: str):
         if name == '':

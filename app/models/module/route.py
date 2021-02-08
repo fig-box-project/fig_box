@@ -10,13 +10,8 @@ def download(module_name: str, store_name: str = 'fast-mode',):
     mod.Module(module_name).download(store_name)
 
 @bp.post('/uninstall')
-def uninstall(module:orm.Module):
-    module_bag = mod.get_module_bag(module.name)
-    module = module_bag.main_module
-    if module.status == mod.Status.USED or module.status == mod.Status.UNUSED:
-        module.uninstall()
-    else:
-        raise HTTPException(status_code=400)
+def uninstall(module_name: str):
+    mod.Module(module_name).uninstall()
 
 # use----------------------------------------------------------------
 
