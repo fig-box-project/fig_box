@@ -1,4 +1,5 @@
 import os
+import time
 from sqlalchemy.orm import Session, load_only
 from app.models.settings.crud import settings
 
@@ -31,7 +32,10 @@ class SiteMap:
                 fields = (table["link_key"], table["lastmod_key"])
                 datas = eval("db.query({0}_mdl.{1}).options(load_only(*fields)).all()".format(k,table["table"]))
                 for i in datas:
-                    site_datas.append((table["prefix"] + i[fields[0]], table[fields[1]], v["changefreq"], v["priority"]))
+                    link = eval(f"i.{fields[0]}")
+                    lastmod = eval(f"i.{fields[1]}")
+                    lastmod = lastmod.strftime("%Y-%-m-%-d") # "%Y-%m-%d" 为有0的配法
+                    site_datas.append(("/" + table["prefix"] + link, lastmod, v["changefreq"], v["priority"]))
                     print(site_datas)
 
         # 已收集完所有页面, 进行转换为文件
@@ -54,7 +58,7 @@ f''' <url>
             if i[3] != None:
                 code += f"\n  <priority>{i[3]}</priority>"
 
-            code += "\n </url>"
+            code += "\n </url>\n"
             lines.append(code)
         lines.append('\n</urlset>')
         with open('files/sitemap/sitemap.xml','w') as w:
