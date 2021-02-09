@@ -21,13 +21,9 @@ def use(module_name: str):
     module.use()
 
 @bp.post('/unuse',description='禁用模组')
-def unuse(module:orm.Module):
-    module_bag = mod.get_module_bag(module.name)
-    module = module_bag.main_module
-    if module.status == mod.Status.USED:
-        module.unuse()
-    else:
-        raise HTTPException(status_code=400)
+def unuse(module_name: str):
+    module = mod.Module(module_name)
+    module.unuse()
 
 
 # store----------------------------------------------------------------

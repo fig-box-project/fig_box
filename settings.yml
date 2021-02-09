@@ -27,15 +27,7 @@ site_maps:
       lastmod: 2021-2-6
       changefreq: weekly
       priority: 1.0
-  db_sites: 
-    fmod:
-      mdls: 
-      - table: Fmod
-        link_key: name
-        lastmod_key: null
-        prefix: fmod/ # 前缀
-      priority: 0.9
-      changefreq: daily
+  db_sites: {}
   
 
 

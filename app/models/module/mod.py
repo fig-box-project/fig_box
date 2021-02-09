@@ -57,15 +57,40 @@ class Module:
             mod_settings = yaml.load(f)
         settings.value["mods"][self.name] = mod_settings[self.name]
         settings.value["mods"][self.name]["status"] = "used"
+        
+        
+        # 搬运sitemap到settings
+        if "site_maps" in mod_settings:
+            if "single_sites" in mod_settings["site_maps"].keys():
+                print("-------------")
+                settings.value["site_maps"]["single_sites"][self.name] = mod_settings["site_maps"]["single_sites"][self.name]
+            if "db_sites" in mod_settings["site_maps"].keys():
+                settings.value["site_maps"]["db_sites"][self.name] = mod_settings["site_maps"]["db_sites"][self.name]
+
+        # 更新下设置
         settings.update()
+
         # 加下log让服务重启
         with open("app/log.py", "a") as f:
             f.write(f"# {self.name} used\n")
-        
 
     # 禁用
     def unuse(self):
         self.status = "unused"
+        # 移除settings的设置
+        if self.name in settings.value["mods"]:
+            del settings.value["mods"][self.name]
+        if self.name in settings.value["site_maps"]["single_sites"]:
+            del settings.value["site_maps"]["single_sites"][self.name]
+        if self.name in settings.value["site_maps"]["db_sites"]:
+            del settings.value["site_maps"]["db_sites"][self.name]
+
+        settings.update()
+
+        # 加log
+        with open("app/log.py", "a") as f:
+            f.write(f"# {self.name} unused\n")
+
         
 class Store:
     def __init__(self, name: str):
