@@ -4,6 +4,7 @@ import os
 import shutil
 import requests
 import json
+import yaml
 from app.models.settings.crud import settings
 
 class RunStatus(Enum):
@@ -28,7 +29,8 @@ class Module:
             settings.update()
         except Exception:
             print("可能模组不存在")
-    # 安装
+
+    # 下载
     def download(self, store: str):
         zip_path = 'files/downloads/'+ self.name +'.zip'
         # 下载 TODO:url
@@ -49,6 +51,17 @@ class Module:
     # 使用
     def use(self):
         self.status = "used"
+        # 搬运yml数据到settings
+        settings_path = "app/insmodes/" + self.name + "/settings.yml"
+        with open(settings_path, "r") as f:
+            mod_settings = yaml.load(f)
+        settings.value["mods"][self.name] = mod_settings[self.name]
+        settings.value["mods"][self.name]["status"] = "used"
+        settings.update()
+        # 加下log让服务重启
+        with open("app/log.py", "a") as f:
+            f.write(f"# {self.name} used\n")
+        
 
     # 禁用
     def unuse(self):

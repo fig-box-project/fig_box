@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile
 from . import crud, orm
 from app.main import check_token
 from app.models.user.mdl import User
-import app.conf as conf
 
 bp = APIRouter()
 

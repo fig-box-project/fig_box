@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile
 from . import crud
-import app.conf as conf
 from app.main import check_token
 from app.models.user.mdl import User
 import os

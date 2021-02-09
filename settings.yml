@@ -8,16 +8,6 @@ allow_link_ip:
 - 35.241.66.226
 
 mods: 
-  fmod: 
-    status: unused
-    name: fmod
-    version: 1
-    has_mdl: True
-    has_sitemap: True
-    route:
-      route_prefix: fmod
-      tags: 
-      - 模组的名字
   sitemap:
     status: unused
     name: sitemap
