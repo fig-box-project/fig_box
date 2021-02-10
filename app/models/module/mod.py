@@ -102,9 +102,9 @@ def local_ls():
     rt = {}
     for i in mod_list:
         if i in settings.value["mods"]:
-            rt[i] = {"status":"used"}
+            rt[i] = {"used":True}
         else:
-            rt[i] = {"status":"unused"}
+            rt[i] = {"used":False}
     return rt
 
 class Store:
