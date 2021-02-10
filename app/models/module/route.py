@@ -27,7 +27,7 @@ def unuse(module_name: str):
 
 @bp.post('/ls', description='查看本地模组情况(未实现,返回个数组)')
 def ls():
-    pass
+    return mod.local_ls()
 
 
 # store----------------------------------------------------------------
@@ -35,5 +35,4 @@ def ls():
 @bp.get('/store/ls')
 def view_store(organization_name: str = ""):
     return mod.Store(organization_name).ls()
-
 

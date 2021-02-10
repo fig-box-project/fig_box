@@ -93,7 +93,20 @@ class Module:
         with open("app/log.py", "a") as f:
             f.write(f"# {self.name} unused\n")
 
-        
+
+def local_ls():
+    path = "app/insmodes"
+    mod_list = os.listdir(path)
+    mod_list.remove("__init__.py")
+    mod_list.remove("__pycache__")
+    rt = {}
+    for i in mod_list:
+        if i in settings.value["mods"]:
+            rt[i] = {"status":"used"}
+        else:
+            rt[i] = {"status":"unused"}
+    return rt
+
 class Store:
     def __init__(self, name: str):
         if name == '':
