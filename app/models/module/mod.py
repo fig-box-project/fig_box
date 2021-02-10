@@ -116,6 +116,7 @@ class Store:
         url = f"https://api.github.com/orgs/{name}/repos"
         if time.time() - self.last_time > 120:
             self.data[name] = Tool.get_json(url)
+            self.last_time = time.time()
         if name in self.data:
             j = self.data[name]
             insmodes_list = os.listdir("app/insmodes")
