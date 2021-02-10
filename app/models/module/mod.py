@@ -111,9 +111,11 @@ class Store:
     def __init__(self):
         self.last_time = time.time() - 120
         self.data = {}
+
     # 获取商品列表
     def store_ls(self,name: str):
         url = f"https://api.github.com/orgs/{name}/repos"
+        # 注意,一小时只能调用60次githubapi
         if time.time() - self.last_time > 120:
             self.data[name] = Tool.get_json(url)
             self.last_time = time.time()
@@ -128,7 +130,7 @@ class Store:
                         rt.append({"name": i, "installed":True})
                     else:
                         rt.append({"name": i, "installed":False})
-                return j
+                return rt
             except:
                 pass
         return [{"name":"nothing", "installed":False}]
