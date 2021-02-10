@@ -118,18 +118,20 @@ class Store:
             self.data[name] = Tool.get_json(url)
             self.last_time = time.time()
         if name in self.data:
-            j = self.data[name]
-            insmodes_list = os.listdir("app/insmodes")
-            rt = []
-            for i in j:
-                i = i["name"]
-                if i in insmodes_list:
-                    rt.append({"name": i, "installed":True})
-                else:
-                    rt.append({"name": i, "installed":False})
-            return j
-        else:
-            return [{"name":"nothing", "installed":False}]
+            try:
+                j = self.data[name]
+                insmodes_list = os.listdir("app/insmodes")
+                rt = []
+                for i in j:
+                    i = i["name"]
+                    if i in insmodes_list:
+                        rt.append({"name": i, "installed":True})
+                    else:
+                        rt.append({"name": i, "installed":False})
+                return j
+            except:
+                pass
+        return [{"name":"nothing", "installed":False}]
 
 store = Store()
 
