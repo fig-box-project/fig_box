@@ -8,10 +8,6 @@ import yaml
 import time
 from app.models.settings.crud import settings
 
-class RunStatus(Enum):
-    SUCCESS = 0
-    DID     = 1
-    FAILURE = 2
 
 class Module:
     name: str

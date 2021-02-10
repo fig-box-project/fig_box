@@ -9,9 +9,7 @@ class Settings:
         else:
             # 获取设置
             with open(self.yaml_path, "r") as f:
-                self.value: dict = yaml.load(f.read())
-            # TODO del
-            print(self.value)
+                self.value: dict = yaml.load(f, Loader=yaml.SafeLoader)
     
     def update(self):
         with open(self.yaml_path, "w") as f:
