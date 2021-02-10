@@ -112,9 +112,9 @@ def store_ls(name: str):
     url = f"https://api.github.com/orgs/{name}/repos"
     j = Tool.get_json(url)
     insmodes_list = os.listdir("app/insmodes")
-    mod_list = [x["name"] for x in j]
     rt = []
-    for i in mod_list:
+    for i in j:
+        i = i["name"]
         if i in insmodes_list:
             rt.append({"name": i, "installed":True})
         else:
