@@ -99,12 +99,12 @@ def local_ls():
     mod_list = os.listdir(path)
     mod_list.remove("__init__.py")
     mod_list.remove("__pycache__")
-    rt = {}
+    rt = []
     for i in mod_list:
         if i in settings.value["mods"]:
-            rt[i] = {"used":True}
+            rt.append({"name": i, "used":True})
         else:
-            rt[i] = {"used":False}
+            rt.append({"name": i, "used":False})
     return rt
 
 class Store:
