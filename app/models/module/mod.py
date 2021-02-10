@@ -109,7 +109,7 @@ def local_ls():
 
 class Store:
     def __init__(self):
-        self.last_time = time.time()
+        self.last_time = time.time() - 120
         self.data = {}
     # 获取商品列表
     def store_ls(self,name: str):
@@ -129,7 +129,7 @@ class Store:
             return j
         else:
             return [{"name":"nothing", "installed":False}]
-            
+
 store = Store()
 
 class Tool:
