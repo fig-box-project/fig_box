@@ -113,12 +113,12 @@ def store_ls(name: str):
     j = Tool.get_json(url)
     insmodes_list = os.listdir("app/insmodes")
     rt = []
-    for i in j:
-        i = i["name"]
-        if i in insmodes_list:
-            rt.append({"name": i, "installed":True})
-        else:
-            rt.append({"name": i, "installed":False})
+    # for i in j:
+    #     i = i["name"]
+    #     if i in insmodes_list:
+    #         rt.append({"name": i, "installed":True})
+    #     else:
+    #         rt.append({"name": i, "installed":False})
     return j
 
 
