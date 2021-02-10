@@ -175,7 +175,6 @@ for k in mods.keys():
     tags_li = ['"' + x + '"' for x in mods[k]["route"]["tags"]]
     # 注入模组名,路由前缀,分类标记
     s = include_str.format(k, mods[k]["route"]["route_prefix"], ",".join(tags_li))
-    print(s)
     # 引用下
     exec(s)
 
