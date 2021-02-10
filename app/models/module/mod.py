@@ -95,8 +95,7 @@ class Module:
 
 
 def local_ls():
-    path = "app/insmodes"
-    mod_list = os.listdir(path)
+    mod_list = os.listdir("app/insmodes")
     mod_list.remove("__init__.py")
     mod_list.remove("__pycache__")
     rt = []
@@ -107,18 +106,20 @@ def local_ls():
             rt.append({"name": i, "used":False})
     return rt
 
-class Store:
-    def __init__(self, name: str):
-        if name == '':
-            name = "fast-mode"
-        self.name = name
 
-    # 获取商品列表
-    def ls(self):
-        url = f"https://api.github.com/orgs/{self.name}/repos"
-        j = Tool.get_json(url)
-        rt = [x["name"] for x in j]
-        return rt
+# 获取商品列表
+def store_ls(name: str):
+    url = f"https://api.github.com/orgs/{name}/repos"
+    j = Tool.get_json(url)
+    insmodes_list = os.listdir("app/insmodes")
+    mod_list = [x["name"] for x in j]
+    rt = []
+    for i in mod_list:
+        if i in insmodes_list:
+            rt.append({"name": i, "installed":True})
+        else:
+            rt.append({"name": i, "installed":False})
+
 
 class Tool:
     # 解压zip,重命名
