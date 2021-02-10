@@ -5,6 +5,7 @@ import shutil
 import requests
 import json
 import yaml
+import time
 from app.models.settings.crud import settings
 
 class RunStatus(Enum):
@@ -106,21 +107,30 @@ def local_ls():
             rt.append({"name": i, "used":False})
     return rt
 
-
-# 获取商品列表
-def store_ls(name: str):
-    url = f"https://api.github.com/orgs/{name}/repos"
-    j = Tool.get_json(url)
-    insmodes_list = os.listdir("app/insmodes")
-    rt = []
-    # for i in j:
-    #     i = i["name"]
-    #     if i in insmodes_list:
-    #         rt.append({"name": i, "installed":True})
-    #     else:
-    #         rt.append({"name": i, "installed":False})
-    return j
-
+class Store:
+    def __init__(self):
+        self.last_time = time.time()
+        self.data = {}
+    # 获取商品列表
+    def store_ls(self,name: str):
+        url = f"https://api.github.com/orgs/{name}/repos"
+        if time.time() - self.last_time > 120:
+            self.data[name] = Tool.get_json(url)
+        if name in self.data:
+            j = self.data[name]
+            insmodes_list = os.listdir("app/insmodes")
+            rt = []
+            for i in j:
+                i = i["name"]
+                if i in insmodes_list:
+                    rt.append({"name": i, "installed":True})
+                else:
+                    rt.append({"name": i, "installed":False})
+            return j
+        else:
+            return [{"name":"nothing", "installed":False}]
+            
+store = Store()
 
 class Tool:
     # 解压zip,重命名

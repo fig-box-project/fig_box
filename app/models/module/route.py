@@ -34,5 +34,5 @@ def ls():
 
 @bp.get('/store/ls')
 def view_store(organization_name: str = "fast-mode"):
-    return mod.store_ls(organization_name)
+    return mod.store.store_ls(organization_name)
 
