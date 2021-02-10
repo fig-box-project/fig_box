@@ -119,6 +119,7 @@ def store_ls(name: str):
             rt.append({"name": i, "installed":True})
         else:
             rt.append({"name": i, "installed":False})
+    return rt
 
 
 class Tool:
