@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session, load_only
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import FileResponse
-from . import conf
 
 # from app.models.article import mdl
 
@@ -37,23 +36,23 @@ def render_test(request,p:str):
         return 'fail'
 
 # 渲染文章
-# def view_article(link:str,db: Session,request):
-#     try:
-#         article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
-#         if article != None and os.path.exists("files/templates/article/show.html"):
-#             data = {}
-#             data['pageData'] = article.__dict__
-#             data['prevData'] = article.__dict__
-#             data['nextData'] = article.__dict__
-#             data['request'] = request
-#             print("正常")
-#             return templates.TemplateResponse("article/show.html", data)
-#         else:
-#             print("检测出404" + str(article != None) + str(os.path.exists("files/templates/article/show.html")))
-#             return templates.TemplateResponse('404.html',{'request':request,'err':"no error"})
-#     except Exception as e:
-#         print("错误404")
-#         return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
+def view_article(link:str,db: Session,request):
+    try:
+        article = db.query(mdl.Article).filter(mdl.Article.link == link).first()
+        if article != None and os.path.exists("files/templates/article/show.html"):
+            data = {}
+            data['pageData'] = article.__dict__
+            data['prevData'] = article.__dict__
+            data['nextData'] = article.__dict__
+            data['request'] = request
+            print("正常")
+            return templates.TemplateResponse("article/show.html", data)
+        else:
+            print("检测出404" + str(article != None) + str(os.path.exists("files/templates/article/show.html")))
+            return templates.TemplateResponse('404.html',{'request':request,'err':"no error"})
+    except Exception as e:
+        print("错误404")
+        return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
 
 # 渲染列表
 def view_list(db: Session,request,begin_id:int,length:int):

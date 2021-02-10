@@ -17,6 +17,8 @@ class Module:
     status: str
     description: str
     def __init__(self, name: str):
+        os.makedirs("files", exist_ok=True)
+        os.makedirs("files/downloads", exist_ok=True)
         self.name = name
         try:
             status = settings.value["mods"][self.name]["status"]
