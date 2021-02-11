@@ -24,6 +24,6 @@ def read(data = Body(...)):
     
 @bp.post("/blog",description="TODO:拒绝从github以外的来源")
 def read(data = Body(...)):
-    os.popen("cd /www/wwwroot/test.leesinhao.com/Blog")
-    request = os.popen("git pull --ff-only")
+    # os.popen("cd /www/wwwroot/test.leesinhao.com/Blog")
+    request = os.popen("git -C /www/wwwroot/test.leesinhao.com/Blog pull")
     print(request.read())
