@@ -26,3 +26,4 @@ def read(data = Body(...)):
 def read(data = Body(...)):
     os.popen("cd /www/wwwroot/test.leesinhao.com/Blog")
     request = os.popen("git pull --ff-only")
+    print(request.read())
