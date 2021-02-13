@@ -57,14 +57,14 @@ def create_sitemap(db: Session=Depends(database.get_db)):
 #     return article_pull.page(db,request,templates,link)
 
 # 获取渲染设置
-rander_settings = settings.value["rander"]
+rander_settings = settings.value["render"]
 for k,v in rander_settings.items():
     # 从settings读取数据并设置侦听
     exec(f"from app.insmodes.{k}.rander import pull as {k}_pull")
     for kp,vp in v["funs"].items():
         # 获得链接参数
         link_para = vp["link_para"]
-        link_url_path = ''.join(['/' + x for x in link_para])
+        link_url_path = ''.join(['/{' + x + '}' for x in link_para])
 
         # 获得quary参数
         query_para = vp["query_para"]

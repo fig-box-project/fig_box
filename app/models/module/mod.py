@@ -53,7 +53,7 @@ class Module:
         # 搬运yml数据到settings
         settings_path = "app/insmodes/" + self.name + "/settings.yml"
         with open(settings_path, "r") as f:
-            mod_settings = yaml.load(f)
+            mod_settings = yaml.load(f, Loader=yaml.SafeLoader)
         settings.value["mods"][self.name] = mod_settings[self.name]
         settings.value["mods"][self.name]["status"] = "used"
         
@@ -65,6 +65,9 @@ class Module:
                 settings.value["site_maps"]["single_sites"][self.name] = mod_settings["site_maps"]["single_sites"][self.name]
             if "db_sites" in mod_settings["site_maps"].keys():
                 settings.value["site_maps"]["db_sites"][self.name] = mod_settings["site_maps"]["db_sites"][self.name]
+        # 搬运render到settings
+        if "render" in mod_settings:
+            settings.value["render"][self.name] = mod_settings["render"][self.name]
 
         # 更新下设置
         settings.update()
@@ -83,6 +86,8 @@ class Module:
             del settings.value["site_maps"]["single_sites"][self.name]
         if self.name in settings.value["site_maps"]["db_sites"]:
             del settings.value["site_maps"]["db_sites"][self.name]
+        if self.name in settings.value["render"]:
+            del settings.value["render"][self.name]
 
         settings.update()
 

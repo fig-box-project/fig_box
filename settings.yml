@@ -1,33 +1,27 @@
-
-token_key: yawei is the honorest in the worlds
-url_prefix: /api/v1
-domain_port: http://www.datasview.com:8000
-auth_test_mode: True
-ip_test_mode: True
 allow_link_ip:
 - 35.241.66.226
-
-mods: 
+auth_test_mode: true
+domain_port: http://www.datasview.com:8000
+ip_test_mode: true
+mods:
   sitemap:
-    status: unused
+    has_mdl: false
+    has_sitemap: false
     name: sitemap
-    version: 1
-    has_mdl: False
-    has_sitemap: False
-    route: 
+    route:
       route_prefix: sitemap
-      tags: 
-      - 网页地图
-    
-# 用来存放站点地图所连接的数据库
+      tags:
+      - "\u7F51\u9875\u5730\u56FE"
+    status: unused
+    version: 1
+render: {}
 site_maps:
-  single_sites:
-    index: 
-    - link: ''
-      lastmod: 2021-2-6
-      changefreq: weekly
-      priority: 1.0
   db_sites: {}
-  
-rander: {}
-
+  single_sites:
+    index:
+    - changefreq: weekly
+      lastmod: 2021-2-6
+      link: ''
+      priority: 1.0
+token_key: yawei is the honorest in the worlds
+url_prefix: /api/v1
