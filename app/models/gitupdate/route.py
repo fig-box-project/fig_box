@@ -20,8 +20,7 @@ def read(data = Body(...)):
     # 备份各样东西
     packager.dump()
     # pull的执行
-    request = os.popen("git fetch --all")
-    request = os.popen("git reset --hard origin/master")
+    request = os.popen("git pull --ff-only")
     
     
 @bp.post("/blog",description="TODO:拒绝从github以外的来源")
