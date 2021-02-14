@@ -1,3 +1,4 @@
+from app.insmodes.article.render import Render
 from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
 from . import crud, cache
 from app.main import check_token
@@ -51,10 +52,10 @@ def create_sitemap(db: Session=Depends(database.get_db)):
     crud.create_sitemap(db)
 
 # 从settings读取数据并设置侦听
-# from app.insmodes.article.rander import pull as article_pull
+# from app.insmodes.article.rander import pull as article_render
 # @bp.get('/article/{link}', description='aaa')
 # def article_page(link, request: Request, db: Session=Depends(database.get_db)):
-#     return article_pull.page(db,request,templates,link)
+#     return article_render.Render().page(db,request,templates,link)
 
 # 获取渲染设置
 rander_settings = settings.value["render"]
@@ -74,6 +75,6 @@ for k,v in rander_settings.items():
         route_code = \
 f"""@bp.get('{v["prefix"]}{vp["prefix"]}{link_url_path}', description='{vp["description"]}')
 def {k}_{kp}({fun_para}):
-    return {k}_render.{kp}({into_fun_para})
+    return {k}_render.Render().{kp}({into_fun_para})
 """
         exec(route_code) 
