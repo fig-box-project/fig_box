@@ -4,6 +4,11 @@ from datetime import datetime
 import os
 import json
 
+def get_jsondata():
+    with open(conf.tree_path,'r') as f:
+        json_str = f.read()
+    return json.loads(json_str)
+
 class Category:
     _data:dict = {}
     db: Session
@@ -28,6 +33,9 @@ class Category:
         with open(conf.tree_path,'w') as f:
             f.write(json.dumps(data))
         self._data = data
+    
+    # def return_fathers(self,id: int):
+    #     ids = self.read_database(id)[]
 
     def read_database(self, id: int):
         return self.db.query(mdl.Category).filter_by(id=id).first()

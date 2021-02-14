@@ -60,7 +60,7 @@ def create_sitemap(db: Session=Depends(database.get_db)):
 rander_settings = settings.value["render"]
 for k,v in rander_settings.items():
     # 从settings读取数据并设置侦听
-    exec(f"from app.insmodes.{k}.rander import pull as {k}_pull")
+    exec(f"from app.insmodes.{k} import render as {k}_render")
     for kp,vp in v["funs"].items():
         # 获得链接参数
         link_para = vp["link_para"]
@@ -74,6 +74,6 @@ for k,v in rander_settings.items():
         route_code = \
 f"""@bp.get('{v["prefix"]}{vp["prefix"]}{link_url_path}', description='{vp["description"]}')
 def {k}_{kp}({fun_para}):
-    return {k}_pull.{kp}({into_fun_para})
+    return {k}_render.{kp}({into_fun_para})
 """
         exec(route_code) 
