@@ -18,7 +18,7 @@ bp = APIRouter()
 
 @bp.get('/templates/link')
 def get_link():
-    return settings.value["domain_port"] + "/api/v1/editor/packup/templates"
+    return settings.value["domain_port"] + "/api/v1/packager/download/templates.zip"
     
 @bp.post('/write',description='写')
 def write(file_path: str=Body(...), data: str=Body(...)):
