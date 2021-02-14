@@ -1,54 +1,33 @@
-allow_link_ip:
-- 35.241.66.226
-auth_test_mode: true
-domain_port: http://www.datasview.com:8000
-ip_test_mode: true
-mods:
-  article:
-    has_mdl: true
-    has_sitemap: true
-    name: article
-    route:
-      route_prefix: article
-      tags:
-      - "\u6587\u7AE0\u6A21\u5757"
-    status: used
-    version: 1
-  sitemap:
-    has_mdl: false
-    has_sitemap: false
-    name: sitemap
-    route:
-      route_prefix: sitemap
-      tags:
-      - "\u7F51\u9875\u5730\u56FE"
-    status: unused
-    version: 1
-render:
-  article:
-    funs:
-      page:
-        description: "\u6587\u7AE0\u7684\u8BE6\u60C5\u9875"
-        link_para:
-        - link
-        prefix: /show
-        query_para: []
-    prefix: /article
-site_maps:
-  db_sites:
-    article:
-      changefreq: daily
-      mdls:
-      - lastmod_key: update_date
-        link_key: link
-        prefix: article/
-        table: Article
-      priority: 0.9
-  single_sites:
-    index:
-    - changefreq: weekly
-      lastmod: 2021-2-6
-      link: ''
-      priority: 1.0
+
 token_key: yawei is the honorest in the worlds
 url_prefix: /api/v1
+domain_port: http://www.datasview.com:8000
+auth_test_mode: True
+ip_test_mode: True
+allow_link_ip:
+- 35.241.66.226
+
+mods: 
+  sitemap:
+    status: unused
+    name: sitemap
+    version: 1
+    has_mdl: False
+    has_sitemap: False
+    route: 
+      route_prefix: sitemap
+      tags: 
+      - 网页地图
+    
+# 用来存放站点地图所连接的数据库
+site_maps:
+  single_sites:
+    index: 
+    - link: ''
+      lastmod: 2021-2-6
+      changefreq: weekly
+      priority: 1.0
+  db_sites: {}
+  
+rander: {}
+
