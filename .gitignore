@@ -2,6 +2,8 @@
 /files
 /downloads
 /tree.json
+settings.yml
+app/log.py
 app/modules.mods
 app/insmodes
 db.sqlite
