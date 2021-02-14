@@ -31,7 +31,7 @@ render:
         description: "\u6587\u7AE0\u7684\u8BE6\u60C5\u9875"
         link_para:
         - link
-        prefix: /page
+        prefix: /show
         query_para: []
     prefix: /article
 site_maps:

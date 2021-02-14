@@ -37,14 +37,15 @@ class Module:
         Tool.download_file(link, zip_path)
         # 解压
         Tool.unzip(zip_path,"app/insmodes/",self.name)
+        # 使用
+        self.use()
         
     # 卸载
     def uninstall(self):
-        zip_path = 'files/downloads/'+ self.name +'.zip'
         # 禁用
         self.unuse()
         # 删除各种文件
-        os.remove(zip_path)
+        os.remove('files/downloads/'+ self.name +'.zip')
         shutil.rmtree("app/insmodes/" + self.name)
 
     # 使用
