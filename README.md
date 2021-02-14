@@ -82,3 +82,11 @@ https://api.github.com/repos/normidar/my_fastapi/tags
 
 > 检查包的信息<br>
 pip3 show pyyaml
+
+
+
+---------------
+
+#### https
+
+yum install epel-release
