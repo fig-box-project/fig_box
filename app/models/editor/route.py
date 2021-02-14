@@ -3,6 +3,8 @@ from . import crud
 from app.main import check_token
 from app.models.user.mdl import User
 import os
+from app.models.settings.crud import settings
+
 bp = APIRouter()
 
 
@@ -16,7 +18,7 @@ bp = APIRouter()
 
 @bp.get('/templates/link')
 def get_link():
-    return conf.domain_port + "/api/v1/editor/packup/templates"
+    return settings.value["domain_port"] + "/api/v1/editor/packup/templates"
     
 @bp.post('/write',description='写')
 def write(file_path: str=Body(...), data: str=Body(...)):
