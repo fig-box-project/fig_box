@@ -103,6 +103,8 @@ def local_ls():
     mod_list.remove("__pycache__")
     rt = []
     for i in mod_list:
+        if i == ".DS_Store":
+            continue
         if i in settings.value["mods"]:
             rt.append({"name": i, "used":True})
         else:

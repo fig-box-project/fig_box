@@ -7,17 +7,7 @@ ip_test_mode: True
 allow_link_ip:
 - 35.241.66.226
 
-mods: 
-  sitemap:
-    status: unused
-    name: sitemap
-    version: 1
-    has_mdl: False
-    has_sitemap: False
-    route: 
-      route_prefix: sitemap
-      tags: 
-      - 网页地图
+mods: {}
     
 # 用来存放站点地图所连接的数据库
 site_maps:
@@ -37,6 +27,14 @@ render:
         prefix: ''
         description: 首页
         link_para: []  # url地址参数
+        query_para: []  # url ?后的参数
+  _photo:
+    prefix: '/photo'
+    funs:
+      page: 
+        prefix: ''
+        description: 图床
+        link_para: [img_name]  # url地址参数
         query_para: []  # url ?后的参数
 
 

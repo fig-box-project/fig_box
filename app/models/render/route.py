@@ -17,38 +17,35 @@ templates = Jinja2Templates(directory=templates_path)
 bp = APIRouter()
 
 # 渲染图片
-@bp.get("/photo/{name}")
-def photo(name: str):
-    return crud.read(name)
+# @bp.get("/photo/{name}")
+# def photo(name: str):
+#     return crud.read(name)
 
 # 模版功能
-@bp.get('/testa/{p:path}')
-def render_test(request: Request,p:str):
-    return crud.render_test(request,p)
+# @bp.get('/testa/{p:path}')
+# def render_test(request: Request,p:str):
+#     return crud.render_test(request,p)
 
-@bp.get('/cache_test')
-def cache_test():
-    cache.cache.get_article(1)
-    return cache.cache.get_article(2)
+# @bp.get('/cache_test')
+# def cache_test():
+#     cache.cache.get_article(1)
+#     return cache.cache.get_article(2)
 
-# 渲染列表页
-@bp.get('/articles/{page}')
-def list_render(page:int,request: Request,db: Session=Depends(database.get_db)):
-    return crud.view_list(db,request)
+# # 渲染列表页
+# @bp.get('/articles/{page}')
+# def list_render(page:int,request: Request,db: Session=Depends(database.get_db)):
+#     return crud.view_list(db,request)
 
-@bp.get('/articleo/{link}',description='对于文章的渲染')
-def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
-    rt = crud.view_article(link,db,request)
-    if rt != None:
-        return rt
+# @bp.get('/articleo/{link}',description='对于文章的渲染')
+# def render_article(link:str,request: Request,db: Session=Depends(database.get_db)):
+#     rt = crud.view_article(link,db,request)
+#     if rt != None:
+#         return rt
 
-@bp.get('/site/sitemap.xml')
-def site_sitemap():
-    return crud.render_sitemap()
+# @bp.get('/site/sitemap.xml')
+# def site_sitemap():
+#     return crud.render_sitemap()
 
-@bp.get('/site/create/sitemap')
-def create_sitemap(db: Session=Depends(database.get_db)):
-    crud.create_sitemap(db)
 
 # 从settings读取数据并设置侦听
 # from app.insmodes.article.rander import pull as article_render

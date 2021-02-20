@@ -23,8 +23,8 @@ templates_path = "files/templates"
 templates = Jinja2Templates(directory=templates_path)
 
 # 读取照片
-def read(name: str):
-    return FileResponse('files/photos/'+name,media_type='image/jpeg')
+# def read(name: str):
+#     return FileResponse('files/photos/'+name,media_type='image/jpeg')
 
 # 模版功能
 def render_test(request,p:str):
@@ -65,7 +65,3 @@ def view_list(db: Session,request,begin_id:int,length:int):
         return templates.TemplateResponse("article/list.html", rt)
     except Exception as e:
         return templates.TemplateResponse('404.html',{'request':request,'err':str(e)})
-
-def render_sitemap():
-    return FileResponse('files/sitemap/sitemap.xml',media_type='application/xml')
-    # return templates.TemplateResponse(templates_path + '/sitemap.xml',{},media_type='application/xml')

@@ -25,7 +25,7 @@ def unuse(module_name: str):
     module = mod.Module(module_name)
     module.unuse()
 
-@bp.post('/ls', description='查看本地模组情况(未实现,返回个数组)')
+@bp.get('/ls', description='查看本地模组情况(未实现,返回个数组)')
 def ls():
     return mod.local_ls()
 
