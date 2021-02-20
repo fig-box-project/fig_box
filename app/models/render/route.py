@@ -19,7 +19,7 @@ bp = APIRouter()
 # 获取渲染设置
 rander_settings = settings.value["render"]
 
-@bp.get('api/v1/render/ls', description = '查看有什么在渲染中')
+@bp.get('/api/v1/render/ls', description = '查看有什么在渲染中')
 def render_ls():
     rt = []
     for k,v in rander_settings.items():
