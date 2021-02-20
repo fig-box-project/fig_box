@@ -128,7 +128,7 @@ app.include_router(
 from .models.module.route import bp as module_route
 app.include_router(
     module_route,
-    prefix=url_prefix + '/module',
+    prefix=url_prefix + '/moudle',
     tags=['模组・插件'],
     dependencies=[Depends(check_ip)])
 from .models.render.route import bp as render_route
