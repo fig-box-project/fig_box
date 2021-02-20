@@ -58,9 +58,17 @@ def create_sitemap(db: Session=Depends(database.get_db)):
 
 # 获取渲染设置
 rander_settings = settings.value["render"]
+
+# 从settings的渲染中, 读取每个模组并设置侦听
 for k,v in rander_settings.items():
-    # 从settings读取数据并设置侦听
-    exec(f"from app.insmodes.{k} import render as {k}_render")
+    # 判断是外部模组还是内部模组
+    if k[0] == "_":
+        k = k[1:]
+        exec(f"from app.models.{k} import render as {k}_render")
+    else:
+        exec(f"from app.insmodes.{k} import render as {k}_render")
+
+    # 循环模组中需侦听的函数
     for kp,vp in v["funs"].items():
         # 获得链接参数
         link_para = vp["link_para"]

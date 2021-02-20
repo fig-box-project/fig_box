@@ -29,5 +29,15 @@ site_maps:
       priority: 1.0
   db_sites: {}
   
-render: {}
+render: 
+  _homepage:  #带_的表示内部模组
+    prefix: '/'  # url的前缀
+    funs: 
+      page: 
+        prefix: ''
+        description: 首页
+        link_para: []  # url地址参数
+        query_para: []  # url ?后的参数
+
+
 

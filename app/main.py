@@ -178,9 +178,9 @@ for k in mods.keys():
     # 引用下
     exec(s)
 
-@app.get('/',tags=['测试'],response_class=HTMLResponse)
-def root(request: Request):
-    return "<a href=\"docs\">api</a>" + request.client.host + " | " 
+# @app.get('/',tags=['测试'],response_class=HTMLResponse)
+# def root(request: Request):
+#     return "<a href=\"docs\">api</a>" + request.client.host + " | " 
 
 
 
