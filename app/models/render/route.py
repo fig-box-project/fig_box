@@ -16,6 +16,24 @@ templates = Jinja2Templates(directory=templates_path)
 
 bp = APIRouter()
 
+# 获取渲染设置
+rander_settings = settings.value["render"]
+
+@bp.get('/render/ls', description = '查看有什么在渲染中')
+def render_ls():
+    rt = []
+    for k,v in rander_settings.items():
+        children = []
+        for kp,vp in v["funs"].items():
+            children.append({
+                'name':kp, 
+                'description': vp["description"], 
+                'link_para':vp["link_para"], 
+                'query_para':vp["query_para"]
+            })
+        rt.append({'module': k, 'children':children})
+    return rt
+
 
 # 从settings读取数据并设置侦听
 # from app.insmodes.article.rander import pull as article_render
@@ -23,8 +41,6 @@ bp = APIRouter()
 # def article_page(link, request: Request, db: Session=Depends(database.get_db)):
 #     return article_render.Render().page(db,request,templates,link)
 
-# 获取渲染设置
-rander_settings = settings.value["render"]
 
 # 从settings的渲染中, 读取每个模组并设置侦听
 for k,v in rander_settings.items():
