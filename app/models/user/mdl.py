@@ -23,6 +23,7 @@ class User(Base):
             return "error"
         return data
     
+    # 检查权限,auth请输入权限代号
     def check_auth(self,auth:int):
         return recognizer.check_auth(self.character_id,auth)
     

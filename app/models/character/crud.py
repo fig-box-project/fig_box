@@ -1,4 +1,4 @@
-
+from app.models.settings.crud import settings
 
 # 分辨器
 class Recognizer:
@@ -8,6 +8,15 @@ class Recognizer:
             return True
         return auth in self.cache[chara]
 recognizer = Recognizer()
+
+auth_data = settings.value["character"]["auth_numbers"]
+chara_data = settings.value["character"]["charas"]
+
+def get_auths():
+    rt = []
+    for k,v in auth_data.items():
+        rt.append({"id":k, "description":v["description"]})
+    return rt
 
 # def get_chara(db: Session, id: int):
 #     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()

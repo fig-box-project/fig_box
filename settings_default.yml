@@ -38,4 +38,21 @@ render:
         query_para: []  # url ?后的参数
 
 
+character:
+  auth_numbers:
+    all:
+      default: false
+      description: 此权限表示所有权限,有了它不需其它
+    default: 
+      default: false
+      description: 此权限表示所有默认权限,它指向所有默认的权限
+  charas: 
+    master:
+      auths:
+      - all
+      description: 管理员
+    normal:
+      auths:
+      - default
+      description: 普通用户
 

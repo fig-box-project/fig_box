@@ -6,6 +6,9 @@ from app.main import check_token
 from app.models.user.mdl import User
 bp = APIRouter()
 
+@bp.get('/auths/ls', description="查看所有的权限")
+def auths_ls():
+    return crud.get_auths()
 
 # @bp.post('/create',description="创建角色")
 # def create(
