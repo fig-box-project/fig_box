@@ -12,7 +12,12 @@ def read(data = Body(...)):
     # 如果消息为d则删库
     if "del_db" in commit_message:
         request = os.popen("rm -f db.sqlite")
-        print(request.read())
+        print("删除数据库")
+
+    # delete
+    if "del_settings" in commit_message:
+        request = os.popen("rm -f settings.yml")
+        print("删除settings")
 
     # 更新Python包,在import前先录入和更新好
     if "pk_update" in commit_message:
