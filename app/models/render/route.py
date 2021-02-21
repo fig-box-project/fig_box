@@ -31,7 +31,7 @@ def render_ls():
                 'link_para':vp["link_para"], 
                 'query_para':vp["query_para"]
             })
-        rt.append({'module': k, 'children':children})
+        rt.append({'module': k, 'prefix':v['prefix'], 'count':len(v["funs"]), 'children':children})
     return rt
 
 
