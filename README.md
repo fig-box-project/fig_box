@@ -87,6 +87,12 @@ pip3 show pyyaml
 
 ---------------
 
-#### https
+## 关于自动推送
 
-yum install epel-release
+```
+del_db  
+del_settings
+pk_update
+un_update
+# 分别是删库,删设置,包更新,不更新代码
+```
