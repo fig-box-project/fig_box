@@ -1,7 +1,7 @@
-
+from sqlalchemy.orm import load_only
 
 # 数据库搜索,
-def Moudle(db, db_name, type, count, params:list):
+def db_search(db, db_name, type, count, params:list):
     bigFirst = db_name.capitalize()
     lower = db_name.lower()
 
@@ -9,9 +9,15 @@ def Moudle(db, db_name, type, count, params:list):
     exec(f"from app.insmodes.{lower}.mdl import {bigFirst}")
     # 搜索同分类下文章
     if type == "same_category":
+        # 使用此选项时:0,category_id 1,page_index
         # rt = db.query(Article).filter(Article.category_id == 0).limit(count).all()
         # print(rt)
-        rt = eval(f"db.query({bigFirst}).filter({bigFirst}.category_id == params[0]).limit(count).all()")
+        if len(params) == 1:
+            fields = ['title','link'] # 使用中
+            rt = eval(f"db.query({bigFirst}).options(load_only(*fields)).filter({bigFirst}.category_id == params[0]).limit(count).all()")
+        elif len(params) == 2:
+            fields = ['title', 'link', 'description']
+            rt = eval(f"db.query({bigFirst}).options(load_only(*fields)).filter({bigFirst}.category_id == params[0]).limit(count).offset((int(params[0])-1)*count).all()")
         return rt
     else:
         return None
