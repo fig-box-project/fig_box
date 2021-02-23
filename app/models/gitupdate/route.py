@@ -24,7 +24,7 @@ def read(data = Body(...)):
         request = os.popen("pip3 install -r requirements.txt")
         print(request.read())
     # 备份各样东西
-    packager.dump()
+    # packager.dump()
 
     # 
     if "un_update" not in commit_message:
