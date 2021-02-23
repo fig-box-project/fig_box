@@ -6,7 +6,8 @@ class Render():
         # 如果模版不存在则创建
         path = 'files/templates/homepage.html'
         if not os.path.exists(path):
-            open(path, 'a').close()
+            with open(path, 'a') as f:
+                f.write("<a href="docs">api</a>")
 
     def page(self, db, request, templates):
         data = {}
