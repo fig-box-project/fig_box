@@ -7,7 +7,7 @@ class Render():
         path = 'files/templates/homepage.html'
         if not os.path.exists(path):
             with open(path, 'a') as f:
-                f.write("<a href="docs">api</a>")
+                f.write('<a href="docs">api</a>')
 
     def page(self, db, request, templates):
         data = {}
