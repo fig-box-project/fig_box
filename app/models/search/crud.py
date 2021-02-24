@@ -26,4 +26,4 @@ def db_search(db, db_name, type, count, params:list):
 
 def change_link_to_abs(rt):
     for i in rt:
-        i["link"] = settings.value["domain_port"] + "/article/show/" + i["link"]
+        i.link = settings.value["domain_port"] + "/article/show/" + i.link
