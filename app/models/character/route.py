@@ -9,7 +9,11 @@ bp = APIRouter()
 @bp.get('/auths/ls', description="查看所有的权限")
 def auths_ls():
     return crud.get_auths()
-
+    
+@bp.get('/charas/ls', description = '')
+def charas():
+	return crud.get_charas()
+	
 # @bp.post('/create',description="创建角色")
 # def create(
 #     chara:orm.CharaBases,
