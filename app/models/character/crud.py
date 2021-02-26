@@ -28,6 +28,15 @@ def get_charas():
     	})
     return rt
     
+    
+	
+# to create a character 
+def creat_character(name:str, auths:str, description:str):
+	if name != "" and name not in chara_data:
+		chara_data[name] = {
+			
+		}
+    
 
 # def get_chara(db: Session, id: int):
 #     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()

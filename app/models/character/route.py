@@ -14,6 +14,10 @@ def auths_ls():
 def charas():
 	return crud.get_charas()
 	
+# # to create a character 
+# def creat_character(name:str, auths:str, description:str):
+# 	if name != "" and name
+	
 # @bp.post('/create',description="创建角色")
 # def create(
 #     chara:orm.CharaBases,
