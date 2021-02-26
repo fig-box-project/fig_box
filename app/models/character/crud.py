@@ -17,6 +17,17 @@ def get_auths():
     for k,v in auth_data.items():
         rt.append({"id":k, "description":v["description"]})
     return rt
+    
+def get_charas():
+    rt = []
+    for k,v in chara_data.items():
+    	rt.append({
+    		"name":k, 
+    		"auths":v["auths"],
+    		"description":v["description"]
+    	})
+    return rt
+    
 
 # def get_chara(db: Session, id: int):
 #     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()
