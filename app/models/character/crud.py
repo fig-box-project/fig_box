@@ -45,4 +45,7 @@ def creat_character(chara: orm.CharaCreate):
         return chara.name
     else:
         raise HTTPException(status_code=400,detail="abc")
+        
+def delete(name:str):
+	
 
