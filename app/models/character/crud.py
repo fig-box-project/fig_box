@@ -51,4 +51,23 @@ def delete(name:str):
     else:
         return "-unExits-"
     
+# remove the auth from character
+def remove_one(chara:str, auths:str):
+    if chara in chara_data:
+        chara_data[chara]["auths"].remove(auths)
+        return "success"
+    else:
+        return "-unExits-"
+        
+def add_one(chara:str, auth:str):
+    if chara in chara_data:
+        chara_data[chara]["auths"].append(auths)
+        return "success"
+    else:
+        return "-unExits-"
+
+
+
+
+
 
