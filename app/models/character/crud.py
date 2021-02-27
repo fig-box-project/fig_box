@@ -13,6 +13,7 @@ recognizer = Recognizer()
 
 auth_data = settings.value["character"]["auth_numbers"]
 chara_data = settings.value["character"]["charas"]
+default_cahara = ["master", "normal"]
 
 def get_auths():
     rt = []
@@ -45,6 +46,9 @@ def creat_character(chara: orm.CharaCreate):
         raise HTTPException(status_code=400,detail="abc")
         
 def delete(name:str):
+    # can not delete default chara
+    if name in default_cahara:
+        return "can not edit default chara"
     if name in chara_data:
         del chara_data[name]
         return "success"
@@ -53,13 +57,20 @@ def delete(name:str):
     
 # remove the auth from character
 def remove_one(chara:str, auths:str):
+    # can not delete default chara
+    if name in default_cahara:
+        return "can not edit default chara"
     if chara in chara_data:
         chara_data[chara]["auths"].remove(auths)
         return "success"
     else:
         return "-unExits-"
         
+# add one auth into character        
 def add_one(chara:str, auth:str):
+    # can not delete default chara
+    if name in default_cahara:
+        return "can not edit default chara"
     if chara in chara_data:
         chara_data[chara]["auths"].append(auths)
         return "success"
