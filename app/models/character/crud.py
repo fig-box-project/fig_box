@@ -27,7 +27,7 @@ def get_charas():
         rt.append({
             "name":k, 
             "auths":v["auths"],
-            "description:v["description"]
+            "description":v["description"]
         })
     return rt
     
@@ -56,20 +56,23 @@ def delete(name:str):
         return "-unExits-"
     
 # remove the auth from character
-def remove_one(chara:str, auths:str):
+def remove_one(data: orm.CharaOne):
     # can not delete default chara
-    if name in default_cahara:
+    if data.name in default_cahara:
         return "can not edit default chara"
-    if chara in chara_data:
-        chara_data[chara]["auths"].remove(auths)
-        return "success"
+    if data.name in chara_data:
+        if data.auth in chara_data[data.name]["auths"]:
+            chara_data[data.name]["auths"].remove(data.auth)
+            return "success"
+        else:
+            return "-unExits-"
     else:
         return "-unExits-"
         
 # add one auth into character        
-def add_one(chara:str, auth:str):
+def add_one(data: orm.CharaOne):
     # can not delete default chara
-    if name in default_cahara:
+    if chara in default_cahara:
         return "can not edit default chara"
     if chara in chara_data:
         chara_data[chara]["auths"].append(auths)

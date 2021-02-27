@@ -2,10 +2,18 @@
 # from typing import List, Optional
 from pydantic import BaseModel
 
-class CharaCreate(BaseModel):
+class CharaBase(BaseModel):
+    pass
+
+class CharaCreate(CharaBase):
     name: str = "superman"
     auths: list
-    description: str
+    description: str = "默认说明"
+
+class CharaOne(CharaBase):
+    name: str = "superman"
+    auth: str = "abc"
+
 
 class Chara(CharaCreate):
     class Config:
