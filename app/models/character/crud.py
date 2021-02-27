@@ -30,13 +30,17 @@ def get_charas():
     
     
 	
-# to create a character 
+# to create a character, auths is a str and need to  
 def creat_character(name:str, auths:str, description:str):
 	if name != "" and name not in chara_data:
+		
+		auths = 
 		chara_data[name] = {
 			
 		}
     
+    
+
 
 # def get_chara(db: Session, id: int):
 #     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()
