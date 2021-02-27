@@ -34,9 +34,10 @@ def get_charas():
 def creat_character(name:str, auths:str, description:str):
 	if name != "" and name not in chara_data:
 		
-		auths = 
+		auths = []
 		chara_data[name] = {
-			
+			"auths":auths,
+			"description":description
 		}
     
     
