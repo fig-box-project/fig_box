@@ -1,6 +1,5 @@
 from fastapi.testclient import TestClient
 from .main import app
-import app.conf as conf
 import random
 import json
 
