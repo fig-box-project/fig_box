@@ -23,15 +23,13 @@ def get_auths():
 def get_charas():
     rt = []
     for k,v in chara_data.items():
-    	rt.append({
-    		"name":k, 
-    		"auths":v["auths"],
-    		"description":v["description"]
-    	})
+        rt.append({
+            "name":k, 
+            "auths":v["auths"],
+            "description:v["description"]
+        })
     return rt
     
-    
-	
 # to create a character, auths is a str and need to  
 def creat_character(chara: orm.CharaCreate):
     if chara.name != "" and chara.name not in chara_data:
@@ -47,5 +45,10 @@ def creat_character(chara: orm.CharaCreate):
         raise HTTPException(status_code=400,detail="abc")
         
 def delete(name:str):
-	
+    if name in chara_data:
+        del chara_data[name]
+        return "success"
+    else:
+        return "-unExits-"
+    
 
