@@ -4,6 +4,7 @@ from app.models import database
 from . import crud
 from app.main import check_token
 from app.models.user.mdl import User
+from . import orm
 bp = APIRouter()
 
 @bp.get('/auths/ls', description="查看所有的权限")
@@ -13,7 +14,13 @@ def auths_ls():
 @bp.get('/charas/ls', description = '')
 def charas():
 	return crud.get_charas()
+
+@bp.post('/chara/create', description = '')
+def create(data: orm.CharaCreate):
+    return crud.creat_character(data)
 	
+@bp.delete('/chara/')
+
 # # to create a character 
 # def creat_character(name:str, auths:str, description:str):
 # 	if name != "" and name

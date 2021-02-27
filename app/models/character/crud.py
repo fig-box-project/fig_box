@@ -1,4 +1,6 @@
+from fastapi.exceptions import HTTPException
 from app.models.settings.crud import settings
+from . import orm
 
 # 分辨器
 class Recognizer:
@@ -31,41 +33,16 @@ def get_charas():
     
 	
 # to create a character, auths is a str and need to  
-def creat_character(name:str, auths:str, description:str):
-	if name != "" and name not in chara_data:
-		
-		auths = []
-		chara_data[name] = {
-			"auths":auths,
-			"description":description
-		}
-    
-    
+def creat_character(chara: orm.CharaCreate):
+    if chara.name != "" and chara.name not in chara_data:
+        auths = []
+        chara_data[chara.name] = {
+            "auths":auths,
+            "description":chara.description,
+        }
+        settings.value["character"]["charas"] = chara_data
+        settings.update()
+        return chara.name
+    else:
+        raise HTTPException(status_code=400,detail="abc")
 
-
-# def get_chara(db: Session, id: int):
-#     return db.query(mdl.Chara).filter(mdl.Chara.id == id).first()
-
-# def get_charas(db: Session, skip = 0, limit=100):
-#     return db.query(mdl.Chara).offset(skip).limit(limit).all()
-
-# def create(db: Session,chara_data: orm.CharaBases):
-#     new_chara = mdl.Chara(**chara_data.dict())
-#     db.add(new_chara)
-#     db.commit()
-#     db.refresh(new_chara)
-#     return new_chara
-
-# def update(db: Session, chara_data: orm.CharaUpdate):
-#     db.query(mdl.Chara).filter(mdl.Chara.id == chara_data.id).update(chara_data.dict())
-#     db.flush()
-#     db.cpmmit()
-#     return True
-
-# def delete(db: Session, id: int):
-#     chara = db.query(mdl.Chara).filter(mdl.Chara.id == id).first()
-#     if chara:
-#         db.delete(chara)
-#         # 只提交到缓存
-#         db.commit()
-#         return chara
