@@ -13,14 +13,14 @@ article_id = None
 # <><><><><>测试用户功能<><><><><><>
 
 # 测试用户的文章创建测试
-def test_login():
-    response = client.post(
-        conf.url_prefix + '/auth/login',
-        json={"username":"test", "password":"test"})
-    global token
-    token = response.json()["token"]
-    print(token)
-    assert response.status_code == 200
+# def test_login():
+#     response = client.post(
+#         conf.url_prefix + '/auth/login',
+#         json={"username":"test", "password":"test"})
+#     global token
+#     token = response.json()["token"]
+#     print(token)
+#     assert response.status_code == 200
 
 # # 创建文章功能
 # # def test_create_article():
