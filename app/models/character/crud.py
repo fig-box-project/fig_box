@@ -43,23 +43,23 @@ def creat_character(chara: orm.CharaCreate):
         settings.update()
         return chara.name
     else:
-        raise HTTPException(status_code=400,detail="abc")
+        raise HTTPException(403, "name exists or none")
         
 def delete(name:str):
     # can not delete default chara
     if name in default_cahara:
-        return "can not edit default chara"
+        raise HTTPException(403, "can not edit default chara")
     if name in chara_data:
         del chara_data[name]
         return "success"
     else:
-        return "-unExits-"
+        raise HTTPException(404, "can not find name in chara datas")
     
 # remove the auth from character
 def remove_one(data: orm.CharaOne):
     # can not delete default chara
     if data.name in default_cahara:
-        return "can not edit default chara"
+        raise HTTPException(403, "can not edit default chara")
     if data.name in chara_data:
         if data.auth in chara_data[data.name]["auths"]:
             chara_data[data.name]["auths"].remove(data.auth)
@@ -67,18 +67,18 @@ def remove_one(data: orm.CharaOne):
         else:
             return "-unExits-"
     else:
-        return "-unExits-"
+        raise HTTPException(404, "can not find name in chara datas")
         
 # add one auth into character        
 def add_one(data: orm.CharaOne):
     # can not delete default chara
-    if chara in default_cahara:
-        return "can not edit default chara"
-    if chara in chara_data:
-        chara_data[chara]["auths"].append(auths)
+    if data.name in default_cahara:
+        raise HTTPException(403, "can not edit default chara")
+    if data.name in chara_data:
+        chara_data[data.name]["auths"].append(data.auth)
         return "success"
     else:
-        return "-unExits-"
+        raise HTTPException(404, "can not find name in chara datas")
 
 
 

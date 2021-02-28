@@ -15,6 +15,10 @@ class Settings:
     def update(self):
         with open(self.yaml_path, "w") as f:
             yaml.dump(self.value, f)
+    
+    def load(self, filename):
+        with open(filename, "r") as f:
+            return yaml.load(f, Loader=yaml.SafeLoader)
 
 # 单例
 settings = Settings()
