@@ -39,13 +39,19 @@ render:
 
 
 character:
-  auth_numbers:
+  auths:
     all:
       default: false
       description: 此权限表示所有权限,有了它不需其它
     default: 
       default: false
       description: 此权限表示所有默认权限,它指向所有默认的权限
+    user_self_edit:
+      default: true
+      description: 此
+    user_all_edit: 
+      default: false
+      description: 此
   charas: 
     master:
       auths:

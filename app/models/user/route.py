@@ -28,21 +28,17 @@ def login(user:orm.UserLogin,db: Session=Depends(database.get_db)):
     else:
         raise HTTPException(status_code=404,detail=token)
 
-@bp.put('/update',description='更新其它用户的资料权限等')
-def update(
-    aim_user:orm.UserUpdate,
-    now_user:mdl.User = Depends(check_token),
-    db: Session=Depends(database.get_db)):
-    if now_user.check_auth(3):
-        return crud.update_user_character(db,aim_user)
-    else:
-        raise HTTPException(status_code=403,detail='权限不足')
+# @bp.put('/update',description='更新其它用户的资料权限等')
+# def update(
+#     aim_user:orm.UserUpdate,
+#     user:mdl.User = Depends(check_token),
+#     db: Session=Depends(database.get_db)):
+#     user.into_auth("user_all_edit")
+#     return crud.update_user_character(db,aim_user)
 
 @bp.get('/view/all_user',description='查看所有用户')
 def view_all_user(
     user:mdl.User = Depends(check_token),
     db: Session=Depends(database.get_db)):
-    if user.check_auth(3):
-        return crud.get_users(db)
-    else:
-        raise HTTPException(status_code=403,detail='权限不足')
+    user.into_auth("user_all_edit")
+    return crud.get_users(db)

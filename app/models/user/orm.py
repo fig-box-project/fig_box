@@ -13,13 +13,8 @@ class UserLogin(UserBase):
 # class UserToken(UserBase):
 #     token: str
 
-class UserUpdate(UserBase):
-    id: int
-    character_id: int
-
 class User(UserBase):
     id: int
-    character_id: int
 
     class Config:
         orm_mode = True

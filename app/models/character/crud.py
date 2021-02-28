@@ -2,18 +2,19 @@ from fastapi.exceptions import HTTPException
 from app.models.settings.crud import settings
 from . import orm
 
-# 分辨器
-class Recognizer:
-    cache = {1:{1},2:{8}}
-    def check_auth(self,chara:int, auth:int):
-        if chara == 1:
-            return True
-        return auth in self.cache[chara]
-recognizer = Recognizer()
-
-auth_data = settings.value["character"]["auth_numbers"]
+auth_data = settings.value["character"]["auths"]
 chara_data = settings.value["character"]["charas"]
 default_cahara = ["master", "normal"]
+
+# 检查角色权限
+def check_auth(chara:str, auth: str):
+    if chara == "master":
+        return True
+    else:
+        # if default in chara`s auths, check auth is true default
+        if "default" in chara_data[chara]["auths"]:
+            return auth_data[auth]["default"]
+        return auth in chara_data[chara]["auths"]
 
 def get_auths():
     rt = []

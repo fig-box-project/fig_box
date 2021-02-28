@@ -1,7 +1,8 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from fastapi import APIRouter, HTTPException, Depends,Header
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from app.models.database import Base
-from app.models.character.crud import recognizer
+from app.models.character.crud import check_auth
 import jwt,time
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,7 +13,8 @@ class User(Base):
     username        = Column(String(32), index=True)
     password_hash   = Column(String(128))
 
-    character_id    = Column(Integer, default=2)
+    character      = Column(String(64), default=2)
+    birth_date     = Column(DateTime)
 
     def get_token(self,expires_in=3600):
         try:
@@ -23,9 +25,10 @@ class User(Base):
             return "error"
         return data
     
-    # 检查权限,auth请输入权限代号
-    def check_auth(self,auth:int):
-        return recognizer.check_auth(self.character_id,auth)
+    # 检查权限,auth请输入权限符
+    def into_auth(self,auth:str):
+        if not check_auth(self.character,auth):
+            raise HTTPException(status_code=403,detail='')
     
     def hash_password(self, password):
         self.password_hash = generate_password_hash(password)

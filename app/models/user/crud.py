@@ -6,7 +6,7 @@ def get_user(db: Session, id: int):
 
 # offset 是跳过多少条的意思,可以用来翻页用
 def get_users(db: Session,skip=0,limit=100):
-    fields = ['id','username','character_id']
+    fields = ['id','username','character']
     return db.query(mdl.User).options(load_only(*fields)).offset(skip).limit(limit).all()
 
 # 检查是否已注册
@@ -20,7 +20,7 @@ def isloged_user(db: Session,username:str):
 def create_user(db: Session,user: orm.UserCreate):
     db_user = mdl.User(username=user.username)
     db_user.hash_password(user.password)
-    db_user.character_id = 2 # normal
+    db_user.character = "normal" # normal
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -35,13 +35,4 @@ def login_user(db: Session,user_data: orm.UserLogin):
         return True,user.get_token()
     else:
         return False,"密码不匹配"
-
-# 更新用户权限
-def update_user_character(db: Session,user: orm.UserUpdate):
-    # 当权限能操纵用户时
-    usr = db.query(mdl.User).filter(mdl.User.id == user.id).update(
-        {'character_id':user.character_id}
-    )
-    db.commit()
-    return usr
 

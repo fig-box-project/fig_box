@@ -70,6 +70,10 @@ class Module:
         if "render" in mod_settings:
             settings.value["render"][self.name] = mod_settings["render"][self.name]
 
+        # copy auths to settings
+        if "auths" in mod_settings:
+            settings.value["character"]["auth"] = {**mod_settings["auths"], **(settings.value["character"]["auth"])}
+
         # 更新下设置
         settings.update()
 

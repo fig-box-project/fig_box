@@ -1,6 +1,7 @@
 version = "α228.144"
 
 import jwt
+from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 from app.models import database
@@ -46,14 +47,14 @@ if db.query(user.User).count() == 0:
     # add admin
     admin_user = user.User(
         username="admin",
-        character_id=1
+        character="master"
     ) 
     admin_user.hash_password("admin")
     db.add(admin_user)
     # add test user
     test_user = user.User(
         username="test",
-        character_id=2
+        character="normal"
     )
     test_user.hash_password("test")
     db.add(test_user)
@@ -70,7 +71,7 @@ app = FastAPI(
 
 # 进入路由时检测token
 # 通过在路由函数中加入这个开启验证并获得用户: now_user:User = Depends(check_token)
-def check_token(token: str=Header(...)):
+def check_token(token: Optional[str] = Header(None)):
     # 在测试模式时总是进入管理员
     if settings.value['auth_test_mode']:
         user_o = db.query(user.User).filter(user.User.id==1).first()
