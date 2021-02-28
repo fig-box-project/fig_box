@@ -72,7 +72,7 @@ class Module:
 
         # copy auths to settings
         if "auths" in mod_settings:
-            settings.value["character"]["auth"] = {**mod_settings["auths"], **(settings.value["character"]["auth"])}
+            settings.value["character"]["auths"] = {**mod_settings["auths"], **(settings.value["character"]["auths"])}
 
         # 更新下设置
         settings.update()

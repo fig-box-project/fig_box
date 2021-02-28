@@ -3,6 +3,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from app.models.database import Base
 from app.models.character.crud import check_auth
+from app.models.settings.crud import settings
 import jwt,time
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,7 +21,7 @@ class User(Base):
         try:
             data = jwt.encode(
                 {'id':self.id, 'exp':time.time()+expires_in},
-                'my god love me forever tom', algorithm='HS256')
+                settings.value['token_key'], algorithm='HS256')
         except:
             return "error"
         return data
