@@ -29,7 +29,7 @@ class User(Base):
     # 检查权限,auth请输入权限符
     def into_auth(self,auth:str):
         if not check_auth(self.character,auth):
-            raise HTTPException(status_code=403,detail='')
+            raise HTTPException(status_code=403,detail='用户权限不足,不能进入 ' + auth + ' 权限')
     
     def hash_password(self, password):
         self.password_hash = generate_password_hash(password)

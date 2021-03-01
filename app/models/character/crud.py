@@ -32,6 +32,9 @@ def get_charas():
         })
     return rt
     
+def get_self_auths(chara:str):
+    return chara_data[chara]["auths"]
+
 # to create a character, auths is a str and need to  
 def creat_character(chara: orm.CharaCreate):
     if chara.name != "" and chara.name not in chara_data:

@@ -52,6 +52,9 @@ character:
     user_all_edit: 
       default: false
       description: 此
+    chara_edit:
+      default: false
+      description: 编辑角色
   charas: 
     master:
       auths:
