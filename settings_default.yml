@@ -1,12 +1,14 @@
 
 token_key: yawei is the honorest in the worlds
 url_prefix: /api/v1
-domain_port: http://www.datasview.com:8000
-auth_test_mode: False
+domain_port: http://dev.datasview.com:8080
+auth_test_mode: True
 ip_test_mode: True
+assets_path: files/assets
 allow_link_ip:
 - 35.241.66.226
 
+# don't delete it
 mods: {}
     
 # 用来存放站点地图所连接的数据库

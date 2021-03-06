@@ -107,6 +107,11 @@ app.include_router(
     prefix=url_prefix + '/auth',
     tags=['用户'],
     dependencies=[Depends(check_ip)])
+from .models.assets.route import bp as assets_route
+app.include_router(
+    assets_route,
+    tags=['资源: 图片,打包文件,xml文件等'],
+    dependencies=[Depends(check_ip)])
 from .models.character.route import bp as chara_route
 app.include_router(
     chara_route,
@@ -135,7 +140,7 @@ app.include_router(
 from .models.render.route import bp as render_route
 app.include_router(
     render_route,
-    tags=['渲染'],)
+    tags=['页面渲染'],)
 from .models.jsaver.route import bp as jsaver_route
 app.include_router(
     jsaver_route,
@@ -146,7 +151,7 @@ from .models.photo.route import bp as photo_route
 app.include_router(
     photo_route,
     prefix=url_prefix + '/photo',
-    tags=['图床'],
+    tags=['图片上传,并转为资源'],
     dependencies=[Depends(check_ip)])
 from .models.packager.route import bp as packager_route
 app.include_router(

@@ -3,7 +3,6 @@ import zipfile
 import os
 import shutil
 import requests
-import json
 import yaml
 import time
 from app.models.settings.crud import settings
