@@ -103,8 +103,10 @@ class Module:
 
 def local_ls():
     mod_list = os.listdir("app/insmodes")
-    mod_list.remove("__init__.py")
-    mod_list.remove("__pycache__")
+    if "__init__.py" in mod_list:
+        mod_list.remove("__init__.py")
+    if "__pycache__" in mod_list:
+        mod_list.remove("__pycache__")
     rt = []
     for i in mod_list:
         if i == ".DS_Store":

@@ -38,13 +38,31 @@ systemctl stop firewalld.service    关闭防火墙
 systemctl start firewalld.service   开启防火墙
 systemctl staus firewalld.service   查看防火墙状态
 firewall-cmd --zone=public --add-port=8080/tcp --permanent 开放指定端口
+firewall-cmd --zone=public --add-port=80/tcp --permanent
 firewall-cmd --reload      重启防火墙
 firewall-cmd --list-ports  查看开放了的端口
 ```
 
 ----------------------------------------------------------------
+centOS配置一条龙
+```
+yum update
+yum install screen
+screen -S dev
+yum install git
+git clone https://github.com/normidar/my_fastapi
+cd my_fastapi
+yum install python3.8
+python3.8 -m venv tutorial-env
+source tutorial-env/bin/activate
+pip3.8 install --upgrade pip
+pip3.8 install --upgrade setuptools
+pip3.8 install -r requirements.txt
+uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
+```
 
 
+----------------------------------------------------------------
 >sudo python3 -m venv tutorial-env 
 
 >source tutorial-env/bin/activate 
@@ -53,8 +71,6 @@ firewall-cmd --list-ports  查看开放了的端口
 >pip3 install -r requirements.txt 
 
 >mkdir files
-
-<!-- source venv/bin/activate -->
 
 //安装screen请使用apt:
 apt-get update
