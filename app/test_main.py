@@ -9,6 +9,9 @@ article_id = None
 
 # <><><><><>测试用户功能<><><><><><>
 
+def test():
+    assert 1 == 1
+
 # 测试用户的文章创建测试
 # def test_login():
 #     response = client.post(
