@@ -132,7 +132,7 @@ truncate: 字符串截断
 <p>{{ 'hello every one' | truncate(9)}}</p>
 ```
 
-## 后置函数说明
+## 内置函数说明
 
 ```
 {% set v = DB_Search(db_name, type, count) %}
