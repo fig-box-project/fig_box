@@ -2,8 +2,7 @@ from sqlalchemy.orm import load_only
 from app.models.settings.crud import settings
 
 # 数据库搜索,
-def db_search(db, db_name, type, count, params:list):
-    print("dbname:" + db_name)
+def db_search(db, db_name:str, type, count, params:list):
     bigFirst = db_name.capitalize()
     lower = db_name.lower()
 
@@ -27,4 +26,5 @@ def db_search(db, db_name, type, count, params:list):
 
 def change_link_to_abs(rt):
     for i in rt:
-        i.link = settings.value["domain_port"] + "/article/show/" + i.link
+        print(type(i.link))
+        i.link = settings.value["domain_port"] + "/article/show/" + str(i.link)
