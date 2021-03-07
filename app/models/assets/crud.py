@@ -5,4 +5,4 @@ class Assets:
         # limit为0 时为无限制
         asset_len = len(asset)
         if limit != 0:
-            
+            ...
