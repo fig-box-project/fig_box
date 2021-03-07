@@ -138,9 +138,9 @@ truncate: 字符串截断
 {% set v = DB_Search(db_name, type, count) %}
 ```
 
-> 上面这句代码将调用查找数据库的函数，并创建v变量
-> 其中，db_name 是数据库的名称（通常和模组相同），不区分大小写
-> type目前只有"same_category"可以输入，表示查找相同的类型
-> count指的是返回数据的数量上限
+> 上面这句代码将调用查找数据库的函数，并创建v变量<br>
+> 其中，db_name 是数据库的名称（通常和模组相同），不区分大小写<br>
+> type目前只有"same_category"可以输入，表示查找相同的类型<br>
+> count指的是返回数据的数量上限<br>
 
 
