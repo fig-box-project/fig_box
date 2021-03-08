@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from app.models import database
 
 templates_path = "files/templates"
-templates = Jinja2Templates(directory=templates_path)
+templates = Jinja2Templates("files/templates")
 
 bp = APIRouter()
 
