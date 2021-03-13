@@ -19,6 +19,10 @@ class Settings:
     def load(self, filename):
         with open(filename, "r") as f:
             return yaml.load(f, Loader=yaml.SafeLoader)
+            
+    def write(self, filename: str, data:dict):
+        with open(filename, "w") as f:
+            yaml.dump(data, f)
 
 # 单例
 settings = Settings()
