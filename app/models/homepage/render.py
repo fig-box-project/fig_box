@@ -1,5 +1,6 @@
 import os
 from app.models.settings.crud import settings
+from app.models.page.crud import Page
 
 class Render():
     def __init__(self):
@@ -9,7 +10,7 @@ class Render():
             with open(path, 'a') as f:
                 f.write('<a href="docs">api</a>')
 
-    def page(self, db, request, templates):
+    def page(self, db, request):
+        pg = Page(request)
         data = {}
-        data['request'] = request
-        return templates.TemplateResponse("homepage.html", data)
+        return pg.show_page("homepage.html", data)

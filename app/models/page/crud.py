@@ -21,3 +21,9 @@ class Page:
         else:
             raise HTTPException(404,"找不到404页面")
 
+    def show_404_page(self,err):
+        if os.path.exists(f"{tempath_prefix}/404.html"):
+            return tem_engine.TemplateResponse('404.html',{'request':self.request,'err':err})
+        else:
+            raise HTTPException(404,"找不到404页面")
+

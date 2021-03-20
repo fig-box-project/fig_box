@@ -8,9 +8,6 @@ from app.models.settings.crud import settings
 from sqlalchemy.orm import Session
 from app.models import database
 
-templates_path = "files/templates"
-templates = Jinja2Templates("files/templates")
-
 bp = APIRouter()
 
 # 获取渲染设置
@@ -57,7 +54,8 @@ for k,v in rander_settings.items():
         # 获得quary参数
         query_para = vp["query_para"]
         fun_para = ', '.join(link_para + query_para + ["request: Request", "db: Session=Depends(database.get_db)"])
-        into_fun_para = ', '.join(['db','request','templates'] + link_para + query_para)
+        # db, request, link_para, query_para
+        into_fun_para = ', '.join(['db','request'] + link_para + query_para)
         # 编个执行字符
         route_code = \
 f"""@bp.get('{v["prefix"]}{vp["prefix"]}{link_url_path}', description='{vp["description"]}')
