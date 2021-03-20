@@ -30,15 +30,6 @@ render:
         description: 首页
         link_para: []  # url地址参数
         query_para: []  # url ?后的参数
-  _photo:
-    prefix: '/photo'
-    funs:
-      page: 
-        prefix: ''
-        description: 图床
-        link_para: [img_name]  # url地址参数
-        query_para: []  # url ?后的参数
-
 
 character:
   auths:

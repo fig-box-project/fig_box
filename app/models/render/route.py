@@ -5,9 +5,6 @@ from app.models.user.mdl import User
 from fastapi.templating import Jinja2Templates
 from app.models.settings.crud import settings
 
-# 加载图库的模组
-from app.models.photo import crud as photo_crud
-
 from sqlalchemy.orm import Session
 from app.models import database
 

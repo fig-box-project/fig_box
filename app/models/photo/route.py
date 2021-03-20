@@ -1,6 +1,5 @@
 from app.models.assets.crud import Assets
 from fastapi import APIRouter, HTTPException, Body, Request, File,UploadFile, Depends
-from . import crud, orm
 from app.main import check_token
 from app.models.user.mdl import User
 
