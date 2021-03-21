@@ -54,7 +54,7 @@ class Assets:
     @staticmethod
     async def insert_with_user(asset, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
         rt = await Assets.insert_file(asset, f"{prefix}user/{owner.id}", filename, limit = limit)
-        return {"link":rt[0], "size":rt[1]}
+        return {"url":Assets.path_to_link(rt[0]), "link":rt[0], "size":rt[1]}
 
 
 
