@@ -23,7 +23,7 @@ typemap = {
 def get_assets(assets_path: str):
     # 安全过滤,如果有两点系统会自动让路径返回上一级,所以要消除..
     assets_path = assets_path.replace("..","")
-
+    # 文件的路径
     path = assets_path_prefix + "/" + assets_path
     type_tips = path[path.rfind(".") + 1:]
 

@@ -15,8 +15,12 @@ class Assets:
         return settings.value["domain_port"] + "/assets"
 
     @staticmethod
+    def path_to_link(path: str):
+        return f"{Assets.get_link_prefix()}/{path}"
+
+    @staticmethod
     async def insert_file(file: UploadFile, path: str, filename: str, mode = "auto_countup",limit = 0):
-        prefix = f"{path_prefix}photos/{path}"
+        prefix = f"{path_prefix}{path}"
         os.makedirs(prefix, exist_ok=True)
         asset = await file.read()
         # 插入
@@ -43,14 +47,14 @@ class Assets:
             # 文件不存在时,插入
             with open(f"{prefix}/{filename}", 'wb') as f:
                 f.write(asset)
-            return (f"{prefix}/{filename}", filename, asset_len)
+            return (f"{path}/{filename}", asset_len)
         else:
             raise HTTPException(500,"模式不支持")
 
     @staticmethod
-    async def insert_with_user(asset, filename:str, owner:User, visibility = True, limit = 0):
-        rt = await Assets.insert_file(asset, f"user/{owner.id}", filename, limit = limit)
-        return {"link":f"user/{owner.id}/{rt[1]}", "size":rt[2]}
+    async def insert_with_user(asset, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
+        rt = await Assets.insert_file(asset, f"{prefix}user/{owner.id}", filename, limit = limit)
+        return {"link":rt[0], "size":rt[1]}
 
 
 
