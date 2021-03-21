@@ -47,14 +47,14 @@ class Assets:
             # 文件不存在时,插入
             with open(f"{prefix}/{filename}", 'wb') as f:
                 f.write(asset)
-            return (f"{path}/{filename}", asset_len)
+            return (f"{path}/{filename}", asset_len, filename)
         else:
             raise HTTPException(500,"模式不支持")
 
     @staticmethod
     async def insert_with_user(asset, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
         rt = await Assets.insert_file(asset, f"{prefix}user/{owner.id}", filename, limit = limit)
-        return {"url":Assets.path_to_link(rt[0]), "link":rt[0], "size":rt[1]}
+        return {"url":Assets.path_to_link(rt[0]), "link":rt[0], "name":rt[2], "size":rt[1]}
 
 
 
