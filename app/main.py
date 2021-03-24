@@ -15,7 +15,7 @@ mods:dict = settings.value["mods"]
 
 # 引用一下mdl才能创建该数据表
 from app.models.user import mdl as user
-from app.models.tree import mdl as tree_mdl
+from app.models.category import mdl as tree_mdl
 
 # 默认表
 tables_strs = ["user.User.__table__","tree_mdl.Category.__table__"]
@@ -119,12 +119,12 @@ app.include_router(
     tags=['角色'],
     dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
-from .models.tree.route import bp as tree_route
-app.include_router(
-    tree_route,
-    prefix=url_prefix + '/category/articles',
-    tags=['文章分类'],
-    dependencies=[Depends(check_ip)])
+# from .models.tree.route import bp as tree_route
+# app.include_router(
+#     tree_route,
+#     prefix=url_prefix + '/category/articles',
+#     tags=['文章分类'],
+#     dependencies=[Depends(check_ip)])
 from .models.editor.route import bp as editor_route
 app.include_router(
     editor_route,
