@@ -1,4 +1,4 @@
-version = "α324.121"
+version = "α326.231"
 
 import jwt
 from typing import Optional
