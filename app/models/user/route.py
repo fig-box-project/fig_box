@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from . import orm, crud, mdl
-from app.models import database
+from app.models.mdl import database
 from app.main import check_token
 
 bp = APIRouter()

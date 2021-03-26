@@ -1,4 +1,4 @@
-from app.models.database import Base
+from .database import Base
 from sqlalchemy import Integer, Column
 from sqlalchemy.ext.declarative import DeclarativeMeta
 

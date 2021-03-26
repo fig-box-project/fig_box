@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from .hasid import HasidMdl
 from sqlalchemy.orm import sessionmaker
 
 # TODO 全部解耦后尝试将hasidmdl指向这里

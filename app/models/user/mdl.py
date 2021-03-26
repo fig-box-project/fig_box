@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends,Header
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
-from app.models.database import Base
+from app.models.mdl.database import Base
 from app.models.character.crud import check_auth
 from app.models.settings.crud import settings
 import jwt,time

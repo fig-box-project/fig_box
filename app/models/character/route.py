@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends,Header
 from sqlalchemy.orm import Session
-from app.models import database
+from app.models.mdl import database
 from . import crud
 from app.main import check_token
 from app.models.user.mdl import User

@@ -4,7 +4,7 @@ import jwt
 from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
-from app.models import database
+from app.models.mdl import database
 from fastapi import FastAPI,Depends,Header,HTTPException,Request
 from fastapi.responses import HTMLResponse
 from app.models.settings.crud import settings

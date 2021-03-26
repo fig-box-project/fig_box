@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from app.models.settings.crud import settings
 
 from sqlalchemy.orm import Session
-from app.models import database
+from app.models.mdl import database
 
 bp = APIRouter()
 
