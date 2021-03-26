@@ -7,8 +7,7 @@ class PageMdl(HasidMdl):
     # unique要改True, 暂时无用
     link               = Column(String, unique=False,index=True) 
     title              = Column(String(64), index=True)
-    context            = Column(String)
-
+    content            = Column(String)
     create_date        = Column(DateTime)
     update_date        = Column(DateTime)
 
