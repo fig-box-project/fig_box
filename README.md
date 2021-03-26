@@ -46,6 +46,8 @@ firewall-cmd --list-ports  查看开放了的端口
 ----------------------------------------------------------------
 centOS配置一条龙
 ```
+sudo passwd  # 设置密码
+su root # 进入root
 yum update
 yum install screen
 screen -S dev
