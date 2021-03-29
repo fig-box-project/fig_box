@@ -169,6 +169,14 @@ app.include_router(
     dependencies=[Depends(check_ip)])
 """
 
+# 试验
+from .insmodes.article.page import bp as article_page
+app.include_router(
+    article_page,
+    prefix="/article",
+    tags=['文章页面']
+)
+
 # TODO: test
 # 自动包括 
 for k in mods.keys():

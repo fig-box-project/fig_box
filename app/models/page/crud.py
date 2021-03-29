@@ -19,29 +19,29 @@ def page(func):
     def wrap(params:str, request: Request, db: Session=Depends(database.get_db)):
         params = params.split("/")
         if func.__code__.co_argcount - 1 == len(params):
-            func(db, *params)
-
-        # rt:tuple = func(db,link)
-        # template_path = rt[0]
-        # data = rt[1]
-        # if os.path.exists(f"{tempath_prefix}/{template_path}"):
-        #     data['request'] = request # request
-        #     return tem_engine.TemplateResponse(template_path, data)
-        # elif os.path.exists(f"{tempath_prefix}/404.html"):
-        #     return tem_engine.TemplateResponse('404.html',{'request':request,'err':"模版不存在"})
-        # else:
-        #     raise HTTPException(404,"找不到404页面")
+            rt:tuple = func(db, *params)
+            template_path = rt[0]
+            data = rt[1]
+            if os.path.exists(f"{tempath_prefix}/{template_path}"):
+                data['request'] = request # request
+                return tem_engine.TemplateResponse(template_path, data)
+        # 如果404页面存在则返回它
+        if os.path.exists(f"{tempath_prefix}/404.html"):
+            return tem_engine.TemplateResponse('404.html',{'request':request,'err':"模版不存在"})
+        else:
+            raise HTTPException(404,"找不到404页面")
+            
     return wrap
 
 class Page:
-    def __init__(self,request):
-        route_path = sys._getframe(1).f_code.co_filename
-        print(route_path)
-        module = route_path.split('/')[-2]
-        print(module)
-        rending_data[module] = {}
-        rending_data["now_module"] = module
-        self.request = request
+    def __init__(self):
+        ...
+        # route_path = sys._getframe(1).f_code.co_filename
+        # print(route_path)
+        # module = route_path.split('/')[-2]
+        # print(module)
+        # rending_data[module] = {}
+        # rending_data["now_module"] = module
 
     def wrap(self):
         return page
