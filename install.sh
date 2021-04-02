@@ -9,8 +9,8 @@ yum install -y epel-release
 yum install -y screen
 # screen -S dev
 cd /
-mkdir dev
-cd /dev
+mkdir my_dev
+cd /my_dev
 git clone https://github.com/normidar/my_fastapi
 cd my_fastapi
 python3.8 -m venv tutorial-env
@@ -19,6 +19,7 @@ pip3.8 install --upgrade pip
 pip3.8 install --upgrade setuptools
 pip3.8 install -r requirements.txt
 deactivate
+
 # 安装puller
 cd /
 mkdir pull
@@ -31,6 +32,7 @@ pip3.8 install --upgrade pip
 pip3.8 install --upgrade setuptools
 pip3.8 install -r requirements.txt
 deactivate
+
 # 安装oil
 cd /
 mkdir oil
@@ -47,5 +49,24 @@ deactivate
 # 关闭防火墙
 systemctl stop firewalld.service
 
+# 设置为密码记住的功能
+git config --global credential.helper store
+
+# 克隆Blog的文件
+cd /
+mkdir www
+cd www
+mkdir wwwroot
+cd wwwroot
+mkdir datasview.com
+cd datasview.com
+git clone https://github.com/applelizihao/Blog
+
+
 # 安装宝塔
 yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh
+
+# source tutorial-env/bin/activate
+# uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
+# uvicorn app.main:app --port 333 --host 0.0.0.0 --reload
+# uvicorn app.main:app --port 369 --host 0.0.0.0 --reload
