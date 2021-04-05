@@ -76,3 +76,11 @@ def run(app):
         packager_route,
         prefix=url_prefix + '/packager',
         tags=['打包下载的集中管理接口'])
+
+    # 页面导入
+    from app.models.homepage.page import bp as homepage_page
+    app.include_router(
+        homepage_page,
+        prefix="",
+        tags=['首页页面']
+    )
