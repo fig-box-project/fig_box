@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/insmodes/article" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/insmodes/get_oil_price" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/insmodes/sitemap" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/app/insmodes/webhookpuller" vcs="Git" />
   </component>
 </project>

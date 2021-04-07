@@ -4,7 +4,7 @@ from app.models.assets.route    import bp as assets_route
 from app.models.character.route import bp as chara_route
 from app.models.editor.route    import bp as editor_route
 from app.models.module.route    import bp as module_route
-from app.models.render.route    import bp as render_route
+# from app.models.render.route    import bp as render_route
 from app.models.jsaver.route    import bp as jsaver_route
 from app.models.photo.route     import bp as photo_route
 from app.models.packager.route  import bp as packager_route
@@ -57,9 +57,9 @@ def run(app):
         tags=['模组・插件'],
         dependencies=[Depends(check_ip)])
     
-    app.include_router(
-        render_route,
-        tags=['页面渲染'],)
+    # app.include_router(
+    #     render_route,
+    #     tags=['页面渲染'],)
     app.include_router(
         jsaver_route,
         prefix=url_prefix + '/customfields',

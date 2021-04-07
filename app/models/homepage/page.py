@@ -5,7 +5,7 @@ bp = APIRouter()
 p = Page()
 
 
-@bp.get('/homepage.html')
+@bp.get('/')
 @p.wrap(is_constant = True)
 def homepage(db):
     return("homepage.html",{})

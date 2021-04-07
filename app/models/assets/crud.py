@@ -61,3 +61,4 @@ class Assets:
     @staticmethod
     def insert_with_character():
         ...
+
