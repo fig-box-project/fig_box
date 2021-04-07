@@ -19,8 +19,16 @@ class InputAssetsConnector():
     # TODO
     def __auto_count_up(self):
         # 文件名后加_[数字]来解决冲突
-        if os.path.exists(self.__get_full_path()):
-            ...
+        # 分头尾
+        i = self.filename.rfind(".")
+        filename_head = self.filename[:i]
+        filename_foot = self.filename[i:]
+        index = 0
+        while os.path.exists(self.__get_full_path()):
+            self.filename = f"{filename_head}_{str(index)}{filename_foot}"
+            index += 1
+            
+
         
 
     def check_assert(self, asset):
