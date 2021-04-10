@@ -13,7 +13,7 @@ class InputUploadConnector(InputAssetsConnector):
 
     # 打包资源到文件
     async def packup(self):
-        super(InputUploadConnector, self).packup()
+        await super(InputUploadConnector, self).packup()
         self.__check_assert_type()
         self.update_filename()
         asset = await self.__file.read()
