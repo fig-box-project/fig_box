@@ -4,6 +4,7 @@ url_prefix: /api/v1
 domain_port: http://dev.datasview.com:8080
 auth_test_mode: True
 ip_test_mode: True
+route_test_mode: True
 assets_path: files/assets
 allow_link_ip:
 - 35.241.66.226

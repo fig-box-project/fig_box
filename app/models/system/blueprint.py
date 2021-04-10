@@ -5,12 +5,13 @@ from app.models.character.route import bp as chara_route
 from app.models.editor.route    import bp as editor_route
 from app.models.module.route    import bp as module_route
 # from app.models.render.route    import bp as render_route
+from app.models.test.route import bp as test_route
 from app.models.jsaver.route    import bp as jsaver_route
 from app.models.photo.route     import bp as photo_route
 from app.models.packager.route  import bp as packager_route
 
 from app.models.settings.crud import settings
-from fastapi import Depends, Request, HTTPException
+from fastapi import FastAPI, Depends, Request, HTTPException
 
 # 进入路由时检查IP
 def check_ip(request: Request):
@@ -19,10 +20,18 @@ def check_ip(request: Request):
         if request.client.host not in settings.value['allow_link_ip']:
             raise HTTPException(status_code=400,detail='unallow ip')
 
-def run(app):
+def run(app:FastAPI):
     # 蓝图
     url_prefix = settings.value['url_prefix']
     
+    if settings.value['route_test_mode']:
+        app.include_router(
+            test_route,
+            prefix="/test",
+            tags=['测试'],
+            dependencies=[Depends(check_ip)]
+        )
+
     app.include_router(
         user_route,
         prefix=url_prefix + '/auth',
