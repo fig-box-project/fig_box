@@ -4,7 +4,6 @@ from fastapi.datastructures import UploadFile
 from app.models.user.mdl import User
 from app.models.settings.crud import settings
 from .input_assets_connector.InputUploadConnector import InputUploadConnector
-from .input_assets_connector.InputZipDirConnector import InputZipDirConnector
 
 path_prefix = "files/assets/"
 allow_upload_type = {"jpg", "png", "bmp"}
