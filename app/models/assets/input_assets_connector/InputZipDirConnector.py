@@ -12,10 +12,10 @@ class InputZipDirConnector(InputAssetsConnector):
     async def packup(self):
         await super(InputZipDirConnector, self).packup()
         self.update_filename()
+        self.creat_directory_when_not_existing()
         self.__zip_dir()
 
     def __zip_dir(self):
-        self.creat_directory_when_not_existing()
         # 压缩目录
         zip = zipfile.ZipFile(self.get_full_path(),"w",zipfile.ZIP_DEFLATED)
         for path,dirs,files in os.walk(self.__directory):
