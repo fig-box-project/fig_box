@@ -58,4 +58,5 @@ class Assets:
     async def migration_from(old_ip: str):
         url = f"http://{old_ip}/migration/packup"
         responses = requests.get(url).text
-        print(responses)
+        # 去除引号,成功返回路径
+        print(responses[1:-1])
