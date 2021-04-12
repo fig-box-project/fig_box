@@ -47,7 +47,8 @@ class Assets:
             else:
                 HTTPException(422,"所输入的内容不符合预设")
         if len(parts) == 0:
-            parts = list(path_data.values())
+            # parts = list(path_data.values())
+            parts = ['settings.yml', "db.sqlite"]
         # 开始打包
         connector = InputZipDirConnector("packup","migration.zip",parts)
         await connector.packup()
