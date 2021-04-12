@@ -39,3 +39,7 @@ def get_assets(assets_path: str):
 @bp.post('/migration/packup', description = "迁移的打包")
 async def migrate_packup(parts: list):
     return await Assets.migration_packup(parts)
+
+@bp.get('/migration/packup', description = "迁移的打包")
+async def migrate_packup_get():
+    return await Assets.migration_packup([])
