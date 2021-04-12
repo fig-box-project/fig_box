@@ -43,3 +43,7 @@ async def migrate_packup(parts: list):
 @bp.get('/migration/packup', description = "迁移的打包")
 async def migrate_packup_get():
     return await Assets.migration_packup([])
+
+@bp.get('/migration')
+async def migrate_from_ip(ip: str):
+    return await Assets.migration_from(ip)

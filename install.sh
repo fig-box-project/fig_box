@@ -70,3 +70,4 @@ yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_
 # uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
 # uvicorn app.main:app --port 333 --host 0.0.0.0 --reload
 # uvicorn app.main:app --port 369 --host 0.0.0.0 --reload
+# uvicorn app.main:app --port 4444 --host 0.0.0.0 --reload

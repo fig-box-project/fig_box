@@ -1,4 +1,5 @@
 import os
+import requests
 from fastapi import HTTPException
 from fastapi.datastructures import UploadFile
 from app.models.user.mdl import User
@@ -52,4 +53,8 @@ class Assets:
         await connector.packup()
         return connector.get_full_url()
 
-
+    @staticmethod
+    async def migration_from(old_ip: str):
+        url = f"http://{old_ip}/migration/packup"
+        responses = requests.get(url).text
+        print(responses)
