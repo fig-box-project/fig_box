@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from starlette.responses import FileResponse
 from app.models.settings.crud import settings
 import os
+from .crud import Assets
 
 assets_path_prefix = settings.value["assets_path"]
 os.makedirs(assets_path_prefix, exist_ok=True)
@@ -35,3 +36,6 @@ def get_assets(assets_path: str):
     else:
         raise HTTPException(status_code=404, detail="找不到资源")
 
+@bp.post('/migration/packup', description = "迁移的打包")
+async def migrate_packup(parts: list):
+    return await Assets.migration_packup(parts)

@@ -1,18 +1,19 @@
 from fastapi import HTTPException
 import os
 from enum import Enum, auto
+from app.models.settings.crud import settings
 
 class ConflictsMode(Enum):
     # 关于解决冲突的枚举
     AUTO_COUNT_UP = auto()
     AUTO_DEL_IF_EXISTS = auto()
 
-
 class InputAssetsConnector():
     root_path:str = 'files/assets/'
     mode: ConflictsMode = ConflictsMode.AUTO_COUNT_UP
     limit:int = 0
     size:int = 0
+
     def __init__(self, path: str, filename: str):
         self.path = path
         self.filename = filename
@@ -62,3 +63,6 @@ class InputAssetsConnector():
 
     def get_full_path(self):
         return f"{self.root_path}{self.path}/{self.filename}"
+
+    def get_full_url(self):
+        return f"{settings.value['domain_port']}/assets/{self.path}/{self.filename}"

@@ -4,6 +4,8 @@ from fastapi.datastructures import UploadFile
 from app.models.user.mdl import User
 from app.models.settings.crud import settings
 from .input_assets_connector.InputUploadConnector import InputUploadConnector
+from app.models.assets.input_assets_connector.InputZipDirConnector import InputZipDirConnector
+
 
 path_prefix = "files/assets/"
 allow_upload_type = {"jpg", "png", "bmp"}
@@ -19,13 +21,8 @@ class Assets:
     def path_to_link(path: str):
         return f"{Assets.get_link_prefix()}/{path}"
 
-    # @staticmethod
-    # async def packup_dir(path:str):
-    #     connector = InputZipDirConnector(f"{path_prefix}packup","test.zip","files/templates")
-    #     await connector.packup()
-
     @staticmethod
-    async def insert_with_user(asset: UploadFile, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
+    async def upload_with_user(asset: UploadFile, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
         connector = InputUploadConnector(f"{prefix}user/{owner.id}",filename,asset, limit)
         await connector.packup()
         link = f"{connector.path}/{connector.filename}"
@@ -33,6 +30,24 @@ class Assets:
             "link":link, "name":connector.filename, "size":connector.size}
 
     @staticmethod
-    def insert_with_character():
-        ...
+    async def migration_packup(parts: list):
+        # 替换到实际路径
+        path_data = {
+            "settings":"settings.yml",
+            "templates":"files/templates",
+            "photos":"files/assets/photos",
+            "database":"db.sqlite"
+        }
+        for i in range(len(parts)):
+            if parts[i] in path_data:
+                key = parts[i]
+                parts[i] = path_data[key]
+                del path_data[key]
+            else:
+                HTTPException(422,"所输入的内容不符合预设")
+        # 开始打包
+        connector = InputZipDirConnector("packup","migration.zip",parts)
+        await connector.packup()
+        return connector.get_full_url()
+
 
