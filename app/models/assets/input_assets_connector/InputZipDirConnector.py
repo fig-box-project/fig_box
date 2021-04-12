@@ -1,7 +1,7 @@
 # 用于打包文件夹为资源
 from .InputAssetsConnector import InputAssetsConnector, ConflictsMode
 from fastapi import HTTPException
-from zipfile import ZipFile,ZIP_DEFLATED
+from zipfile import ZipFile, ZIP_DEFLATED
 import os
 
 class InputZipDirConnector(InputAssetsConnector):
@@ -22,6 +22,8 @@ class InputZipDirConnector(InputAssetsConnector):
 
     def __auto_packup(self):
         # 循环数组并逐次打包入压缩文件
+        # 只可以r w x a 只读 只写 存在报错写 追加写 默认为r
+        # ZIP_DEFLATED 为压缩模式 默认为不压缩
         with ZipFile(self.get_full_path(),"w",ZIP_DEFLATED) as ziper:
             for i in range(len(self.__aims)):
                 self.__auto_zip(ziper, self.__aims[i], i)
