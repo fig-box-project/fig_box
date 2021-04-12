@@ -22,16 +22,16 @@ class InputZipDirConnector(InputAssetsConnector):
 
     def __auto_packup(self):
         # 循环数组并逐次打包入压缩文件
-        for i in range(len(self.__aims)):
-            self.__auto_zip(self.__aims[i], i)
+        with ZipFile(self.get_full_path(),"w",ZIP_DEFLATED) as ziper:
+            for i in range(len(self.__aims)):
+                self.__auto_zip(ziper, self.__aims[i], i)
 
-    def __auto_zip(self, path: str, index: int):
+    def __auto_zip(self,ziper: ZipFile, path: str, index: int):
         if os.path.exists(path):
-            with ZipFile(self.get_full_path(),"a",ZIP_DEFLATED) as ziper:
-                if os.path.isdir(path):
-                    self.__zip_dir(ziper, path, index)
-                else:
-                    self.__zip_file(ziper, path, index)
+            if os.path.isdir(path):
+                self.__zip_dir(ziper, path, index)
+            else:
+                self.__zip_file(ziper, path, index)
         else:
             HTTPException(500, f"压缩时找不到文件或文件夹:{path} 索引:{index}")
 
