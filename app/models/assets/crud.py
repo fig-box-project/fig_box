@@ -52,11 +52,11 @@ class Assets:
         # 开始打包
         connector = InputZipDirConnector("packup","migration.zip",parts)
         await connector.packup()
-        return connector.get_full_url()
+        return f"{connector.path}/{connector.filename}"
 
     @staticmethod
     async def migration_from(old_ip: str):
-        url = f"http://{old_ip}/migration/packup"
+        url = f"{old_ip}/migration/packup"
         responses = requests.get(url).text
         # 去除引号,成功返回路径
-        print(responses[1:-1])
+        print(f"{old_ip}/assets/{responses[1:-1]}")
