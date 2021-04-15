@@ -1,11 +1,11 @@
 # 用于打包文件夹为资源
-from .InputAssetsConnector import InputAssetsConnector, ConflictsMode
+from .InputAssetsConnector import InputAssetsConnector
 import requests
 
 class InputDownloadConnector(InputAssetsConnector):
     def __init__(self, path: str, filename: str, url: str):
         super(InputDownloadConnector, self).__init__(path, filename)
-        self.mode = ConflictsMode.AUTO_DEL_IF_EXISTS
+        self.mode = InputAssetsConnector.AUTO_DEL_IF_EXISTS
         self.__url = url
 
     async def packup(self):
@@ -20,5 +20,6 @@ class InputDownloadConnector(InputAssetsConnector):
             for chunk in res.iter_content(chunk_size=1024):
                 if chunk:
                     dl.write(chunk)
+                    
 
         

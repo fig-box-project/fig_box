@@ -3,30 +3,27 @@ import os
 from enum import Enum, auto
 from app.models.settings.crud import settings
 
-class ConflictsMode(Enum):
-    # 关于解决冲突的枚举
-    AUTO_COUNT_UP = auto()
-    AUTO_DEL_IF_EXISTS = auto()
-
 class InputAssetsConnector():
     root_path:str = 'files/assets/'
-    mode: ConflictsMode = ConflictsMode.AUTO_COUNT_UP
     limit:int = 0
     size:int = 0
 
     def __init__(self, path: str, filename: str):
         self.path = path
         self.filename = filename
+        self.mode = InputAssetsConnector.AUTO_COUNT_UP
 
     # 用于被重写,被外部调用
     async def packup(self):
         ...
 
+    AUTO_COUNT_UP = 0
+    AUTO_DEL_IF_EXISTS = 1
     def update_filename(self):
         # 用于在命名冲突时的处理
-        if self.mode is ConflictsMode.AUTO_COUNT_UP:
+        if self.mode is self.AUTO_COUNT_UP:
             self.__auto_count_up()
-        elif self.mode is ConflictsMode.AUTO_DEL_IF_EXISTS:
+        elif self.mode is self.AUTO_DEL_IF_EXISTS:
             # 删除文件
             if os.path.exists(self.get_full_path()):
                 os.remove(self.get_full_path())

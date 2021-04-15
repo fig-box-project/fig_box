@@ -1,17 +1,18 @@
 # 用于打包文件夹为资源
-from .InputAssetsConnector import InputAssetsConnector, ConflictsMode
+from .InputAssetsConnector import InputAssetsConnector
 from fastapi import HTTPException
 from zipfile import ZipFile, ZIP_DEFLATED
 import os
 
 class InputZipDirConnector(InputAssetsConnector):
-    def __init__(self, path: str, filename: str, aims: list):
+    def __init__(self, path: str, filename: str, aims: list, zip_mode: int=0):
         # path 是相对assets的路径不需前后斜杠
         # aims 是个要打包目标的绝对路径的列表
         super(InputZipDirConnector, self).__init__(path, filename)
         if len(aims) == 0:
             raise HTTPException(500,"系统错误,压缩的目标不应为0.")
-        self.mode = ConflictsMode.AUTO_DEL_IF_EXISTS
+        self.mode = InputAssetsConnector.AUTO_DEL_IF_EXISTS
+        self.zip_mode = zip_mode
         self.__aims = aims
 
     async def packup(self):
@@ -51,6 +52,17 @@ class InputZipDirConnector(InputAssetsConnector):
                 # 文件源的路径
                 file_from = os.path.join(path,file)
                 # 压缩文件内的路径
-                file_to = os.path.join("root",str(index),file_path,file)
+                file_to = self.__get_aim_path()
                 ziper.write(file_from,file_to)
+
+    WRAP_WITH_INDEX = 0
+    WRAP_IN_ROOT = 1
+    def __get_aim_path(self, index:int, file_path:str, file_name:str):
+        if self.zip_mode == self.WRAP_WITH_INDEX:
+            return os.path.join("root",str(index),file_path,file_name)
+        elif self.zip_mode == self.WRAP_IN_ROOT:
+            return os.path.join("root",file_path,file_name)
+        else:
+            HTTPException(500, "zip_mode错误")
+
         
