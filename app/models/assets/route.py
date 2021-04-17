@@ -9,12 +9,8 @@ os.makedirs(assets_path_prefix, exist_ok=True)
 
 bp = APIRouter()
 
-
-
 @bp.get("/assets/{assets_path:path}", description = "获取资源链接")
 def get_assets(assets_path: str):
-    # 安全过滤,如果有两点系统会自动让路径返回上一级,所以要消除..
-    assets_path = assets_path.replace("..","")
     # 文件的路径
     path = assets_path_prefix + "/" + assets_path
     connector = OutputWebConnector(path)
