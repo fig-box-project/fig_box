@@ -2,6 +2,7 @@
 from .InputAssetsConnector import InputAssetsConnector
 import requests
 
+
 class InputDownloadConnector(InputAssetsConnector):
     def __init__(self, path: str, filename: str, url: str):
         super(InputDownloadConnector, self).__init__(path, filename)
@@ -15,11 +16,8 @@ class InputDownloadConnector(InputAssetsConnector):
         self.__download()
 
     def __download(self):
-        res = requests.get(self.__url,stream=True)
+        res = requests.get(self.__url, stream=True)
         with open(self.get_full_path(), 'wb') as dl:
             for chunk in res.iter_content(chunk_size=1024):
                 if chunk:
                     dl.write(chunk)
-                    
-
-        

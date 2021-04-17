@@ -16,9 +16,9 @@ def get_assets(assets_path: str):
     connector = OutputWebConnector(path)
     return connector.output()
 
-@bp.post('/migration/packup', description = "迁移的打包")
-async def migrate_packup(parts: list):
-    return await Assets.migration_packup(parts)
+# @bp.post('/migration/packup', description = "迁移的打包")
+# async def migrate_packup(parts: list):
+#     return await Assets.migration_packup(parts)
 
 @bp.get('/migration/packup', description = "迁移的打包")
 async def migrate_packup_get():

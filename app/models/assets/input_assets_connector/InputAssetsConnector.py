@@ -3,10 +3,11 @@ import os
 from enum import Enum, auto
 from app.models.settings.crud import settings
 
+
 class InputAssetsConnector():
-    root_path:str = 'files/assets/'
-    limit:int = 0
-    size:int = 0
+    root_path: str = 'files/assets/'
+    limit: int = 0
+    size: int = 0
 
     def __init__(self, path: str, filename: str):
         self.path = path
@@ -19,6 +20,7 @@ class InputAssetsConnector():
 
     AUTO_COUNT_UP = 0
     AUTO_DEL_IF_EXISTS = 1
+
     def update_filename(self):
         # 用于在命名冲突时的处理
         if self.mode is self.AUTO_COUNT_UP:
@@ -28,7 +30,7 @@ class InputAssetsConnector():
             if os.path.exists(self.get_full_path()):
                 os.remove(self.get_full_path())
         else:
-            raise HTTPException(500,"模式不支持")
+            raise HTTPException(500, "模式不支持")
 
     def __auto_count_up(self):
         # 文件名后加_[数字]来解决冲突
@@ -41,7 +43,7 @@ class InputAssetsConnector():
             # 合头尾
             self.filename = f"{filename_head}_{str(index)}{filename_foot}"
             index += 1
-    
+
     def creat_directory_when_not_existing(self):
         os.makedirs(f"{self.root_path}{self.path}", exist_ok=True)
 
@@ -49,8 +51,8 @@ class InputAssetsConnector():
         # 检查文件大小
         self.size = len(asset)
         if self.limit != 0 and self.size > self.limit * 1000000:
-            raise HTTPException(403,"文件的大小超过系统限制")
-    
+            raise HTTPException(403, "文件的大小超过系统限制")
+
     def save_asset(self, asset):
         # 保存资源
         full_path = self.get_full_path()
