@@ -4,9 +4,7 @@ from fastapi import HTTPException
 from fastapi.datastructures import UploadFile
 from app.models.user.mdl import User
 from app.models.settings.crud import settings
-from .input_assets_connector.InputUploadConnector import InputUploadConnector
-from app.models.assets.input_assets_connector.InputZipDirConnector import InputZipDirConnector
-
+from .input_assets_connector import *
 
 path_prefix = "files/assets/"
 allow_upload_type = {"jpg", "png", "bmp"}
@@ -47,10 +45,11 @@ class Assets:
             else:
                 HTTPException(422,"所输入的内容不符合预设")
         if len(parts) == 0:
-            # parts = list(path_data.values())
-            parts = ['settings.yml', "db.sqlite"]
+            parts = list(path_data.values())
+            # parts = ['settings.yml', "db.sqlite"]
         # 开始打包
-        connector = InputZipDirConnector("packup","migration.zip",parts)
+        connector = InputZipDirConnector("packup","migration.zip",parts,unexist_skip=True)
+        connector.zip_mode = InputZipDirConnector.WRAP_IN_ROOT
         await connector.packup()
         return f"{connector.path}/{connector.filename}"
 
@@ -59,4 +58,7 @@ class Assets:
         url = f"{old_ip}/migration/packup"
         responses = requests.get(url).text
         # 去除引号,成功返回路径
-        print(f"{old_ip}/assets/{responses[1:-1]}")
+        link = f"{old_ip}/assets/{responses[1:-1]}"
+        print(link)
+        connector = InputDownloadConnector("dl","sss.zip",link)
+        await connector.packup()

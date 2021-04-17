@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException
-from starlette.responses import FileResponse
+from fastapi import APIRouter
 from app.models.settings.crud import settings
+from .output_assets_connector import OutputWebConnector
 import os
 from .crud import Assets
 
@@ -9,16 +9,7 @@ os.makedirs(assets_path_prefix, exist_ok=True)
 
 bp = APIRouter()
 
-typemap = {
-    "jpg":"image/jpeg",
-    "jpeg":"image/jpeg",
-    "gif":"image/gif",
-    "png":"image/png",
-    "bmp":"image/jpeg",
-    "webp":"image/webp",
-    "zip":"application/zip",
-    "xml":"application/xml"
-}
+
 
 @bp.get("/assets/{assets_path:path}", description = "获取资源链接")
 def get_assets(assets_path: str):
@@ -26,15 +17,8 @@ def get_assets(assets_path: str):
     assets_path = assets_path.replace("..","")
     # 文件的路径
     path = assets_path_prefix + "/" + assets_path
-    type_tips = path[path.rfind(".") + 1:]
-
-    if os.path.exists(path):
-        if type_tips in typemap:
-            return FileResponse(path, media_type=typemap[type_tips])
-        else:
-            raise HTTPException(status_code=403, detail="不支持的数据类型")
-    else:
-        raise HTTPException(status_code=404, detail="找不到资源")
+    connector = OutputWebConnector(path)
+    return connector.output()
 
 @bp.post('/migration/packup', description = "迁移的打包")
 async def migrate_packup(parts: list):
