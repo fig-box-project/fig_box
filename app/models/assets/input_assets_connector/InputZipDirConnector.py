@@ -14,7 +14,7 @@ class InputZipDirConnector(InputAssetsConnector):
             raise HTTPException(500, "系统错误,压缩的目标不应为0.")
         self.mode = InputAssetsConnector.AUTO_DEL_IF_EXISTS
         # 压缩模式默认为索引试压缩
-        self.zip_mode = self.WRAP_WITH_INDEX
+        self.__zip_mode = self.WRAP_WITH_INDEX
         self.unexist_skip = unexist_skip
         self.__aims = aims
 
@@ -29,7 +29,6 @@ class InputZipDirConnector(InputAssetsConnector):
         # 只可以r w x a 只读 只写 存在报错写 追加写 默认为r
         # ZIP_DEFLATED 为压缩模式 默认为不压缩
         with ZipFile(self.get_full_path(), "w", ZIP_DEFLATED) as ziper:
-            ziper.write()
             for i in range(len(self.__aims)):
                 self.__auto_zip(ziper, self.__aims[i], i)
 
@@ -46,7 +45,8 @@ class InputZipDirConnector(InputAssetsConnector):
 
     def __zip_file(self, ziper: ZipFile, path: str, index: int):
         file_to = os.path.join("root", str(index), path[path.rfind('/') + 1:])
-        ziper.write(path, file_to)
+        # ziper.write(path, file_to)
+        self.__write(ziper, path, file_to)
 
     def __zip_dir(self, ziper: ZipFile, directory: str, index: int):
         # 压缩目录
@@ -59,15 +59,30 @@ class InputZipDirConnector(InputAssetsConnector):
                 file_from = os.path.join(path, file)
                 # 压缩文件内的路径
                 file_to = self.__get_aim_path(index, path, file)
-                ziper.write(file_from, file_to)
+                # ziper.write(file_from, file_to)
+                self.__write(ziper, file_from, file_to)
 
     WRAP_WITH_INDEX = 0  # 在root文件夹下放置索引以防止文件名冲突
     WRAP_IN_ROOT = 1  # 直接将文件放置在root文件夹下
+    WRAP_WITH_PATH = 2  # 系统原来的路径来包装文件
 
-    def __get_aim_path(self, index: int, file_path: str, file_name: str):
-        if self.zip_mode == self.WRAP_WITH_INDEX:
-            return os.path.join("root", str(index), file_path, file_name)
-        elif self.zip_mode == self.WRAP_IN_ROOT:
-            return os.path.join("root", file_path, file_name)
+    def set_zip_mode(self, mode: int):
+        if mode >= 0 and mode <= 2:
+            self.__zip_mode = mode
         else:
             raise HTTPException(500, "zip_mode错误")
+
+    def __write(self, ziper: ZipFile, file_from: str, file_to: str):
+        # 写入压缩文件,根据是否利用原系统路径
+        if self.__zip_mode == self.WRAP_WITH_PATH:
+            ziper.write(file_from)
+        else:
+            ziper.write(file_from, file_to)
+
+    def __get_aim_path(self, index: int, file_path: str, file_name: str):
+        if self.__zip_mode == self.WRAP_WITH_INDEX:
+            return os.path.join("root", str(index), file_path, file_name)
+        elif self.__zip_mode == self.WRAP_IN_ROOT:
+            return os.path.join("root", file_path, file_name)
+        else:
+            return ""
