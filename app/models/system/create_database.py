@@ -5,10 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from app.models.user import mdl as user
 from app.models.category import mdl as tree_mdl
 
+
 def run():
-    mods:dict = settings.value["mods"]
+    mods: dict = settings.value["mods"]
     # 默认表
-    tables_strs = ["user.User.__table__","tree_mdl.Category.__table__"]
+    tables_strs = ["user.User.__table__", "tree_mdl.Category.__table__"]
     tables = []
 
     # 自动引用安装的库
@@ -18,16 +19,16 @@ def run():
                 # 引用下
                 exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
                 # 加入下列表中等下读取
-                tables_strs.append("{}_mdl.{}.__table__".format(k,k.capitalize()))
+                tables_strs.append(
+                    "{}_mdl.{}.__table__".format(k, k.capitalize()))
 
     # 录入到tables中
     for t in tables_strs:
         exec("tables.append({})".format(t))
 
-
     # もしテーブルを選びたい時： create_all(bind=engine, tables=[User.__table__])
     # もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
-    database.Base.metadata.create_all(bind=database.engine,tables=tables)
+    database.Base.metadata.create_all(bind=database.engine, tables=tables)
 
     # database.Base.metadata.query
     # 初始化数据库
@@ -38,7 +39,7 @@ def run():
         admin_user = user.User(
             username="admin",
             character="master"
-        ) 
+        )
         admin_user.hash_password("admin")
         db.add(admin_user)
         # add test user
@@ -48,6 +49,6 @@ def run():
         )
         test_user.hash_password("test")
         db.add(test_user)
-        
+
         db.commit()
     return db
