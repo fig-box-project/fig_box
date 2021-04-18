@@ -44,7 +44,8 @@ class InputZipDirConnector(InputAssetsConnector):
             raise HTTPException(500, f"压缩时找不到文件或文件夹:{path} 索引:{index}")
 
     def __zip_file(self, ziper: ZipFile, path: str, index: int):
-        file_to = os.path.join("root", str(index), path[path.rfind('/') + 1:])
+        # file_to = os.path.join("root", str(index), path[path.rfind('/') + 1:])
+        file_to = self.__get_aim_path(index, path[path.rfind('/') + 1:])
         # ziper.write(path, file_to)
         self.__write(ziper, path, file_to)
 
@@ -58,7 +59,7 @@ class InputZipDirConnector(InputAssetsConnector):
                 # 文件源的路径
                 file_from = os.path.join(path, file)
                 # 压缩文件内的路径
-                file_to = self.__get_aim_path(index, path, file)
+                file_to = self.__get_aim_path(index, os.path.join(path, file))
                 # ziper.write(file_from, file_to)
                 self.__write(ziper, file_from, file_to)
 
@@ -79,10 +80,10 @@ class InputZipDirConnector(InputAssetsConnector):
         else:
             ziper.write(file_from, file_to)
 
-    def __get_aim_path(self, index: int, file_path: str, file_name: str):
+    def __get_aim_path(self, index: int, full_path: str):
         if self.__zip_mode == self.WRAP_WITH_INDEX:
-            return os.path.join("root", str(index), file_path, file_name)
+            return os.path.join("root", str(index), full_path)
         elif self.__zip_mode == self.WRAP_IN_ROOT:
-            return os.path.join("root", file_path, file_name)
+            return os.path.join("root", full_path)
         else:
             return ""

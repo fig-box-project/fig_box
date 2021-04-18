@@ -9,8 +9,13 @@ async def packup():
     from app.models.assets.input_assets_connector.InputZipDirConnector import InputZipDirConnector
     connector = InputZipDirConnector(
         "packup", "test.zip", ["settings.yml", "files/templates"])
+    # connector.set_zip_mode(InputZipDirConnector.WRAP_IN_ROOT)
+    # connector.set_zip_mode(InputZipDirConnector.WRAP_WITH_INDEX)
     connector.set_zip_mode(InputZipDirConnector.WRAP_WITH_PATH)
     await connector.packup()
+
+    connector = OutputUnzipConnector('packup/test.zip')
+    connector.output()
 
 
 @bp.get('/packup/download', description="Download")
