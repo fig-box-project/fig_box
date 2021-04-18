@@ -1,4 +1,4 @@
-from app.models.assets.output_assets_connector.OutputUnzipConnector import OutputUnzipConnector
+from app.models.assets.output_assets_connector import OutputUnzipConnector
 from fastapi import APIRouter, HTTPException
 
 bp = APIRouter()
