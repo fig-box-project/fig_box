@@ -2,6 +2,7 @@ from .InputAssetsConnector import InputAssetsConnector
 from fastapi import HTTPException
 from fastapi.datastructures import UploadFile
 
+
 class InputUploadConnector(InputAssetsConnector):
     # 允许上传的文件类型
     allow_upload_type = {"jpg", "png", "bmp"}

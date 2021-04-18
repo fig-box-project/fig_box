@@ -9,7 +9,8 @@ os.makedirs(assets_path_prefix, exist_ok=True)
 
 bp = APIRouter()
 
-@bp.get("/assets/{assets_path:path}", description = "获取资源链接")
+
+@bp.get("/assets/{assets_path:path}", description="获取资源链接")
 def get_assets(assets_path: str):
     # 文件的路径
     path = assets_path_prefix + "/" + assets_path
@@ -20,9 +21,11 @@ def get_assets(assets_path: str):
 # async def migrate_packup(parts: list):
 #     return await Assets.migration_packup(parts)
 
-@bp.get('/migration/packup', description = "迁移的打包")
+
+@bp.get('/migration/packup', description="迁移的打包")
 async def migrate_packup_get():
     return await Assets.migration_packup([])
+
 
 @bp.get('/migration')
 async def migrate_from_ip(ip: str):
