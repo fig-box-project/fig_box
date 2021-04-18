@@ -12,11 +12,13 @@ class OutputUnzipConnector(OutputAssetsConnector):
 
     def output(self):
         self._check_path()
+        self.__unzip()
 
     def __unzip(self):
-        zipFile = ZipFile(self.path, 'r')
-        for file in zipFile.namelist():
-            print(file)
+        with ZipFile(self.get_full_path(), 'r') as f:
+
+            for file in f.infolist():
+                print(file.filename)
             # zipFile.extract(file,newpath)
         # directory_name = zipFile.namelist()[0][:-1]
         # zipFile.close()
