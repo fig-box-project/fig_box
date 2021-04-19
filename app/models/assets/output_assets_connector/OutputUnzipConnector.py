@@ -19,8 +19,7 @@ class OutputUnzipConnector(OutputAssetsConnector):
         with ZipFile(self.get_full_path(), 'r') as f:
             for file in f.infolist():
                 print(file.filename)
-                dirs = self._create_directory(file.filename, True)
-                f.extract(file, dirs)
+                f.extract(file, ".")
         # directory_name = zipFile.namelist()[0][:-1]
         # zipFile.close()
         # # 重命名

@@ -8,14 +8,14 @@ bp = APIRouter()
 @bp.get('/packup/directory', description='打包文件夹')
 async def packup():
     connector = InputZipDirConnector(
-        "packup", "test.zip", ["settings.yml", "files/templates"])
+        "packup", "test.zip", ["settings.yml", "files/templates"], False)
     # connector.set_zip_mode(InputZipDirConnector.WRAP_IN_ROOT)
     # connector.set_zip_mode(InputZipDirConnector.WRAP_WITH_INDEX)
     connector.set_zip_mode(InputZipDirConnector.WRAP_WITH_PATH)
     await connector.packup()
 
-    connector = OutputUnzipConnector('packup/test.zip')
-    connector.output()
+    # connector = OutputUnzipConnector('packup/test.zip')
+    # connector.output()
 
 
 @bp.get('/packup/download', description="Download")

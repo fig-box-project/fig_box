@@ -31,6 +31,7 @@ class InputZipDirConnector(InputAssetsConnector):
         with ZipFile(self.get_full_path(), "w", ZIP_DEFLATED) as ziper:
             for i in range(len(self.__aims)):
                 self.__auto_zip(ziper, self.__aims[i], i)
+        print("--------------------------------")
 
     def __auto_zip(self, ziper: ZipFile, path: str, index: int):
         if os.path.exists(path):
@@ -76,6 +77,7 @@ class InputZipDirConnector(InputAssetsConnector):
         # 写入压缩文件,根据是否利用原系统路径
         if self.__zip_mode == self.WRAP_WITH_PATH:
             ziper.write(file_from)
+            print(file_from)
         else:
             ziper.write(file_from, file_to)
 
