@@ -54,7 +54,6 @@ class InputZipDirConnector(InputAssetsConnector):
         for path, dirs, files in os.walk(directory):
             # 绝对转相对
             file_path = path.replace(directory, "")[1:]
-            print(file_path)
             for file in files:
                 # 文件源的路径
                 file_from = os.path.join(path, file)

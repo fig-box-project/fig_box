@@ -8,11 +8,13 @@ version = "α4.19"
 # 初始化数据库, 创建数据表
 db: Session = create_database.run()
 
-# app = FastAPI(docs_url=None, redoc_url=None)  # 关闭文档
 app = FastAPI(
     title="F-Mod",
     description="这是自由、易管理的高速模组化cms system.",
-    version=version
+    version=version,
+    # 关闭文档
+    # docs_url=None,
+    # redoc_url=None,
 )
 
 # 检查token的函数

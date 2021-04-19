@@ -17,10 +17,10 @@ class OutputUnzipConnector(OutputAssetsConnector):
 
     def __unzip(self):
         with ZipFile(self.get_full_path(), 'r') as f:
-
             for file in f.infolist():
                 print(file.filename)
-            # zipFile.extract(file,newpath)
+                dirs = self._create_directory(file.filename, True)
+                f.extract(file, dirs)
         # directory_name = zipFile.namelist()[0][:-1]
         # zipFile.close()
         # # 重命名

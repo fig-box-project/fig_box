@@ -56,7 +56,6 @@ class InputAssetsConnector():
     def save_asset(self, asset):
         # 保存资源
         full_path = self.get_full_path()
-        print("保存的位置:" + full_path)
         with open(full_path, 'wb') as f:
             f.write(asset)
 

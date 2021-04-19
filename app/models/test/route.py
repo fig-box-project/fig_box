@@ -1,4 +1,5 @@
-from app.models.assets.output_assets_connector import OutputUnzipConnector
+from app.models.assets.output_assets_connector import *
+from app.models.assets.input_assets_connector import *
 from fastapi import APIRouter, HTTPException
 
 bp = APIRouter()
@@ -6,7 +7,6 @@ bp = APIRouter()
 
 @bp.get('/packup/directory', description='打包文件夹')
 async def packup():
-    from app.models.assets.input_assets_connector.InputZipDirConnector import InputZipDirConnector
     connector = InputZipDirConnector(
         "packup", "test.zip", ["settings.yml", "files/templates"])
     # connector.set_zip_mode(InputZipDirConnector.WRAP_IN_ROOT)
