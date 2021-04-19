@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from . import orm, crud, mdl
 from app.models.mdl import database
-from app.main import check_token
+from app.models.system import token
 
 bp = APIRouter()
 
@@ -42,7 +42,7 @@ def login(user: orm.UserLogin, db: Session = Depends(database.get_db)):
 
 @bp.get('/view/all_user', description='查看所有用户')
 def view_all_user(
-        user: mdl.User = Depends(check_token),
+        user: mdl.User = Depends(token.get_token_func()),
         db: Session = Depends(database.get_db)):
     user.into_auth("user_all_edit")
     return crud.get_users(db)

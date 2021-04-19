@@ -3,7 +3,8 @@ from zipfile import *
 
 
 class OutputUnzipConnector(OutputAssetsConnector):
-    def __init__(self, path: str, mapping: dict = {}):
+    def __init__(self, path: str, mapping: dict = {}, auto_unzip=False):
+        # auto_unzip 是否按照压缩包目录自动解压到指定目录
         self.path = path
         self.__mapping = mapping
 

@@ -1,10 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends,Header,Body, Request
+from fastapi import APIRouter, HTTPException, Depends, Header, Body, Request
 from . import crud, cache
-from app.main import check_token
 from app.models.user.mdl import User
 from fastapi.templating import Jinja2Templates
 from app.models.settings.crud import settings
-
+from app.models.system import token
 from sqlalchemy.orm import Session
 from app.models.mdl import database
 
@@ -13,19 +12,21 @@ bp = APIRouter()
 # 获取渲染设置
 rander_settings = settings.value["render"]
 
-@bp.get('/api/v1/render/ls', description = '查看有什么在渲染中')
+
+@bp.get('/api/v1/render/ls', description='查看有什么在渲染中')
 def render_ls():
     rt = []
-    for k,v in rander_settings.items():
+    for k, v in rander_settings.items():
         children = []
-        for kp,vp in v["funs"].items():
+        for kp, vp in v["funs"].items():
             children.append({
-                'name':kp, 
-                'description': vp["description"], 
-                'link_para':vp["link_para"], 
-                'query_para':vp["query_para"]
+                'name': kp,
+                'description': vp["description"],
+                'link_para': vp["link_para"],
+                'query_para': vp["query_para"]
             })
-        rt.append({'module': k, 'prefix':v['prefix'], 'count':len(v["funs"]), 'children':children})
+        rt.append({'module': k, 'prefix': v['prefix'], 'count': len(
+            v["funs"]), 'children': children})
     return rt
 
 
@@ -37,7 +38,7 @@ def render_ls():
 
 
 # 从settings的渲染中, 读取每个模组并设置侦听
-for k,v in rander_settings.items():
+for k, v in rander_settings.items():
     # 判断是外部模组还是内部模组
     if k[0] == "_":
         k = k[1:]
@@ -46,20 +47,21 @@ for k,v in rander_settings.items():
         exec(f"from app.insmodes.{k} import render as {k}_render")
 
     # 循环模组中需侦听的函数
-    for kp,vp in v["funs"].items():
+    for kp, vp in v["funs"].items():
         # 获得链接参数
         link_para = vp["link_para"]
         link_url_path = ''.join(['/{' + x + '}' for x in link_para])
 
         # 获得quary参数
         query_para = vp["query_para"]
-        fun_para = ', '.join(link_para + query_para + ["request: Request", "db: Session=Depends(database.get_db)"])
+        fun_para = ', '.join(
+            link_para + query_para + ["request: Request", "db: Session=Depends(database.get_db)"])
         # db, request, link_para, query_para
-        into_fun_para = ', '.join(['db','request'] + link_para + query_para)
+        into_fun_para = ', '.join(['db', 'request'] + link_para + query_para)
         # 编个执行字符
         route_code = \
-f"""@bp.get('{v["prefix"]}{vp["prefix"]}{link_url_path}', description='{vp["description"]}')
+            f"""@bp.get('{v["prefix"]}{vp["prefix"]}{link_url_path}', description='{vp["description"]}')
 def {k}_{kp}({fun_para}):
     return {k}_render.Render().{kp}({into_fun_para})
 """
-        exec(route_code) 
+        exec(route_code)
