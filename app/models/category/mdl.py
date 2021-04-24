@@ -6,4 +6,4 @@ from app.models.mdl.page import PageMdl
 class Category(PageMdl):
     __tablename__ = 'category'
     # 暂时无用
-    father_ids = Column(String)
+    father_id = Column(String)

@@ -9,6 +9,7 @@ from app.models.test.route import bp as test_route
 from app.models.jsaver.route import bp as jsaver_route
 from app.models.photo.route import bp as photo_route
 from app.models.packager.route import bp as packager_route
+from app.models.category.route import bp as category_route
 
 from app.models.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -51,11 +52,11 @@ def run(app: FastAPI):
         dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
     # from .models.tree.route import bp as tree_route
-    # app.include_router(
-    #     tree_route,
-    #     prefix=url_prefix + '/category/articles',
-    #     tags=['文章分类'],
-    #     dependencies=[Depends(check_ip)])
+    app.include_router(
+        category_route,
+        prefix=url_prefix + '/category/articles',
+        tags=['文章的分类'],
+        dependencies=[Depends(check_ip)])
 
     app.include_router(
         editor_route,

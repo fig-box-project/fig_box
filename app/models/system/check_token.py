@@ -6,7 +6,7 @@ from app.models.settings.crud import settings
 from app.models.user import mdl as user
 
 
-class Token():
+class Token:
     __db: Session = None
 
     def set_db(self, db: Session):
@@ -25,7 +25,7 @@ class Token():
         # 否则检查token合法性
         else:
             user_id = self.verify_token(token)
-            if user_id == None:
+            if user_id is None:
                 raise HTTPException(status_code=400, detail='token error')
             else:
                 return self.__db.query(user.User).filter_by(id=user_id).first()
