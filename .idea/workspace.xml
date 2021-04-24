@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f3fa86b8-a3ac-4464-a85a-4519e618d90d" name="Default Changelist" comment="u">
-      <change afterPath="$PROJECT_DIR$/app/models/category/crud.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/category/orm.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/category/route.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/orm/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/orm/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/_tree/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/_tree/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/category/mdl.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/category/mdl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/system/blueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/system/blueprint.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/system/check_token.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/system/check_token.py" afterDir="false" />
-    </list>
+    <list default="true" id="f3fa86b8-a3ac-4464-a85a-4519e618d90d" name="Default Changelist" comment="修好category模组" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -107,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619264531325</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="修好category模组">
+      <created>1619275851337</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1619275851337</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -125,6 +121,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0048整合到PyCharm" />
     <MESSAGE value="u" />
-    <option name="LAST_COMMIT_MESSAGE" value="u" />
+    <MESSAGE value="修好category模组" />
+    <option name="LAST_COMMIT_MESSAGE" value="修好category模组" />
   </component>
 </project>
