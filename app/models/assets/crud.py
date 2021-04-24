@@ -1,4 +1,3 @@
-import os
 import requests
 from fastapi import HTTPException
 from fastapi.datastructures import UploadFile

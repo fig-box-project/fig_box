@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f3fa86b8-a3ac-4464-a85a-4519e618d90d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/insmodes/article/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/insmodes/article/route.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/route.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/insmodes/article/settings.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/settings.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/homepage/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/homepage/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/render/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/render/cache.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/render/crud.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/render/route.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/system/blueprint.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/system/blueprint.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/assets/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/crud.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/assets/input_assets_connector/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/input_assets_connector/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/assets/mdl.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/mdl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/mdl/hasid.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mdl/hasid.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/mdl/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mdl/page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,7 +31,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
