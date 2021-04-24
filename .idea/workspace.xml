@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f3fa86b8-a3ac-4464-a85a-4519e618d90d" name="Default Changelist" comment="">
+    <list default="true" id="f3fa86b8-a3ac-4464-a85a-4519e618d90d" name="Default Changelist" comment="0048整合到PyCharm">
+      <change afterPath="$PROJECT_DIR$/app/models/category/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/insmodes/article/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/insmodes/article/route.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/route.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/insmodes/article/settings.yml" beforeDir="false" afterPath="$PROJECT_DIR$/app/insmodes/article/settings.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/assets/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/assets/input_assets_connector/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/input_assets_connector/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/assets/mdl.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/assets/mdl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/mdl/hasid.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mdl/hasid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/mdl/page.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/mdl/page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/category/mdl.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/category/mdl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/debug_server.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +27,50 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="my_fastapi" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="my_fastapi" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -42,6 +80,30 @@
       <option name="presentableId" value="Default" />
       <updated>1612064676117</updated>
     </task>
+    <task id="LOCAL-00001" summary="0048整合到PyCharm">
+      <created>1619242955582</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1619242955582</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="0048整合到PyCharm" />
+    <option name="LAST_COMMIT_MESSAGE" value="0048整合到PyCharm" />
   </component>
 </project>
