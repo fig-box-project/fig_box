@@ -1,0 +1,4 @@
+from .InputAssetsConnector import InputAssetsConnector
+from .InputZipDirConnector import InputZipDirConnector
+from .InputUploadConnector import InputUploadConnector
+from .InputDownloadConnector import InputDownloadConnector

@@ -2,7 +2,7 @@
 /files
 /downloads
 /tree.json
-/tutorial-env
+/venv
 settings.yml
 app/log.py
 app/modules.mods

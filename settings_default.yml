@@ -4,6 +4,7 @@ url_prefix: /api/v1
 domain_port: http://dev.datasview.com:8080
 auth_test_mode: True
 ip_test_mode: True
+route_test_mode: True
 assets_path: files/assets
 allow_link_ip:
 - 35.241.66.226
@@ -21,15 +22,7 @@ site_maps:
       priority: 1.0
   db_sites: {}
   
-render: 
-  _homepage:  #带_的表示内部模组
-    prefix: '/'  # url的前缀
-    funs: 
-      page: 
-        prefix: ''
-        description: 首页
-        link_para: []  # url地址参数
-        query_para: []  # url ?后的参数
+render: {}
 
 character:
   auths:

@@ -1,14 +1,16 @@
-import os
+import requests
 from fastapi import HTTPException
 from fastapi.datastructures import UploadFile
 from app.models.user.mdl import User
 from app.models.settings.crud import settings
+from .input_assets_connector import *
 
 path_prefix = "files/assets/"
 allow_upload_type = {"jpg", "png", "bmp"}
 
+
 class Assets:
-    
+
     @staticmethod
     def get_link_prefix():
         # 获取链接前缀
@@ -19,45 +21,46 @@ class Assets:
         return f"{Assets.get_link_prefix()}/{path}"
 
     @staticmethod
-    async def insert_file(file: UploadFile, path: str, filename: str, mode = "auto_countup",limit = 0):
-        prefix = f"{path_prefix}{path}"
-        os.makedirs(prefix, exist_ok=True)
-        asset = await file.read()
-        # 插入
-        # 分头尾
-        i = filename.rfind(".")
-        filename_head = filename[:i]
-        filename_foot = filename[i:]
-        # 不允许上传的类型要截断
-        if filename_foot[1:] not in allow_upload_type:
-            raise HTTPException(403, "Upload type not allowed")
-        if mode == "auto_countup":
-            # limit为0 时为无限制
-            asset_len = len(asset)
-            if limit != 0 and asset_len > limit * 1000000:
-                raise HTTPException(404,"上传文件的大小超过系统限制")
-            # 对于文件已存在时的处理
-            if os.path.exists(f"{prefix}/{filename}"):
-                # 当存在时更改名称再插入
-                for j in range(99):
-                    filename = f"{filename_head}_{j}{filename_foot}"
-                    if os.path.exists(f"{prefix}/{filename}"):
-                        continue
-                    break
-            # 文件不存在时,插入
-            with open(f"{prefix}/{filename}", 'wb') as f:
-                f.write(asset)
-            return (f"{path}/{filename}", asset_len, filename)
-        else:
-            raise HTTPException(500,"模式不支持")
+    async def upload_with_user(asset: UploadFile, filename: str, owner: User, prefix="", visibility=True, limit=0):
+        connector = InputUploadConnector(
+            f"{prefix}user/{owner.id}", filename, asset, limit)
+        await connector.packup()
+        link = f"{connector.path}/{connector.filename}"
+        return {"url": Assets.path_to_link(link),
+                "link": link, "name": connector.filename, "size": connector.size}
 
     @staticmethod
-    async def insert_with_user(asset, filename:str, owner:User, prefix = "", visibility = True, limit = 0):
-        rt = await Assets.insert_file(asset, f"{prefix}user/{owner.id}", filename, limit = limit)
-        return {"url":Assets.path_to_link(rt[0]), "link":rt[0], "name":rt[2], "size":rt[1]}
-
-
+    async def migration_packup(parts: list):
+        # 替换到实际路径
+        path_data = {
+            "settings": "settings.yml",
+            "templates": "files/templates",
+            "photos": "files/assets/photos",
+            "database": "db.sqlite"
+        }
+        for i in range(len(parts)):
+            if parts[i] in path_data:
+                key = parts[i]
+                parts[i] = path_data[key]
+                del path_data[key]
+            else:
+                HTTPException(422, "所输入的内容不符合预设")
+        if len(parts) == 0:
+            parts = list(path_data.values())
+            # parts = ['settings.yml', "db.sqlite"]
+        # 开始打包
+        connector = InputZipDirConnector(
+            "packup", "migration.zip", parts, unexist_skip=True)
+        connector.__zip_mode = InputZipDirConnector.WRAP_IN_ROOT
+        await connector.packup()
+        return f"{connector.path}/{connector.filename}"
 
     @staticmethod
-    def insert_with_character():
-        ...
+    async def migration_from(old_ip: str):
+        url = f"{old_ip}/migration/packup"
+        responses = requests.get(url).text
+        # 去除引号,成功返回路径
+        link = f"{old_ip}/assets/{responses[1:-1]}"
+        print(link)
+        connector = InputDownloadConnector("dl", "sss.zip", link)
+        await connector.packup()

@@ -30,7 +30,25 @@ def page(func):
             return tem_engine.TemplateResponse('404.html',{'request':request,'err':"模版不存在"})
         else:
             raise HTTPException(404,"找不到404页面")
-            
+    return wrap
+
+# 固定的页面
+def const_page(func):
+    # page(db,request,link)link 当作元组传入
+    # func 中将传入(db)
+    # func 请返回(tamplate_path, data)
+    def wrap(request: Request, db: Session=Depends(database.get_db)):
+        rt:tuple = func(db)
+        template_path = rt[0]
+        data = rt[1]
+        if os.path.exists(f"{tempath_prefix}/{template_path}"):
+            data['request'] = request # request
+            return tem_engine.TemplateResponse(template_path, data)
+        # 如果404页面存在则返回它
+        if os.path.exists(f"{tempath_prefix}/404.html"):
+            return tem_engine.TemplateResponse('404.html',{'request':request,'err':"模版不存在"})
+        else:
+            raise HTTPException(404,"找不到404页面")
     return wrap
 
 class Page:
@@ -43,8 +61,11 @@ class Page:
         # rending_data[module] = {}
         # rending_data["now_module"] = module
 
-    def wrap(self):
-        return page
+    def wrap(self,is_constant=False):
+        if is_constant:
+            return const_page
+        else:
+            return page
 
 
     def show_page(self, template_path: str, data:dict):
