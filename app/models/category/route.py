@@ -13,6 +13,10 @@ bp = APIRouter()
 def read_database(id: int, db: Session = Depends(database.get_db)):
     return db.query(mdl.Category).filter_by(id=id).first()
 
+@bp.get('/ls')
+def ls(db: Session = Depends(database.get_db)):
+    return db.query(mdl.Category).all()
+
 
 @bp.post('/create')
 def create_category(data: orm.CategoryCU, db: Session = Depends(database.get_db),
