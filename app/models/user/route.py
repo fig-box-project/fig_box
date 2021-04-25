@@ -42,7 +42,7 @@ def login(user: orm.UserLogin, db: Session = Depends(database.get_db)):
 
 @bp.get('/view/all_user', description='查看所有用户')
 def view_all_user(
-        user: mdl.User = Depends(token.get_token_func()),
+        user: mdl.User = Depends(token.check_token),
         db: Session = Depends(database.get_db)):
     user.into_auth("user_all_edit")
     return crud.get_users(db)

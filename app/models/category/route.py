@@ -38,6 +38,5 @@ def delete_category(id: int, db: Session = Depends(database.get_db), now_user: U
 def update_json(id: int, data: orm.CategoryCU, db: Session = Depends(database.get_db),
                 now_user: User = Depends(token.check_token), ):
     insert_data = data.dict()
-    insert_data['id'] = id
-    db.query(mdl.Category).update(insert_data)
+    db.query(mdl.Category).filter_by(id=id).update(insert_data)
     db.commit()
