@@ -6,7 +6,6 @@ p = Page()
 
 
 @bp.get('/')
-@p.wrap(is_constant = True)
+@p.wrap(is_constant=True)
 def homepage(db):
-    return("homepage.html",{})
-
+    return "homepage.html", {}

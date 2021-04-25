@@ -54,7 +54,7 @@ def run(app: FastAPI):
     # from .models.tree.route import bp as tree_route
     app.include_router(
         category_route,
-        prefix=url_prefix + '/category/articles',
+        prefix=url_prefix + '/category',
         tags=['文章的分类'],
         dependencies=[Depends(check_ip)])
 

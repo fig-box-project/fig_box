@@ -1,6 +1,11 @@
+from sqlalchemy.orm import Session
+
 from app.models.assets.output_assets_connector import *
 from app.models.assets.input_assets_connector import *
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+
+from app.models.category import mdl
+from app.models.mdl import database
 
 bp = APIRouter()
 
@@ -22,11 +27,18 @@ async def packup():
 async def download():
     from app.models.assets.input_assets_connector.InputDownloadConnector import InputDownloadConnector
     connector = InputDownloadConnector(
-        "test", "tt312.jpg", "https://lh3.googleusercontent.com/ogw/ADGmqu8m5HjUhjl1CgV_0NyPrbBTAcsgpWMC2p1LSi0=s64-c-mo")
+        "test", "tt312.jpg",
+        "https://lh3.googleusercontent.com/ogw/ADGmqu8m5HjUhjl1CgV_0NyPrbBTAcsgpWMC2p1LSi0=s64-c-mo")
     await connector.packup()
 
 
-@bp.get('unzip')
+@bp.get('/unzip')
 def unzip():
     connector = OutputUnzipConnector('packup/test.zip')
     connector.output()
+
+
+@bp.get('/category')
+def category(id: int, db: Session = Depends(database.get_db)):
+    c: mdl.Category = db.query(mdl.Category).filter_by(id=id).first()
+    return c.father
