@@ -21,7 +21,6 @@ class InputZipDirConnector(InputAssetsConnector):
     async def packup(self):
         await super(InputZipDirConnector, self).packup()
         self.update_filename()
-        self.creat_directory_when_not_existing()
         self.__auto_packup()
 
     def __auto_packup(self):

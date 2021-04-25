@@ -16,7 +16,7 @@ class InputAssetsConnector():
 
     # 用于被重写,被外部调用
     async def packup(self):
-        ...
+        self.creat_directory_when_not_existing()
 
     AUTO_COUNT_UP = 0
     AUTO_DEL_IF_EXISTS = 1

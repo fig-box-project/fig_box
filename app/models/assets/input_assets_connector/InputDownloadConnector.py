@@ -12,7 +12,6 @@ class InputDownloadConnector(InputAssetsConnector):
     async def packup(self):
         await super(InputDownloadConnector, self).packup()
         self.update_filename()
-        self.creat_directory_when_not_existing()
         self.__download()
 
     def __download(self):
