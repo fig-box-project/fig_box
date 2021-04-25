@@ -15,7 +15,7 @@ class CategoryServer:
     def __init__(self, db: Session, service: str):
         all_services = db.query(mdl.Category).filter_by(title=service).all()
         if len(all_services) == 0:
-            HTTPException(403, '没有找到此服务,你是否已创建此服务?')
+            raise HTTPException(403, '没有找到此服务,你是否已创建此服务?')
         self.__service: mdl.Category = all_services[0]
         self.__db = db
 
@@ -49,7 +49,7 @@ def create_categor(data: orm.CategoryCU, db: Session = Depends(database.get_db),
                    now_user: User = Depends(token.check_token), ):
     # 查找有无相同的服务
     if data.title in ls_service(db):
-        HTTPException(403, '已存在同名服务')
+        raise HTTPException(403, '已存在同名服务')
     # 插入
     data.father_id = 0
     data = mdl.Category(**data.dict())

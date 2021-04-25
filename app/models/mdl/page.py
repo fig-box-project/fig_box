@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .hasid import HasidMdl
 from typing import Optional
 from sqlalchemy import Column, String, DateTime
@@ -20,6 +22,14 @@ class PageMdl(HasidMdl):
     seo_title = Column(String(40))
     seo_keywords = Column(String(256))
     seo_description = Column(String(400))
+
+    def create_stamp(self):
+        now = datetime.now()
+        self.create_date = now
+        self.update_date = now
+
+    def update_stamp(self):
+        self.update_date = datetime.now()
 
 
 class PageOrm(BaseModel):
