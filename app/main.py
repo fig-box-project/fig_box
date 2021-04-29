@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import app.models.system.mod_blueprint as mod_blueprint
 from app.models.system.check_token import token
 import app.models.system.create_database as create_database
-version = "α4.24"
+version = "α4.30"
 # 初始化数据库, 创建数据表
 db: Session = create_database.run()
 
