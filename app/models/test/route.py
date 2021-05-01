@@ -1,3 +1,4 @@
+import HtmlCreator
 from sqlalchemy.orm import Session
 
 from app.models.assets.output_assets_connector import *
@@ -41,4 +42,10 @@ def unzip():
 @bp.get('/category')
 def category(id: int, db: Session = Depends(database.get_db)):
     c: mdl.Category = db.query(mdl.Category).filter_by(id=id).first()
+
     return c.father
+
+
+@bp.get('/html')
+def html():
+    print(HtmlCreator.Html('aaa'))
