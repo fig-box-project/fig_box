@@ -16,7 +16,7 @@ rending_data = {"now_module": ""}
 def page(func):
     # page(db,request,link)link 当作元组传入
     # func 中将传入(db, link)
-    # func 请返回(tamplate, data)
+    # func 请返回(tamplate, data, [default html]: Html)
     def wrap(params: str, request: Request, db: Session = Depends(database.get_db)):
         params = params.split("/")
         if func.__code__.co_argcount - 1 == len(params):
@@ -39,7 +39,7 @@ def page(func):
 def const_page(func):
     # page(db,request,link)link 当作元组传入
     # func 中将传入(db)
-    # func 请返回(tamplate_path, data)
+    # func 请返回(tamplate_path, data, [default html]: Html)
     def wrap(request: Request, db: Session = Depends(database.get_db)):
         rt: tuple = func(db)
         template_path = rt[0]
