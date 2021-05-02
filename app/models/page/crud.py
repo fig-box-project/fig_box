@@ -6,6 +6,8 @@ from functools import wraps
 import os
 import sys
 
+from app.models.template.Template import Template
+
 tempath_prefix = "files/templates"
 tem_engine = Jinja2Templates(tempath_prefix)
 
@@ -19,18 +21,13 @@ def page(func):
     # func 请返回(tamplate, data, [default html]: Html)
     def wrap(params: str, request: Request, db: Session = Depends(database.get_db)):
         params = params.split("/")
+        # 判断函数可接受的参数与前端传来的参数数量
         if func.__code__.co_argcount - 1 == len(params):
             rt: tuple = func(db, *params)
-            template_path = rt[0]
-            data = rt[1]
-            if os.path.exists(f"{tempath_prefix}/{template_path}"):
-                data['request'] = request  # request
-                return tem_engine.TemplateResponse(template_path, data)
+            rt[1]['request'] = request
+            return Template.response(*rt)
         # 如果404页面存在则返回它
-        if os.path.exists(f"{tempath_prefix}/404.html"):
-            return tem_engine.TemplateResponse('404.html', {'request': request, 'err': "模版不存在"})
-        else:
-            raise HTTPException(404, "找不到404页面")
+        Template.response_404(request, f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
 
     return wrap
 
