@@ -1,11 +1,19 @@
 import os
 
 # TODO:对Element类进行一个继承,返回{{}}所包含的内容之类的
+from fastapi import HTTPException
 from starlette.responses import Response
+from fastapi.templating import Jinja2Templates
 
 
 class Template:
     ROOT_PATH = 'files/templates'
+    PATH_404 = '404.html'
+    ENGINE: Jinja2Templates = Jinja2Templates(ROOT_PATH)
+    # 设置是否在404页面不存在时自动创建404,TODO:创建自动创建器并改为True.
+    AUTO_CREATE_404 = False
+
+
 
     @staticmethod
     def get_root():
@@ -20,13 +28,40 @@ class Template:
         return f'{Template.ROOT_PATH}/{template_path}'
 
     @staticmethod
-    def response() -> Response:
-        """获取用于返回的资源"""
+    def response(path: str, data: dict, get_creator_func=None) -> Response:
+        """输入相对路径,要绑定的数据,html构筑函数,
+        :return 获取用于返回给前端的对象"""
+        # 存在就直接返回
+        if os.path.exists(Template.get_full_path(path)):
+            return Template.ENGINE.TemplateResponse(path, data)
+        # 不存在时确认有无传入自动创建器
+        if get_creator_func is not None:
+            Template.auto_create_html(path, get_creator_func)
+            return Template.ENGINE.TemplateResponse(path, data)
+        # 以上都无是检查404的存在
+        if os.path.exists(Template.get_full_path(Template.PATH_404)):
+            return Template.ENGINE.TemplateResponse(
+                Template.PATH_404,
+                {'request': data['request'], 'err': f'template path: {path} un exists.'}
+            )
+        # 无404页面时确定是否自动创建404页面
+        if Template.AUTO_CREATE_404:
+            Template.auto_create_404()
+            return Template.ENGINE.TemplateResponse(
+                Template.PATH_404,
+                {'request': data['request'], 'err': f'template path: {path} un exists.'}
+            )
+        # 直接报404
+        raise HTTPException(404, f'can not find {path} and 404.html')
+
+    @staticmethod
+    def auto_create_404():
+        # TODO
         ...
 
     @staticmethod
     def auto_create_html(template_path: str, get_creator_func):
-        """检查html地址是否存在,不存在则用Html来自动创建"""
+        """检查相对地址是否存在,不存在则用Html来自动创建"""
         full_path = Template.get_full_path(template_path)
         if not os.path.exists(full_path):
             html = str(get_creator_func())
