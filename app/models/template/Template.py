@@ -13,8 +13,6 @@ class Template:
     # 设置是否在404页面不存在时自动创建404,TODO:创建自动创建器并改为True.
     __AUTO_CREATE_404 = False
 
-
-
     @staticmethod
     def get_root():
         """获取绝对路径,并在不存在时创建"""
@@ -40,9 +38,8 @@ class Template:
             return Template.__ENGINE.TemplateResponse(path, data)
         return Template.response_404(data['request'], f'template path: {path} un exists.')
 
-
     @staticmethod
-    def response_404(request,message:str):
+    def response_404(request, message: str):
         # 以上都无是检查404的存在
         if os.path.exists(Template.get_full_path(Template.__PATH_404)):
             return Template.__ENGINE.TemplateResponse(
@@ -69,6 +66,14 @@ class Template:
         """检查相对地址是否存在,不存在则用Html来自动创建"""
         full_path = Template.get_full_path(template_path)
         if not os.path.exists(full_path):
+            Template.auto_create_dirs(full_path)
             html = str(get_creator_func())
             with open(full_path, 'w') as f:
                 f.write(html)
+
+    @staticmethod
+    def auto_create_dirs(path: str):
+        index = path.rfind('/')
+        if index != -1:
+            path = path[:index]
+            os.makedirs(path, exist_ok=True)

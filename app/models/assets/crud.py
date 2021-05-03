@@ -13,7 +13,7 @@ class Assets:
 
     @staticmethod
     def get_link_prefix():
-        # 获取链接前缀
+        """获取链接前缀"""
         return settings.value["domain_port"] + "/assets"
 
     @staticmethod

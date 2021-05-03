@@ -12,6 +12,7 @@ class Module:
     name: str
     status: str
     description: str
+
     def __init__(self, name: str):
         os.makedirs("files", exist_ok=True)
         os.makedirs("files/downloads", exist_ok=True)
@@ -20,7 +21,7 @@ class Module:
             status = settings.value["mods"][self.name]["status"]
         except Exception:
             status = None
-            
+
     def update_status(self):
         try:
             settings.value["mods"][self.name]["status"] = self.status
@@ -30,21 +31,21 @@ class Module:
 
     # 下载
     def download(self, store: str):
-        zip_path = 'files/downloads/'+ self.name +'.zip'
+        zip_path = 'files/downloads/' + self.name + '.zip'
         # 下载 TODO:url
         link = f"https://github.com/{store}/{self.name}/archive/main.zip"
         Tool.download_file(link, zip_path)
         # 解压
-        Tool.unzip(zip_path,"app/insmodes/",self.name)
+        Tool.unzip(zip_path, "app/insmodes/", self.name)
         # 使用
         self.use()
-        
+
     # 卸载
     def uninstall(self):
         # 禁用
         self.unuse()
         # 删除各种文件
-        os.remove('files/downloads/'+ self.name +'.zip')
+        os.remove('files/downloads/' + self.name + '.zip')
         shutil.rmtree("app/insmodes/" + self.name)
 
     # 使用
@@ -56,13 +57,13 @@ class Module:
             mod_settings = yaml.load(f, Loader=yaml.SafeLoader)
         settings.value["mods"][self.name] = mod_settings[self.name]
         settings.value["mods"][self.name]["status"] = "used"
-        
-        
+
         # 搬运sitemap到settings
         if "site_maps" in mod_settings:
             if "single_sites" in mod_settings["site_maps"].keys():
                 print("-------------")
-                settings.value["site_maps"]["single_sites"][self.name] = mod_settings["site_maps"]["single_sites"][self.name]
+                settings.value["site_maps"]["single_sites"][self.name] = mod_settings["site_maps"]["single_sites"][
+                    self.name]
             if "db_sites" in mod_settings["site_maps"].keys():
                 settings.value["site_maps"]["db_sites"][self.name] = mod_settings["site_maps"]["db_sites"][self.name]
         # 搬运render到settings
@@ -111,10 +112,11 @@ def local_ls():
         if i == ".DS_Store":
             continue
         if i in settings.value["mods"]:
-            rt.append({"name": i, "used":True})
+            rt.append({"name": i, "used": True})
         else:
-            rt.append({"name": i, "used":False})
+            rt.append({"name": i, "used": False})
     return rt
+
 
 class Store:
     def __init__(self):
@@ -122,7 +124,7 @@ class Store:
         self.data = {}
 
     # 获取商品列表
-    def store_ls(self,name: str):
+    def store_ls(self, name: str):
         url = f"https://api.github.com/orgs/{name}/repos"
         # 注意,一小时只能调用60次githubapi
         if time.time() - self.last_time > 120:
@@ -136,42 +138,43 @@ class Store:
                 for i in j:
                     i = i["name"]
                     if i in insmodes_list:
-                        rt.append({"name": i, "installed":True})
+                        rt.append({"name": i, "installed": True})
                     else:
-                        rt.append({"name": i, "installed":False})
+                        rt.append({"name": i, "installed": False})
                 return rt
             except:
                 pass
-        return [{"name":"nothing", "installed":False}]
+        return [{"name": "nothing", "installed": False}]
+
 
 store = Store()
+
 
 class Tool:
     # 解压zip,重命名
     @staticmethod
-    def unzip(oldpath: str, newpath: str,newname: str):
-        zipFile = zipfile.ZipFile(oldpath,'r')
+    def unzip(oldpath: str, newpath: str, newname: str):
+        zipFile = zipfile.ZipFile(oldpath, 'r')
         for file in zipFile.namelist():
-            zipFile.extract(file,newpath)
+            zipFile.extract(file, newpath)
         directory_name = zipFile.namelist()[0][:-1]
         zipFile.close()
         # 重命名
-        os.rename(newpath + directory_name,newpath + newname)
-    
+        os.rename(newpath + directory_name, newpath + newname)
+
     # 下载文件
     @staticmethod
-    def download_file(url:str,path: str):
+    def download_file(url: str, path: str):
         print(url)
-        res = requests.get(url,stream=True)
+        res = requests.get(url, stream=True)
         with open(path, 'wb') as dl:
             for chunk in res.iter_content(chunk_size=1024):
                 if chunk:
                     dl.write(chunk)
                 # 如果函数存在则给其百分比
-    
+
     # get请求并转换为json
     @staticmethod
-    def get_json(url:str):
+    def get_json(url: str):
         rt = requests.get(url).json()
         return rt
-        

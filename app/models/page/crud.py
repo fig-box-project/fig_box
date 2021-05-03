@@ -24,10 +24,13 @@ def page(func):
         # 判断函数可接受的参数与前端传来的参数数量
         if func.__code__.co_argcount - 1 == len(params):
             rt: tuple = func(db, *params)
-            rt[1]['request'] = request
-            return Template.response(*rt)
-        # 如果404页面存在则返回它
-        return Template.response_404(request, f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
+            if rt is not None:
+                rt[1]['request'] = request
+                return Template.response(*rt)
+            return Template.response_404(request, '可能在数据库找不到该资源')
+        # 返回404
+        return Template.response_404(request,
+                                     f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
 
     return wrap
 
@@ -60,6 +63,8 @@ class Page:
         ...
 
     def wrap(self, is_constant=False):
+        """ func 中将传入(db, *link)
+        func 请返回(tamplate_path[相对路径], data, [default html]: Html)"""
         if is_constant:
             return const_page
         else:

@@ -9,6 +9,13 @@ app.include_router(
     prefix=url_prefix + '/{1}',
     tags=[{2}],
     dependencies=[Depends(check_ip)])
+if 'app.insmodes.{0}.route.pg_bp':
+    from app.insmodes.{0}.route import pg_bp as {0}_pg_route
+    app.include_router(
+        {0}_pg_route,
+        prefix='/{1}',
+        tags=[{2}],
+        dependencies=[Depends(check_ip)])
 """
 
 mods: dict = settings.value["mods"]
