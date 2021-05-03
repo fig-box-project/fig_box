@@ -9,7 +9,8 @@ app.include_router(
     prefix=url_prefix + '/{1}',
     tags=[{2}],
     dependencies=[Depends(check_ip)])
-if 'app.insmodes.{0}.route.pg_bp':
+import app.insmodes.{0}.route as {0}_route
+if 'pg_bp' in dir({0}_route):
     from app.insmodes.{0}.route import pg_bp as {0}_pg_route
     app.include_router(
         {0}_pg_route,
@@ -23,7 +24,7 @@ mods: dict = settings.value["mods"]
 
 def check_ip(request: Request):
     # 进入路由时检查IP
-    if settings.value['ip_test_mode'] == False:
+    if not settings.value['ip_test_mode']:
         # 如果ip不在允许的列表中时,不允许通过
         if request.client.host not in settings.value['allow_link_ip']:
             raise HTTPException(status_code=400, detail='unallow ip')
