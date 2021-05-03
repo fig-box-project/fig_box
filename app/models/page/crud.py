@@ -27,7 +27,7 @@ def page(func):
             rt[1]['request'] = request
             return Template.response(*rt)
         # 如果404页面存在则返回它
-        Template.response_404(request, f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
+        return Template.response_404(request, f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
 
     return wrap
 
@@ -39,16 +39,18 @@ def const_page(func):
     # func 请返回(tamplate_path, data, [default html]: Html)
     def wrap(request: Request, db: Session = Depends(database.get_db)):
         rt: tuple = func(db)
-        template_path = rt[0]
-        data = rt[1]
-        if os.path.exists(f"{tempath_prefix}/{template_path}"):
-            data['request'] = request  # request
-            return tem_engine.TemplateResponse(template_path, data)
-        # 如果404页面存在则返回它
-        if os.path.exists(f"{tempath_prefix}/404.html"):
-            return tem_engine.TemplateResponse('404.html', {'request': request, 'err': "模版不存在"})
-        else:
-            raise HTTPException(404, "找不到404页面")
+        rt[1]['request'] = request
+        return Template.response(*rt)
+        # template_path = rt[0]
+        # data = rt[1]
+        # if os.path.exists(f"{tempath_prefix}/{template_path}"):
+        #     data['request'] = request  # request
+        #     return tem_engine.TemplateResponse(template_path, data)
+        # # 如果404页面存在则返回它
+        # if os.path.exists(f"{tempath_prefix}/404.html"):
+        #     return tem_engine.TemplateResponse('404.html', {'request': request, 'err': "模版不存在"})
+        # else:
+        #     raise HTTPException(404, "找不到404页面")
 
     return wrap
 
@@ -56,12 +58,6 @@ def const_page(func):
 class Page:
     def __init__(self):
         ...
-        # route_path = sys._getframe(1).f_code.co_filename
-        # print(route_path)
-        # module = route_path.split('/')[-2]
-        # print(module)
-        # rending_data[module] = {}
-        # rending_data["now_module"] = module
 
     def wrap(self, is_constant=False):
         if is_constant:
@@ -75,11 +71,5 @@ class Page:
             return tem_engine.TemplateResponse(template_path, data)
         elif os.path.exists(f"{tempath_prefix}/404.html"):
             return tem_engine.TemplateResponse('404.html', {'request': self.request, 'err': "模版不存在"})
-        else:
-            raise HTTPException(404, "找不到404页面")
-
-    def show_404_page(self, err):
-        if os.path.exists(f"{tempath_prefix}/404.html"):
-            return tem_engine.TemplateResponse('404.html', {'request': self.request, 'err': err})
         else:
             raise HTTPException(404, "找不到404页面")
