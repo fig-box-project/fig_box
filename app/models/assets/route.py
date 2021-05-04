@@ -12,9 +12,7 @@ bp = APIRouter()
 
 @bp.get("/assets/{assets_path:path}", description="获取资源链接")
 def get_assets(assets_path: str):
-    # 文件的路径
-    path = assets_path_prefix + "/" + assets_path
-    connector = OutputWebConnector(path)
+    connector = OutputWebConnector(assets_path)
     return connector.output()
 
 # @bp.post('/migration/packup', description = "迁移的打包")

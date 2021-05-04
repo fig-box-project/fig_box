@@ -22,7 +22,7 @@ class OutputWebConnector(OutputAssetsConnector):
         self.__safty_filter()
         self._check_path()
         media_type = self.__check_name_get_type()
-        return FileResponse(self.path, media_type=media_type)
+        return FileResponse(self.get_full_path(), media_type=media_type)
 
     def __safty_filter(self):
         # 安全过滤,如果有两点系统会自动让路径返回上一级,所以要消除..

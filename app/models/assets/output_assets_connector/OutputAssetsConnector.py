@@ -10,6 +10,7 @@ class OutputAssetsConnector():
         self.path = path
 
     def _check_path(self):
+        print(self.get_full_path())
         if not os.path.exists(self.get_full_path()):
             raise HTTPException(404, "找不到资源")
 
