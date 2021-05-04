@@ -2,6 +2,7 @@ import app.models.system.blueprint as blueprint
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
 import app.models.system.mod_blueprint as mod_blueprint
+from app.models.system import err_handle
 from app.models.system.check_token import token
 import app.models.system.create_database as create_database
 version = "α5.3"
@@ -20,6 +21,9 @@ app = FastAPI(
 # 检查token的函数
 token.set_db(db)
 token.get_token_func()
+
+# 导入错误处理系统
+err_handle.run(app)
 
 # 导入系统模组的蓝图
 blueprint.run(app)

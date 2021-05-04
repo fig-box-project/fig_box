@@ -1,4 +1,5 @@
-import HtmlCreator
+import secrets
+
 from sqlalchemy.orm import Session
 
 from app.models.assets.output_assets_connector import *
@@ -33,10 +34,11 @@ async def download():
     await connector.packup()
 
 
-@bp.get('/unzip')
-def unzip():
-    connector = OutputUnzipConnector('packup/test.zip')
-    connector.output()
+@bp.get('/unzip/{l}')
+def unzip(l: int):
+
+    return 5/0
+    # secrets.compare_digest()
 
 
 @bp.get('/category')
@@ -44,8 +46,3 @@ def category(id: int, db: Session = Depends(database.get_db)):
     c: mdl.Category = db.query(mdl.Category).filter_by(id=id).first()
 
     return c.father
-
-
-@bp.get('/html')
-def html():
-    print(HtmlCreator.Html('aaa'))

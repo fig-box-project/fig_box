@@ -1,6 +1,8 @@
-from HtmlCreator import Html
-from HtmlCreator.Body.Anchor import Anchor
+
 from fastapi import APIRouter
+from html_builder import Html
+from html_builder.Body.Anchor import Anchor
+
 from app.models.page.crud import Page
 
 bp = APIRouter()
