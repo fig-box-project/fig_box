@@ -41,3 +41,16 @@ class PageOrm(BaseModel):
     seo_title: str = Query(..., min_length=1)
     seo_keywords: Optional[str] = None
     seo_description: Optional[str] = None
+
+    def dict_when_create(self):
+        now = datetime.now()
+        rt = self.dict()
+        rt['create_date'] = now
+        rt['update_date'] = now
+        return rt
+
+    def dict_when_update(self):
+        now = datetime.now()
+        rt = self.dict()
+        rt['update_date'] = now
+        return rt
