@@ -22,7 +22,7 @@ class User(Base):
     def get_token(self, expires_in=3600):
         try:
             data = jwt.encode(
-                {'id': self.id, 'exp': time.time()+expires_in},
+                {'id': self.id, 'exp': time.time() + expires_in},
                 settings.value['token_key'], algorithm='HS256')
         except:
             return "error"
@@ -30,6 +30,7 @@ class User(Base):
 
     # 检查权限,auth请输入权限符
     def into_auth(self, auth: str):
+        """检查权限,auth请输入权限符,如果此用户没有此权限将抛出403"""
         if not check_auth(self.character, auth):
             raise HTTPException(
                 status_code=403, detail='用户权限不足,不能进入 ' + auth + ' 权限')
