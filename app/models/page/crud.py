@@ -14,6 +14,12 @@ tem_engine = Jinja2Templates(tempath_prefix)
 rending_data = {"now_module": ""}
 
 
+class ParamsContainer:
+    def __init__(self, db: Session, request: Request):
+        self.db = db
+        self.request = request
+
+
 # 装饰器
 def page(func):
     # page(db,request,link)link 当作元组传入
@@ -23,7 +29,7 @@ def page(func):
         params = params.split("/")
         # 判断函数可接受的参数与前端传来的参数数量
         if func.__code__.co_argcount - 1 == len(params):
-            rt: tuple = func(db, *params)
+            rt: tuple = func(ParamsContainer(db, request), *params)
             if rt is not None:
                 if rt[0] == 404:
                     return Template.response_404(request, rt[1])
@@ -43,9 +49,9 @@ def const_page(func):
     # func 中将传入(db)
     # func 请返回(tamplate_path, data, [default html]: Html)
     def wrap(request: Request, db: Session = Depends(database.get_db)):
-        rt: tuple = func(db)
+        rt: tuple = func(ParamsContainer(db, request))
         if rt[0] == 404:
-            return Template.response_404(request,rt[1])
+            return Template.response_404(request, rt[1])
         rt[1]['request'] = request
         return Template.response(*rt)
         # template_path = rt[0]

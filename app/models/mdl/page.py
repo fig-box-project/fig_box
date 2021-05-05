@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from starlette.requests import Request
+
 from .hasid import HasidMdl
 from typing import Optional
 from sqlalchemy import Column, String, DateTime
@@ -33,8 +35,10 @@ class PageMdl(HasidMdl):
     def update_stamp(self):
         self.update_date = datetime.now()
 
-    def get_image_url(self):
-        Assets.path_to_link(self.image)
+    def reset_image_url(self, request: Request):
+        """将image重设为完整网址"""
+        # TODO: 上线后改为https
+        self.image = Assets.path_to_link(self.image, host=f'http://{request.headers.get("host", None)}')
 
 
 class PageOrm(BaseModel):

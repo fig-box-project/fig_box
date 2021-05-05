@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.models.category import orm, mdl
 from app.models.mdl import database
-from app.models.page.crud import Page
+from app.models.page.crud import Page, ParamsContainer
 from app.models.system import token
 from app.models.user.mdl import User
 
@@ -123,14 +123,15 @@ def category_profile_creator():
 
 @pg_bp.get('/{params:path}')
 @p.wrap()
-def category_profile(db: Session, service: str, category_name: str):
-    main_category = db.query(mdl.Category).filter_by(title=service).first()
+def category_profile(pc: ParamsContainer, service: str, category_name: str):
+    main_category = pc.db.query(mdl.Category).filter_by(title=service).first()
     if category_name == 'main':
         category = main_category
     else:
-        category = db.query(mdl.Category) \
+        category = pc.db.query(mdl.Category) \
             .filter_by(father_id=main_category.id, title=category_name).first()
     if category is not None:
+        category.reset_image_url(pc.request)
         data = {'category': category}
         return 'category/show.html', data, category_profile_creator
     return 404, '找不到该分类'

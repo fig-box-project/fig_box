@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from . import orm, crud, mdl
 from app.models.mdl import database
 from app.models.system import token
-from ..page.crud import Page
+from ..page.crud import Page, ParamsContainer
 from ..template.Template import Template
 
 bp = APIRouter()
@@ -71,10 +71,10 @@ def profile_creator():
 
 @pg_bp.get('/profile/{params:path}', description='对外显示的用户页面')
 @p.wrap()
-def profile_page(db: Session, id: str):
+def profile_page(pc: ParamsContainer, id: str):
     id = int(id)
     if id > 2:
-        user = db.query(mdl.User).get(id)
+        user = pc.db.query(mdl.User).get(id)
         if user is None:
             return 404, '找不到用户'
         data = {'user': user}

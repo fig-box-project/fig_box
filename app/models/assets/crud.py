@@ -12,14 +12,17 @@ allow_upload_type = {"jpg", "png", "bmp"}
 class Assets:
 
     @staticmethod
-    def get_link_prefix():
+    def get_link_prefix(host: str = None):
         """获取链接前缀"""
+        if host is not None:
+            return host + '/assets'
         return settings.value["domain_port"] + "/assets"
 
     @staticmethod
-    def path_to_link(path: str):
+    def path_to_link(path: str, host: str = None):
         """通过路径获取完整url"""
-        return f"{Assets.get_link_prefix()}/{path}"
+        print(host)
+        return f"{Assets.get_link_prefix(host)}/{path}"
 
     @staticmethod
     async def upload_with_user(asset: UploadFile, filename: str, owner: User, prefix="", visibility=True, limit=0):

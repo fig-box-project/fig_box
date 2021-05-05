@@ -17,5 +17,5 @@ def html_creator():
 
 @bp.get('/')
 @p.wrap(is_constant=True)
-def homepage(db):
+def homepage(pc):
     return "homepage.html", {}, html_creator

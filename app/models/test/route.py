@@ -37,8 +37,7 @@ async def download():
 
 @bp.get('/unzip/{l}')
 def unzip(l: int):
-
-    return 5/0
+    return 5 / 0
     # secrets.compare_digest()
 
 
@@ -48,6 +47,7 @@ def category(id: int, db: Session = Depends(database.get_db)):
 
     return c.father
 
+
 @bp.get('/rere')
-def rere(request:Request):
+def rere(request: Request):
     return request.headers
