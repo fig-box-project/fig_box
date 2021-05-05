@@ -1,6 +1,7 @@
 import secrets
 
 from sqlalchemy.orm import Session
+from starlette.requests import Request
 
 from app.models.assets.output_assets_connector import *
 from app.models.assets.input_assets_connector import *
@@ -46,3 +47,7 @@ def category(id: int, db: Session = Depends(database.get_db)):
     c: mdl.Category = db.query(mdl.Category).filter_by(id=id).first()
 
     return c.father
+
+@bp.get('/rere')
+def rere(request:Request):
+    return request.client.host

@@ -6,6 +6,8 @@ from sqlalchemy import Column, String, DateTime
 from pydantic import BaseModel
 from fastapi import Query
 
+from ..assets.crud import Assets
+
 
 class PageMdl(HasidMdl):
     __abstract__ = True
@@ -30,6 +32,9 @@ class PageMdl(HasidMdl):
 
     def update_stamp(self):
         self.update_date = datetime.now()
+
+    def get_image_url(self):
+        Assets.path_to_link(self.image)
 
 
 class PageOrm(BaseModel):

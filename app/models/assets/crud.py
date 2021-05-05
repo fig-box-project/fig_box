@@ -18,6 +18,7 @@ class Assets:
 
     @staticmethod
     def path_to_link(path: str):
+        """通过路径获取完整url"""
         return f"{Assets.get_link_prefix()}/{path}"
 
     @staticmethod

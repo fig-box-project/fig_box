@@ -5,12 +5,12 @@ from app.models.assets.route import bp as assets_route
 from app.models.character.route import bp as chara_route
 from app.models.editor.route import bp as editor_route
 from app.models.module.route import bp as module_route
-# from app.models.render.route    import bp as render_route
 from app.models.test.route import bp as test_route
 from app.models.jsaver.route import bp as jsaver_route
 from app.models.photo.route import bp as photo_route
 from app.models.packager.route import bp as packager_route
 from app.models.category.route import bp as category_route
+from app.models.category.route import pg_bp as category_page_route
 
 from app.models.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -61,7 +61,12 @@ def run(app: FastAPI):
     app.include_router(
         category_route,
         prefix=url_prefix + '/category',
-        tags=['文章的分类'],
+        tags=['分类'],
+        dependencies=[Depends(check_ip)])
+    app.include_router(
+        category_page_route,
+        prefix='/category',
+        tags=['分类'],
         dependencies=[Depends(check_ip)])
 
     app.include_router(

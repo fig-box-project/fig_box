@@ -1,10 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, HTTPException, Depends, Header
+from html_builder import Html
 from sqlalchemy.orm import Session
 
 from app.models.category import orm, mdl
 from app.models.mdl import database
+from app.models.page.crud import Page
 from app.models.system import token
 from app.models.user.mdl import User
 
@@ -104,6 +106,31 @@ def update_json(service: str, id: int, data: orm.CategoryCU, db: Session = Depen
     db.query(mdl.Category).filter_by(id=id).update(insert_data)
     db.commit()
 
+
 # @bp.get('/{service}/cd')
 # def cd(id: int, db: Session = Depends(database.get_db)):
 #     return Tools.get_children(id, db)
+
+pg_bp = APIRouter()
+p = Page()
+
+
+def category_profile_creator():
+    rt = Html('分类详情页')
+    rt.body.addElement('这是{{ category.title }}的详情页')
+    return rt
+
+
+@pg_bp.get('/{params:path}')
+@p.wrap()
+def category_profile(db: Session, service: str, category_name: str):
+    main_category = db.query(mdl.Category).filter_by(title=service).first()
+    if category_name == 'main':
+        category = main_category
+    else:
+        category = db.query(mdl.Category) \
+            .filter_by(father_id=main_category.id, title=category_name).first()
+    if category is not None:
+        data = {'category': category}
+        return 'category/show.html', data, category_profile_creator
+    return 404, '找不到该分类'

@@ -67,7 +67,7 @@ class Page:
         ...
 
     def wrap(self, is_constant=False):
-        """ func 中将传入(db, *link)
+        """ func 中将传入(db, *link) 来自url的 {params:path}
         func 请返回(tamplate_path[相对路径(前面不加斜杠)]
         , data, [default html]: Html)
         404页面请返回: 404, message"""
