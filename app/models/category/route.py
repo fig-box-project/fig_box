@@ -15,7 +15,7 @@ class CategoryServer:
     def __init__(self, db: Session, service: str):
         all_services = db.query(mdl.Category).filter_by(title=service).all()
         if len(all_services) == 0:
-            raise HTTPException(403, '没有找到此服务,你是否已创建此服务?')
+            raise HTTPException(412, '没有找到此服务,你是否已创建此服务?')
         self.__service: mdl.Category = all_services[0]
         self.__db = db
 

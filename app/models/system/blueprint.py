@@ -1,5 +1,6 @@
 # 引用内在的蓝图
 from app.models.user.route import bp as user_route
+from app.models.user.route import pg_bp as user_page_route
 from app.models.assets.route import bp as assets_route
 from app.models.character.route import bp as chara_route
 from app.models.editor.route import bp as editor_route
@@ -38,6 +39,11 @@ def run(app: FastAPI):
     app.include_router(
         user_route,
         prefix=url_prefix + '/auth',
+        tags=['用户'],
+        dependencies=[Depends(check_ip)])
+    app.include_router(
+        user_page_route,
+        prefix='/auth',
         tags=['用户'],
         dependencies=[Depends(check_ip)])
     app.include_router(

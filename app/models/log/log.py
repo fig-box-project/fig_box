@@ -8,3 +8,4 @@ class Log:
     def e(message: str = '500'):
         logger.add(f'files/log/500/{date.today()}.log')
         logger.exception(message)
+        logger.info('----------------')

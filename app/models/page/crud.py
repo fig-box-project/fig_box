@@ -25,6 +25,8 @@ def page(func):
         if func.__code__.co_argcount - 1 == len(params):
             rt: tuple = func(db, *params)
             if rt is not None:
+                if rt[0] == 404:
+                    return Template.response_404(request, rt[1])
                 rt[1]['request'] = request
                 return Template.response(*rt)
             return Template.response_404(request, '可能在数据库找不到该资源')
@@ -42,6 +44,8 @@ def const_page(func):
     # func 请返回(tamplate_path, data, [default html]: Html)
     def wrap(request: Request, db: Session = Depends(database.get_db)):
         rt: tuple = func(db)
+        if rt[0] == 404:
+            return Template.response_404(request,rt[1])
         rt[1]['request'] = request
         return Template.response(*rt)
         # template_path = rt[0]
@@ -64,7 +68,9 @@ class Page:
 
     def wrap(self, is_constant=False):
         """ func 中将传入(db, *link)
-        func 请返回(tamplate_path[相对路径], data, [default html]: Html)"""
+        func 请返回(tamplate_path[相对路径(前面不加斜杠)]
+        , data, [default html]: Html)
+        404页面请返回: 404, message"""
         if is_constant:
             return const_page
         else:
