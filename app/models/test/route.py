@@ -50,4 +50,4 @@ def category(id: int, db: Session = Depends(database.get_db)):
 
 @bp.get('/rere')
 def rere(request:Request):
-    return request.client.host
+    return request.headers
