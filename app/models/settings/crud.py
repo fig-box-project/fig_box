@@ -17,14 +17,6 @@ class Settings:
         with open(self.yaml_path, "w") as f:
             yaml.dump(self.value, f)
 
-    def load(self, filename):
-        with open(filename, "r") as f:
-            return yaml.load(f, Loader=yaml.SafeLoader)
-
-    def write(self, filename: str, data: dict):
-        with open(filename, "w") as f:
-            yaml.dump(data, f)
-
 
 class FileDict:
     """构造函数中的路径请不要输入后缀.yml"""
@@ -41,10 +33,27 @@ class FileDict:
             self.__dict: dict = yaml.load(f, Loader=yaml.SafeLoader)
 
     def __getitem__(self, index):
-        return self.__dict[index]
+        rt = self.__dict[index]
+        if isinstance(rt, dict):
+            rt._
+        return rt
 
     def __setitem__(self, index, value):
         self.__dict[index] = value
+
+    def update(self):
+        with open(self.__path, "w") as f:
+            yaml.dump(self.__dict, f)
+
+
+class ItemDict(dict):
+    def __init__(self, seq=None, file_dict: FileDict = None, **kwargs):
+        super().__init__(seq, **kwargs)
+        self.__file_dict = file_dict
+
+    def __setitem__(self, index, value):
+        super().__setitem__(index, value)
+        self.__file_dict.update()
 
 
 # 单例
