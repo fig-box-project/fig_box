@@ -25,7 +25,6 @@ class Module:
     def update_status(self):
         try:
             settings.value["mods"][self.name]["status"] = self.status
-            settings.update()
         except Exception:
             print("可能模组不存在")
 
@@ -74,9 +73,6 @@ class Module:
         if "auths" in mod_settings:
             settings.value["character"]["auths"] = {**mod_settings["auths"], **(settings.value["character"]["auths"])}
 
-        # 更新下设置
-        settings.update()
-
         # 加下log让服务重启
         with open("app/log.py", "a") as f:
             f.write(f"# {self.name} used\n")
@@ -93,8 +89,6 @@ class Module:
             del settings.value["site_maps"]["db_sites"][self.name]
         if self.name in settings.value["render"]:
             del settings.value["render"][self.name]
-
-        settings.update()
 
         # 加log
         with open("app/log.py", "a") as f:

@@ -49,7 +49,6 @@ def creat_character(chara: orm.CharaCreate):
             "description": chara.description,
         }
         settings.value["character"]["charas"] = chara_data
-        settings.update()
         return chara.name
     else:
         raise HTTPException(403, "name exists or none")

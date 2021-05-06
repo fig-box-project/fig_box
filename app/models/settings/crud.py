@@ -5,21 +5,14 @@ import os
 
 class Settings:
     def __init__(self):
-        self.yaml_path = "settings.yml"
-        if not os.path.exists(self.yaml_path):
-            # 复制默认文件
-            copyfile("settings_default.yml", "settings.yml")
-        # 获取设置
-        with open(self.yaml_path, "r") as f:
-            self.value: dict = yaml.load(f, Loader=yaml.SafeLoader)
+        self.value = FileDict('settings').getValue()
 
     def update(self):
-        with open(self.yaml_path, "w") as f:
-            yaml.dump(self.value, f)
+        """弃用"""
 
 
 class FileDict:
-    """构造函数中的路径请不要输入后缀.yml"""
+    """此类用于解析文件并获得,构造函数中的路径请不要输入后缀.yml"""
 
     def __init__(self, path_head: str):
         default_path = f'{path_head}_default.yml'
@@ -32,14 +25,8 @@ class FileDict:
         with open(cache_path, "r") as f:
             self.__dict: dict = yaml.load(f, Loader=yaml.SafeLoader)
 
-    def __getitem__(self, index):
-        rt = self.__dict[index]
-        if isinstance(rt, dict):
-            rt._
-        return rt
-
-    def __setitem__(self, index, value):
-        self.__dict[index] = value
+    def getValue(self):
+        return ItemDict(self, self.__dict)
 
     def update(self):
         with open(self.__path, "w") as f:
@@ -48,6 +35,7 @@ class FileDict:
 
 class ItemDict(dict):
     """此类能够监控对此dict的所有输入行为(测试完成)"""
+
     def __init__(self, file_dict: FileDict, seq=None, **kwargs):
         self.__file_dict = file_dict
         seq = self.__compare(seq)
@@ -60,6 +48,8 @@ class ItemDict(dict):
         return data
 
     def __setitem__(self, index, value):
+        if isinstance(value, dict) and not isinstance(value, ItemDict):
+            value = ItemDict(self.__file_dict, value)
         super().__setitem__(index, value)
         self.__file_dict.update()
 
