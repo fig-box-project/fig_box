@@ -47,9 +47,17 @@ class FileDict:
 
 
 class ItemDict(dict):
-    def __init__(self, seq=None, file_dict: FileDict = None, **kwargs):
-        super().__init__(seq, **kwargs)
+    """此类能够监控对此dict的所有输入行为(测试完成)"""
+    def __init__(self, file_dict: FileDict, seq=None, **kwargs):
         self.__file_dict = file_dict
+        seq = self.__compare(seq)
+        super().__init__(seq, **kwargs)
+
+    def __compare(self, data: dict) -> dict:
+        for k in data:
+            if isinstance(data[k], dict):
+                data[k] = ItemDict(self.__file_dict, data[k])
+        return data
 
     def __setitem__(self, index, value):
         super().__setitem__(index, value)
