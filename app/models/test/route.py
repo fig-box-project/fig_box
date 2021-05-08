@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException, Depends
 
 from app.models.category import mdl
 from app.models.mdl import database
+from app.models.settings.crud import settings
 
 bp = APIRouter()
 
@@ -51,3 +52,7 @@ def category(id: int, db: Session = Depends(database.get_db)):
 @bp.get('/rere')
 def rere(request: Request):
     return request.headers
+
+@bp.get('/settings')
+def setting():
+    settings.value['a'] = 'b'

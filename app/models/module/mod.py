@@ -25,6 +25,7 @@ class Module:
     def update_status(self):
         try:
             settings.value["mods"][self.name]["status"] = self.status
+            settings.value.update()
         except Exception:
             print("可能模组不存在")
 
@@ -72,7 +73,7 @@ class Module:
         # copy auths to settings
         if "auths" in mod_settings:
             settings.value["character"]["auths"] = {**mod_settings["auths"], **(settings.value["character"]["auths"])}
-
+        settings.value.update()
         # 加下log让服务重启
         with open("app/log.py", "a") as f:
             f.write(f"# {self.name} used\n")
@@ -93,6 +94,7 @@ class Module:
         # 加log
         with open("app/log.py", "a") as f:
             f.write(f"# {self.name} unused\n")
+        settings.value.update()
 
 
 def local_ls():
