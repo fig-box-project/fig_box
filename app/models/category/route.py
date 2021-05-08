@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.models.category import orm, mdl
 from app.models.mdl import database
 from app.models.page.crud import PageRouter, ParamsContainer
-from app.models.system import token
+from app.models.system.check_token import token
 from app.models.user.mdl import User
 
 bp = APIRouter()

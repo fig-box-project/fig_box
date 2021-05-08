@@ -2,9 +2,10 @@ from fastapi import APIRouter, HTTPException, Depends, Header
 from sqlalchemy.orm import Session
 from app.models.mdl import database
 from . import crud
-from app.models.system import token
 from app.models.user.mdl import User
 from . import orm
+from ..system.check_token import token
+
 bp = APIRouter()
 
 auth_name = "chara_edit"

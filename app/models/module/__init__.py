@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter
+from requests import Session
 
 from app.models.page.crud import PageRouter
 
@@ -51,7 +52,7 @@ class ApiModule(Module, metaclass=ABCMeta):
 
     def __init__(self):
         self._api_bp = BluePrintSet('/api/v1', self._get_tag())
-        self._register_api_bp(self._api_bp)
+        self._register_api_bp(self._api_bp.get_bp())
 
     @abstractmethod
     def _register_api_bp(self, bp):
@@ -70,8 +71,9 @@ class PageItem:
         self.update_date = update_date
 
 
-class PageModel(Module, metaclass=ABCMeta):
+class PageModule(Module, metaclass=ABCMeta):
     def __init__(self):
+        print('afsdf')
         self._page_bp = BluePrintSet(f'/{self.get_module_name()}', self._get_tag())
         self.page_router = PageRouter()
         self._register_page_bp(self._page_bp.get_bp(), self.page_router)
@@ -82,7 +84,7 @@ class PageModel(Module, metaclass=ABCMeta):
         ...
 
     @abstractmethod
-    def get_pages(self) -> List[PageItem]:
+    def get_pages(self, db: Session) -> List[PageItem]:
         """此方法当返回PageItem的列表,暂时被认定为用于创建网站地图
         PageItem 的link为前加/的样式
         """

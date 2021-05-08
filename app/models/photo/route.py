@@ -1,6 +1,7 @@
 from app.models.assets.crud import Assets
 from fastapi import APIRouter, HTTPException, Body, Request, File, UploadFile, Depends
-from app.models.system import token
+
+from app.models.system.check_token import token
 from app.models.user.mdl import User
 
 bp = APIRouter()

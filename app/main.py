@@ -1,11 +1,13 @@
-import app.models.system.blueprint as blueprint
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
-import app.models.system.mod_blueprint as mod_blueprint
-from app.models.system import err_handle
+from app.models.system import err_handle, create_database, mod_blueprint, blueprint
 from app.models.system.check_token import token
-import app.models.system.create_database as create_database
+from app.models.system.modules import get_module_list
+
 version = "α5.3"
+
+auto_list = get_module_list()
+
 # 初始化数据库, 创建数据表
 db: Session = create_database.run()
 
@@ -26,7 +28,7 @@ token.get_token_func()
 err_handle.run(app)
 
 # 导入系统模组的蓝图
-blueprint.run(app)
+blueprint.run(app,auto_list)
 
 # 导入模组的蓝图
 mod_blueprint.run(app)

@@ -1,14 +1,12 @@
 # 引用内在的蓝图
 from typing import List
 
-from app.models.module import PageModel, Module
-from app.models.user.route import bp as user_route
-from app.models.user.route import pg_bp as user_page_route
+from app.models.module import PageModule, Module, ApiModule
 from app.models.assets.route import bp as assets_route
 from app.models.character.route import bp as chara_route
 from app.models.editor.route import bp as editor_route
 from app.models.module.route import bp as module_route
-from app.models.test.route import bp as test_route
+from app.models.test import test
 from app.models.jsaver.route import bp as jsaver_route
 from app.models.photo.route import bp as photo_route
 from app.models.packager.route import bp as packager_route
@@ -29,8 +27,7 @@ def check_ip(request: Request):
             raise HTTPException(status_code=400, detail='unallow ip')
 
 
-def run(app: FastAPI):
-    auto_list: List[Module] = [homepage]
+def run(app: FastAPI, auto_list: List[Module]):
     # 蓝图
     url_prefix = settings.value['url_prefix']
     #
@@ -43,36 +40,37 @@ def run(app: FastAPI):
 
     # 循环注册
     for m in auto_list:
-        dependencies = None
-        if m.is_need_ip_filter():
-            dependencies = [Depends(check_ip)]
-        if isinstance(m, PageModel):
-            bp_set = m.get_page_bp_set()
-            app.include_router(
-                bp_set.get_bp(),
-                prefix=bp_set.get_prefix(),
-                tags=bp_set.get_tags(),
-                dependencies=dependencies
-            )
+        if m is not None:
+            dependencies = None
+            if m.is_need_ip_filter():
+                dependencies = [Depends(check_ip)]
+            if isinstance(m, PageModule):
+                bp_set = m.get_page_bp_set()
+                app.include_router(
+                    bp_set.get_bp(),
+                    prefix=bp_set.get_prefix(),
+                    tags=bp_set.get_tags(),
+                    dependencies=dependencies
+                )
+            if isinstance(m, ApiModule):
+                bp_set = m.get_api_bp_set()
+                app.include_router(
+                    bp_set.get_bp(),
+                    prefix=bp_set.get_prefix(),
+                    tags=bp_set.get_tags(),
+                    dependencies=dependencies
+                )
 
-    if settings.value['route_test_mode']:
-        app.include_router(
-            test_route,
-            prefix="/test",
-            tags=['测试'],
-            dependencies=[Depends(check_ip)]
-        )
-
-    app.include_router(
-        user_route,
-        prefix=url_prefix + '/auth',
-        tags=['用户'],
-        dependencies=[Depends(check_ip)])
-    app.include_router(
-        user_page_route,
-        prefix='/auth',
-        tags=['用户'],
-        dependencies=[Depends(check_ip)])
+    # app.include_router(
+    #     user_route,
+    #     prefix=url_prefix + '/auth',
+    #     tags=['用户'],
+    #     dependencies=[Depends(check_ip)])
+    # app.include_router(
+    #     user_page_route,
+    #     prefix='/auth',
+    #     tags=['用户'],
+    #     dependencies=[Depends(check_ip)])
     app.include_router(
         assets_route,
         tags=['资源: 图片,打包文件,xml文件等'],
