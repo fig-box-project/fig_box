@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from . import orm, crud, mdl
 from app.models.mdl import database
 from app.models.system import token
-from ..page.crud import Page, ParamsContainer
+from ..page.crud import PageRouter, ParamsContainer
 from ..template.Template import Template
 
 bp = APIRouter()
@@ -60,7 +60,7 @@ def profile_data(
 
 
 pg_bp = APIRouter()
-p = Page()
+p = PageRouter()
 
 
 def profile_creator():

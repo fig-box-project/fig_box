@@ -68,7 +68,7 @@ def const_page(func):
     return wrap
 
 
-class Page:
+class PageRouter:
     def __init__(self):
         ...
 

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.models.category import orm, mdl
 from app.models.mdl import database
-from app.models.page.crud import Page, ParamsContainer
+from app.models.page.crud import PageRouter, ParamsContainer
 from app.models.system import token
 from app.models.user.mdl import User
 
@@ -112,7 +112,7 @@ def update_json(service: str, id: int, data: orm.CategoryCU, db: Session = Depen
 #     return Tools.get_children(id, db)
 
 pg_bp = APIRouter()
-p = Page()
+p = PageRouter()
 
 
 def category_profile_creator():

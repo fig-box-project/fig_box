@@ -1,4 +1,7 @@
 # 引用内在的蓝图
+from typing import List
+
+from app.models.module import PageModel, Module
 from app.models.user.route import bp as user_route
 from app.models.user.route import pg_bp as user_page_route
 from app.models.assets.route import bp as assets_route
@@ -11,6 +14,8 @@ from app.models.photo.route import bp as photo_route
 from app.models.packager.route import bp as packager_route
 from app.models.category.route import bp as category_route
 from app.models.category.route import pg_bp as category_page_route
+
+from app.models.homepage import homepage
 
 from app.models.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -25,8 +30,30 @@ def check_ip(request: Request):
 
 
 def run(app: FastAPI):
+    auto_list: List[Module] = [homepage]
     # 蓝图
     url_prefix = settings.value['url_prefix']
+    #
+    # # 页面导入
+    # app.include_router(
+    #     homepage_page,
+    #     prefix="",
+    #     tags=['首页页面']
+    # )
+
+    # 循环注册
+    for m in auto_list:
+        dependencies = None
+        if m.is_need_ip_filter():
+            dependencies = [Depends(check_ip)]
+        if isinstance(m, PageModel):
+            bp_set = m.get_page_bp_set()
+            app.include_router(
+                bp_set.get_bp(),
+                prefix=bp_set.get_prefix(),
+                tags=bp_set.get_tags(),
+                dependencies=dependencies
+            )
 
     if settings.value['route_test_mode']:
         app.include_router(
@@ -99,11 +126,3 @@ def run(app: FastAPI):
         packager_route,
         prefix=url_prefix + '/packager',
         tags=['打包下载的集中管理接口'])
-
-    # 页面导入
-    from app.models.homepage.page import bp as homepage_page
-    app.include_router(
-        homepage_page,
-        prefix="",
-        tags=['首页页面']
-    )
