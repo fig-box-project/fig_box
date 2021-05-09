@@ -6,6 +6,9 @@ from app.models.module import PageModule, PageItem
 
 
 class Homepage(PageModule):
+    def __init__(self):
+        PageModule.__init__(self)
+    
     def _register_page_bp(self, bp, page_router):
         self._page_bp.change_prefix('')
         homepage_route(bp, page_router)

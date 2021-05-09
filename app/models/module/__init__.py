@@ -51,12 +51,12 @@ class Module(metaclass=ABCMeta):
 class ApiModule(Module, metaclass=ABCMeta):
 
     def __init__(self):
-        self._api_bp = BluePrintSet('/api/v1', self._get_tag())
+        self._api_bp = BluePrintSet(f'/api/v1/{self.get_module_name()}', self._get_tag())
         self._register_api_bp(self._api_bp.get_bp())
 
     @abstractmethod
-    def _register_api_bp(self, bp):
-        """重写此方法,并更改前缀和注册路由"""
+    def _register_api_bp(self, bp: APIRouter):
+        """重写此方法,并更改前缀和注册路由self._api_bp可以改前缀"""
         ...
 
     def get_api_bp_set(self) -> BluePrintSet:
@@ -79,7 +79,7 @@ class PageModule(Module, metaclass=ABCMeta):
         self._register_page_bp(self._page_bp.get_bp(), self.page_router)
 
     @abstractmethod
-    def _register_page_bp(self, bp, page_router):
+    def _register_page_bp(self, bp: APIRouter, page_router: PageRouter):
         """重写此方法,并更改前缀和注册路由"""
         ...
 

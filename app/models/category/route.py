@@ -10,8 +10,6 @@ from app.models.page.crud import PageRouter, ParamsContainer
 from app.models.system.check_token import token
 from app.models.user.mdl import User
 
-bp = APIRouter()
-
 
 class CategoryServer:
     def __init__(self, db: Session, service: str):
@@ -46,92 +44,83 @@ class CategoryServer:
         return rt
 
 
-@bp.post('/create/service')
-def create_categor(data: orm.CategoryCU, db: Session = Depends(database.get_db),
-                   now_user: User = Depends(token.check_token), ):
-    # 查找有无相同的服务
-    if data.title in ls_service(db):
-        raise HTTPException(403, '已存在同名服务')
-    # 插入
-    data.father_id = 0
-    data = mdl.Category(**data.dict())
-    db.add(data)
-    db.commit()
-    return {'service': data.title}
+def category_route(bp):
+    @bp.post('/create/service')
+    def create_categor(data: orm.CategoryCU, db: Session = Depends(database.get_db),
+                       now_user: User = Depends(token.check_token), ):
+        # 查找有无相同的服务
+        if data.title in ls_service(db):
+            raise HTTPException(403, '已存在同名服务')
+        # 插入
+        data.father_id = 0
+        data = mdl.Category(**data.dict())
+        db.add(data)
+        db.commit()
+        return {'service': data.title}
 
+    @bp.get('/ls/service')
+    def ls_service(db: Session = Depends(database.get_db)) -> set:
+        all_services = db.query(mdl.Category).filter_by(father_id=0).all()
+        rt = set()
+        for i in all_services:
+            rt.add(i.title)
+        return rt
 
-@bp.get('/ls/service')
-def ls_service(db: Session = Depends(database.get_db)) -> set:
-    all_services = db.query(mdl.Category).filter_by(father_id=0).all()
-    rt = set()
-    for i in all_services:
-        rt.add(i.title)
-    return rt
+    # ---服务内处理---
 
+    @bp.get('/{service}/ls')
+    def ls(service: str, db: Session = Depends(database.get_db)):
+        return CategoryServer(db, service).ls()
 
-# ---服务内处理---
+    @bp.post('/{service}/create')
+    def create_category(service: str, data: orm.CategoryCU, db: Session = Depends(database.get_db),
+                        now_user: User = Depends(token.check_token), ):
+        server = CategoryServer(db, service)
+        if data.father_id == 0:
+            data.father_id = server.get_id()
+        data = mdl.Category(**data.dict())
+        db.add(data)
+        db.commit()
+        db.refresh(data)
+        return {'id': data.id}
 
+    @bp.delete('/{service}/delete')
+    def delete_category(id: int, db: Session = Depends(database.get_db), now_user: User = Depends(token.check_token), ):
+        db.query(mdl.Category).filter_by(id=id).delete()
+        db.commit()
 
-@bp.get('/{service}/ls')
-def ls(service: str, db: Session = Depends(database.get_db)):
-    return CategoryServer(db, service).ls()
-
-
-@bp.post('/{service}/create')
-def create_category(service: str, data: orm.CategoryCU, db: Session = Depends(database.get_db),
+    @bp.put('/{service}/update')
+    def update_json(service: str, id: int, data: orm.CategoryCU, db: Session = Depends(database.get_db),
                     now_user: User = Depends(token.check_token), ):
-    server = CategoryServer(db, service)
-    if data.father_id == 0:
-        data.father_id = server.get_id()
-    data = mdl.Category(**data.dict())
-    db.add(data)
-    db.commit()
-    db.refresh(data)
-    return {'id': data.id}
-
-
-@bp.delete('/{service}/delete')
-def delete_category(id: int, db: Session = Depends(database.get_db), now_user: User = Depends(token.check_token), ):
-    db.query(mdl.Category).filter_by(id=id).delete()
-    db.commit()
-
-
-@bp.put('/{service}/update')
-def update_json(service: str, id: int, data: orm.CategoryCU, db: Session = Depends(database.get_db),
-                now_user: User = Depends(token.check_token), ):
-    server = CategoryServer(db, service)
-    if data.father_id == 0:
-        data.father_id = server.get_id()
-    insert_data = data.dict()
-    db.query(mdl.Category).filter_by(id=id).update(insert_data)
-    db.commit()
+        server = CategoryServer(db, service)
+        if data.father_id == 0:
+            data.father_id = server.get_id()
+        insert_data = data.dict()
+        db.query(mdl.Category).filter_by(id=id).update(insert_data)
+        db.commit()
 
 
 # @bp.get('/{service}/cd')
 # def cd(id: int, db: Session = Depends(database.get_db)):
 #     return Tools.get_children(id, db)
 
-pg_bp = APIRouter()
-p = PageRouter()
+def category_page_route(pg_bp, p):
+    def category_profile_creator():
+        rt = Html('分类详情页')
+        rt.body.addElement('这是{{ category.title }}的详情页')
+        return rt
 
-
-def category_profile_creator():
-    rt = Html('分类详情页')
-    rt.body.addElement('这是{{ category.title }}的详情页')
-    return rt
-
-
-@pg_bp.get('/{params:path}')
-@p.wrap()
-def category_profile(pc: ParamsContainer, service: str, category_name: str):
-    main_category = pc.db.query(mdl.Category).filter_by(title=service).first()
-    if category_name == 'main':
-        category = main_category
-    else:
-        category = pc.db.query(mdl.Category) \
-            .filter_by(father_id=main_category.id, title=category_name).first()
-    if category is not None:
-        category.reset_image_url(pc.request)
-        data = {'category': category}
-        return 'category/show.html', data, category_profile_creator
-    return 404, '找不到该分类'
+    @pg_bp.get('/{params:path}')
+    @p.wrap()
+    def category_profile(pc: ParamsContainer, service: str, category_name: str):
+        main_category = pc.db.query(mdl.Category).filter_by(title=service).first()
+        if category_name == 'main':
+            category = main_category
+        else:
+            category = pc.db.query(mdl.Category) \
+                .filter_by(father_id=main_category.id, title=category_name).first()
+        if category is not None:
+            category.reset_image_url(pc.request)
+            data = {'category': category}
+            return 'category/show.html', data, category_profile_creator
+        return 404, '找不到该分类'

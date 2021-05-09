@@ -2,18 +2,12 @@
 from typing import List
 
 from app.models.module import PageModule, Module, ApiModule
-from app.models.assets.route import bp as assets_route
 from app.models.character.route import bp as chara_route
 from app.models.editor.route import bp as editor_route
 from app.models.module.route import bp as module_route
-from app.models.test import test
 from app.models.jsaver.route import bp as jsaver_route
 from app.models.photo.route import bp as photo_route
 from app.models.packager.route import bp as packager_route
-from app.models.category.route import bp as category_route
-from app.models.category.route import pg_bp as category_page_route
-
-from app.models.homepage import homepage
 
 from app.models.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -71,10 +65,10 @@ def run(app: FastAPI, auto_list: List[Module]):
     #     prefix='/auth',
     #     tags=['用户'],
     #     dependencies=[Depends(check_ip)])
-    app.include_router(
-        assets_route,
-        tags=['资源: 图片,打包文件,xml文件等'],
-        dependencies=[Depends(check_ip)])
+    # app.include_router(
+    #     assets_route,
+    #     tags=['资源: 图片,打包文件,xml文件等'],
+    #     dependencies=[Depends(check_ip)])
 
     app.include_router(
         chara_route,
@@ -83,16 +77,16 @@ def run(app: FastAPI, auto_list: List[Module]):
         dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
     # from .models.tree.route import bp as tree_route
-    app.include_router(
-        category_route,
-        prefix=url_prefix + '/category',
-        tags=['分类'],
-        dependencies=[Depends(check_ip)])
-    app.include_router(
-        category_page_route,
-        prefix='/category',
-        tags=['分类'],
-        dependencies=[Depends(check_ip)])
+    # app.include_router(
+    #     category_route,
+    #     prefix=url_prefix + '/category',
+    #     tags=['分类'],
+    #     dependencies=[Depends(check_ip)])
+    # app.include_router(
+    #     category_page_route,
+    #     prefix='/category',
+    #     tags=['分类'],
+    #     dependencies=[Depends(check_ip)])
 
     app.include_router(
         editor_route,
