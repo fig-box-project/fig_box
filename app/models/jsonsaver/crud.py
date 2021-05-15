@@ -1,7 +1,7 @@
 import os
 import json
 
-directory_name = 'files/templates/jsaver/'
+directory_name = 'files/templates/jsonsaver/'
 
 class Jsaver:
     cache = {}
@@ -9,7 +9,7 @@ class Jsaver:
         # 创建齐文件夹
         os.makedirs("files", exist_ok=True)
         os.makedirs("files/templates", exist_ok=True)
-        os.makedirs("files/templates/jsaver", exist_ok=True)
+        os.makedirs("files/templates/jsonsaver", exist_ok=True)
     def read(self, name: str):
         if name not in self.cache:
             # 从文件中查找
