@@ -5,6 +5,7 @@ from typing import List
 from fastapi import APIRouter
 from requests import Session
 
+from app.models.module.route import module_route
 from app.models.page.crud import PageRouter
 
 
@@ -92,3 +93,16 @@ class PageModule(Module, metaclass=ABCMeta):
 
     def get_page_bp_set(self):
         return self._page_bp
+
+
+class Moudle(ApiModule):
+    def _register_api_bp(self, bp: APIRouter):
+        module_route(bp)
+
+    def _get_tag(self) -> str:
+        return '模组'
+
+    def get_module_name(self) -> str:
+        return 'moudle'
+
+moudle = Moudle()

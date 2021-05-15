@@ -9,7 +9,7 @@ def assets_route(bp):
     assets_path_prefix = settings.value["assets_path"]
     os.makedirs(assets_path_prefix, exist_ok=True)
 
-    @bp.get("/assets/{assets_path:path}", description="获取资源链接")
+    @bp.get("/{assets_path:path}", description="获取资源链接")
     def get_assets(assets_path: str):
         connector = OutputWebConnector(assets_path)
         return connector.output()

@@ -7,8 +7,10 @@ import os
 
 class InputZipDirConnector(InputAssetsConnector):
     def __init__(self, path: str, filename: str, aims: list, unexist_skip=False):
-        # path 是相对assets的路径不需前后斜杠
+        """
+        # path 是相对assets的路径不需前后斜杠(打包后的路径)
         # aims 是个要打包目标的绝对路径的列表
+        """
         super(InputZipDirConnector, self).__init__(path, filename)
         if len(aims) == 0:
             raise HTTPException(500, "系统错误,压缩的目标不应为0.")

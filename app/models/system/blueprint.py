@@ -2,12 +2,9 @@
 from typing import List
 
 from app.models.module import PageModule, Module, ApiModule
-from app.models.character.route import bp as chara_route
-from app.models.editor.route import bp as editor_route
-from app.models.module.route import bp as module_route
 from app.models.jsaver.route import bp as jsaver_route
 from app.models.photo.route import bp as photo_route
-from app.models.packager.route import bp as packager_route
+# from app.models.packager.route import bp as packager_route
 
 from app.models.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
@@ -70,11 +67,6 @@ def run(app: FastAPI, auto_list: List[Module]):
     #     tags=['资源: 图片,打包文件,xml文件等'],
     #     dependencies=[Depends(check_ip)])
 
-    app.include_router(
-        chara_route,
-        prefix=url_prefix + '/character',
-        tags=['角色'],
-        dependencies=[Depends(check_ip)])
     # dependencies=[Depends(check_token)]) 如果想整个包都用户验证而不需要获得用户时用这个
     # from .models.tree.route import bp as tree_route
     # app.include_router(
@@ -87,17 +79,6 @@ def run(app: FastAPI, auto_list: List[Module]):
     #     prefix='/category',
     #     tags=['分类'],
     #     dependencies=[Depends(check_ip)])
-
-    app.include_router(
-        editor_route,
-        prefix=url_prefix + '/editor',
-        tags=['文件编辑'],
-        dependencies=[Depends(check_ip)])
-    app.include_router(
-        module_route,
-        prefix=url_prefix + '/moudle',
-        tags=['模组・插件'],
-        dependencies=[Depends(check_ip)])
 
     # app.include_router(
     #     render_route,
@@ -114,7 +95,7 @@ def run(app: FastAPI, auto_list: List[Module]):
         tags=['图片上传,并转为资源'],
         dependencies=[Depends(check_ip)])
 
-    app.include_router(
-        packager_route,
-        prefix=url_prefix + '/packager',
-        tags=['打包下载的集中管理接口'])
+    # app.include_router(
+    #     packager_route,
+    #     prefix=url_prefix + '/packager',
+    #     tags=['打包下载的集中管理接口'])
