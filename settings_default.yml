@@ -1,6 +1,8 @@
 token_key: yawei is the honorest in the worlds
 url_prefix: /api/v1
 domain_port: http://dev.datasview.com:8080
+host: dev.datasview.com:8080
+is_https: True
 # 注意在正式发布时当审视所有test模式并尽量关闭.
 auth_test_mode: True # 开启时无视token并自动赋予root权限(严重)
 ip_test_mode: True # 开启时允许所有的ip访问

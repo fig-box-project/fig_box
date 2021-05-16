@@ -1,3 +1,6 @@
+import types
+from typing import Callable
+
 from fastapi.templating import Jinja2Templates
 from fastapi import HTTPException, Request, Depends
 from sqlalchemy.orm import Session
@@ -20,6 +23,38 @@ class ParamsContainer:
         self.request = request
 
 
+class RequestItem:
+    def __init__(self, template_path: str, data: dict, html_builder: Callable = None):
+        """
+        template_path:不带斜杠"""
+        self.request = None
+        self.message = None
+        self.template_path = template_path
+        self.data = data
+        self.html_builder = html_builder
+
+    @classmethod
+    def with404(cls, message: str):
+        cls.message = message
+
+    def set_request(self, request: Request):
+        self.data['request'] = request
+        self.request = request
+
+    def get_response(self):
+        if self.message is None:
+            return Template.response(
+                self.template_path,
+                self.data,
+                self.html_builder
+            )
+        else:
+            return Template.response_404(
+                self.request,
+                self.message
+            )
+
+
 # 装饰器
 def page(func):
     # page(db,request,link)link 当作元组传入
@@ -29,17 +64,14 @@ def page(func):
         params = params.split("/")
         # 判断函数可接受的参数与前端传来的参数数量
         if func.__code__.co_argcount - 1 == len(params):
-            rt: tuple = func(ParamsContainer(db, request), *params)
+            rt: RequestItem = func(ParamsContainer(db, request), *params)
             if rt is not None:
-                if rt[0] == 404:
-                    return Template.response_404(request, rt[1])
-                rt[1]['request'] = request
-                return Template.response(*rt)
+                rt.set_request(request)
+                return rt.get_response()
             return Template.response_404(request, '可能在数据库找不到该资源')
         # 返回404
         return Template.response_404(request,
                                      f'路径参数,函数参数不对称: 路径参数: {len(params)}, 函数参数:{func.__code__.co_argcount - 1}')
-
     return wrap
 
 
@@ -49,11 +81,9 @@ def const_page(func):
     # func 中将传入(db)
     # func 请返回(tamplate_path, data, [default html]: Html)
     def wrap(request: Request, db: Session = Depends(database.get_db)):
-        rt: tuple = func(ParamsContainer(db, request))
-        if rt[0] == 404:
-            return Template.response_404(request, rt[1])
-        rt[1]['request'] = request
-        return Template.response(*rt)
+        rt: RequestItem = func(ParamsContainer(db, request))
+        rt.set_request(request)
+        return rt.get_response()
         # template_path = rt[0]
         # data = rt[1]
         # if os.path.exists(f"{tempath_prefix}/{template_path}"):

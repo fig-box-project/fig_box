@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from fastapi import Query
 
 # from ..assets.crud import Assets
+from ..tools import Tools
 
 
 class PageMdl(HasidMdl):
@@ -38,7 +39,7 @@ class PageMdl(HasidMdl):
     def reset_image_url(self, request: Request):
         """将image重设为完整网址"""
         # TODO: 上线后改为https
-        # self.image = Assets.path_to_link(self.image, host=f'http://{request.headers.get("host", None)}')
+        self.image = Tools.get_assets_url(self.image, request)
 
 
 class PageOrm(BaseModel):

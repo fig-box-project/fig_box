@@ -3,7 +3,7 @@ from html_builder import Html
 from sqlalchemy.orm import Session
 from . import orm, crud, mdl
 from app.models.mdl import database
-from ..page.crud import PageRouter, ParamsContainer
+from ..page.crud import PageRouter, ParamsContainer, RequestItem
 from ..system.check_token import token
 
 
@@ -65,7 +65,8 @@ def user_page_route(pg_bp, p):
         if id > 2:
             user = pc.db.query(mdl.User).get(id)
             if user is None:
-                return 404, '找不到用户'
+                # return 404, '找不到用户'
+                return RequestItem.with404('找不到用户')
             data = {'user': user}
-            return 'user/profile.html', data, profile_creator
+            return RequestItem('user/profile.html', data, profile_creator)
         raise HTTPException(403, '权限不足')

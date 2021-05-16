@@ -81,7 +81,6 @@ class PageModule(Module, metaclass=ABCMeta):
         self._page_bp = BluePrintSet(f'/{self.get_module_name()}', self._get_tag())
         self.page_router = PageRouter()
         self._register_page_bp(self._page_bp.get_bp(), self.page_router)
-        print('adfsda222')
 
     @abstractmethod
     def _register_page_bp(self, bp: APIRouter, page_router: PageRouter):
@@ -102,11 +101,9 @@ class PageModule(Module, metaclass=ABCMeta):
                 data: List[PageMdl] = db.query(i).all()
                 for d in data:
                     rt.append(PageItem(d.link, d.update_date))
-
             elif isinstance(i, PageMdl):
                 # 当其是搜索结果时
                 rt.append(PageItem(i.link, i.update_date))
-
         return rt
 
     @abstractmethod

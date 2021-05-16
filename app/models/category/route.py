@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.models.category import orm, mdl
 from app.models.mdl import database
-from app.models.page.crud import PageRouter, ParamsContainer
+from app.models.page.crud import PageRouter, ParamsContainer, RequestItem
 from app.models.system.check_token import token
 from app.models.user.mdl import User
 
@@ -122,5 +122,5 @@ def category_page_route(pg_bp, p):
         if category is not None:
             category.reset_image_url(pc.request)
             data = {'category': category}
-            return 'category/show.html', data, category_profile_creator
-        return 404, '找不到该分类'
+            return RequestItem('category/show.html', data, category_profile_creator)
+        return RequestItem.with404('找不到该分类')
