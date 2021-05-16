@@ -1,4 +1,4 @@
-
+from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 from starlette.requests import Request
 
@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Depends
 
 from app.models.category import mdl
 from app.models.mdl import database
+from app.models.mdl.page import PageMdl
 from app.models.settings.crud import settings
 
 
@@ -35,6 +36,14 @@ def test_route(bp: APIRouter):
     def unzip(l: int):
         return 5 / 0
         # secrets.compare_digest()
+
+    @bp.get('/test')
+    def test():
+        print(type(PageMdl))
+        print(type(DeclarativeMeta))
+        print(isinstance(PageMdl, DeclarativeMeta))
+        print(PageMdl.__mro__)
+        print(PageMdl in PageMdl.__mro__)
 
     @bp.get('/category')
     def category(id: int, db: Session = Depends(database.get_db)):

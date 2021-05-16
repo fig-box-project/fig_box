@@ -14,7 +14,7 @@ class Category(ApiModule, PageModule):
     def _register_page_bp(self, bp, page_router):
         category_page_route(bp, page_router)
 
-    def get_pages(self, db: Session) -> List[PageItem]:
+    def _get_pages(self, db: Session) -> List[PageItem]:
         # TODO
         pass
 

@@ -13,14 +13,14 @@ def run():
     tables = []
 
     # 自动引用安装的库
-    for k in mods.keys():
-        if "has_mdl" in mods[k]:
-            if mods[k]["has_mdl"] == True:
-                # 引用下
-                exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
-                # 加入下列表中等下读取
-                tables_strs.append(
-                    "{}_mdl.{}.__table__".format(k, k.capitalize()))
+    # for k in mods.keys():
+    #     if "has_mdl" in mods[k]:
+    #         if mods[k]["has_mdl"] == True:
+    #             # 引用下
+    #             exec("from app.insmodes.{0} import mdl as {0}_mdl".format(k))
+    #             # 加入下列表中等下读取
+    #             tables_strs.append(
+    #                 "{}_mdl.{}.__table__".format(k, k.capitalize()))
 
     # 录入到tables中
     for t in tables_strs:

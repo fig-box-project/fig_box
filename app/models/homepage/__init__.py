@@ -13,7 +13,7 @@ class Homepage(PageModule):
         self._page_bp.change_prefix('')
         homepage_route(bp, page_router)
 
-    def get_pages(self, db) -> List[PageItem]:
+    def _get_pages(self, db) -> List[PageItem]:
         return [PageItem('/', datetime.today())]
 
     def _get_tag(self) -> str:

@@ -20,7 +20,7 @@ class User(ApiModule, PageModule):
     def _register_page_bp(self, bp, page_router):
         user_page_route(bp, page_router)
 
-    def get_pages(self, db: Session) -> List[PageItem]:
+    def _get_pages(self, db: Session) -> List[PageItem]:
         # TODO
         pass
 

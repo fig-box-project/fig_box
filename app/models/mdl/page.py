@@ -8,7 +8,7 @@ from sqlalchemy import Column, String, DateTime
 from pydantic import BaseModel
 from fastapi import Query
 
-from ..assets.crud import Assets
+# from ..assets.crud import Assets
 
 
 class PageMdl(HasidMdl):
@@ -38,7 +38,7 @@ class PageMdl(HasidMdl):
     def reset_image_url(self, request: Request):
         """将image重设为完整网址"""
         # TODO: 上线后改为https
-        self.image = Assets.path_to_link(self.image, host=f'http://{request.headers.get("host", None)}')
+        # self.image = Assets.path_to_link(self.image, host=f'http://{request.headers.get("host", None)}')
 
 
 class PageOrm(BaseModel):
