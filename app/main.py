@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
-from app.models.system import err_handle, create_database, mod_blueprint, blueprint
+from app.models.system import err_handle, create_database, blueprint
 from app.models.system.check_token import token
 from app.models.system.modules import get_module_list
 
@@ -31,7 +31,7 @@ err_handle.run(app)
 blueprint.run(app,auto_list)
 
 # 导入模组的蓝图
-mod_blueprint.run(app)
+# mod_blueprint.run(app)
 
 # @app.get('/',tags=['测试'],response_class=HTMLResponse)
 # def root(request: Request):

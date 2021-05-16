@@ -95,6 +95,8 @@ class PageModule(Module, metaclass=ABCMeta):
         return self._page_bp
 
 
+# 下面是api的实现
+
 class Moudle(ApiModule):
     def _register_api_bp(self, bp: APIRouter):
         module_route(bp)

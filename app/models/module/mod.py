@@ -1,3 +1,4 @@
+from datetime import datetime
 from enum import Enum
 import zipfile
 import os
@@ -51,32 +52,12 @@ class Module:
     # 使用
     def use(self):
         self.status = "used"
-        # 搬运yml数据到settings
-        settings_path = "app/insmodes/" + self.name + "/settings.yml"
-        with open(settings_path, "r") as f:
-            mod_settings = yaml.load(f, Loader=yaml.SafeLoader)
-        settings.value["mods"][self.name] = mod_settings[self.name]
-        settings.value["mods"][self.name]["status"] = "used"
-
-        # 搬运sitemap到settings
-        if "site_maps" in mod_settings:
-            if "single_sites" in mod_settings["site_maps"].keys():
-                print("-------------")
-                settings.value["site_maps"]["single_sites"][self.name] = mod_settings["site_maps"]["single_sites"][
-                    self.name]
-            if "db_sites" in mod_settings["site_maps"].keys():
-                settings.value["site_maps"]["db_sites"][self.name] = mod_settings["site_maps"]["db_sites"][self.name]
-        # 搬运render到settings
-        if "render" in mod_settings:
-            settings.value["render"][self.name] = mod_settings["render"][self.name]
-
-        # copy auths to settings
-        if "auths" in mod_settings:
-            settings.value["character"]["auths"] = {**mod_settings["auths"], **(settings.value["character"]["auths"])}
-        settings.value.update()
-        # 加下log让服务重启
-        with open("app/log.py", "a") as f:
-            f.write(f"# {self.name} used\n")
+        if self.name not in settings.value["mods"]:
+            settings.value["mods"].append(self.name)
+            settings.value.update()
+            # 加下log让服务重启
+            with open("app/log.py", "a") as f:
+                f.write(f"# {str(datetime.now())} {self.name} used\n")
 
     # 禁用
     def unuse(self):
@@ -84,17 +65,11 @@ class Module:
         # 移除settings的设置
         if self.name in settings.value["mods"]:
             del settings.value["mods"][self.name]
-        if self.name in settings.value["site_maps"]["single_sites"]:
-            del settings.value["site_maps"]["single_sites"][self.name]
-        if self.name in settings.value["site_maps"]["db_sites"]:
-            del settings.value["site_maps"]["db_sites"][self.name]
-        if self.name in settings.value["render"]:
-            del settings.value["render"][self.name]
+            settings.value.update()
+            # 加log
+            with open("app/log.py", "a") as f:
+                f.write(f"# {str(datetime.now())} {self.name} unused\n")
 
-        # 加log
-        with open("app/log.py", "a") as f:
-            f.write(f"# {self.name} unused\n")
-        settings.value.update()
 
 
 def local_ls():

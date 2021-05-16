@@ -1,54 +1,42 @@
-
 token_key: yawei is the honorest in the worlds
 url_prefix: /api/v1
 domain_port: http://dev.datasview.com:8080
-auth_test_mode: True # 开启时无视token并自动赋予root权限
+# 注意在正式发布时当审视所有test模式并尽量关闭.
+auth_test_mode: True # 开启时无视token并自动赋予root权限(严重)
 ip_test_mode: True # 开启时允许所有的ip访问
 route_test_mode: True # 是否显示测试路由
-err_test_mode: True # 开启时将返回错误的详细信息
+err_test_mode: True # 开启时将返回错误的详细信息(严重)
 assets_path: files/assets
 allow_link_ip:
-- 35.241.66.226
+  - 35.241.66.226
 
 # don't delete it
-mods: {}
-    
-# 用来存放站点地图所连接的数据库
-site_maps:
-  single_sites:
-    index: 
-    - link: ''
-      lastmod: 2021-2-6
-      changefreq: weekly
-      priority: 1.0
-  db_sites: {}
-  
-render: {}
+mods: [ ]
 
 character:
   auths:
     all:
       default: false
       description: 此权限表示所有权限,有了它不需其它
-    default: 
+    default:
       default: false
       description: 此权限表示所有默认权限,它指向所有默认的权限
     user_self_edit:
       default: true
       description: 此
-    user_all_edit: 
+    user_all_edit:
       default: false
       description: 此
     chara_edit:
       default: false
       description: 编辑角色
-  charas: 
+  charas:
     master:
       auths:
-      - all
+        - all
       description: 管理员
     normal:
       auths:
-      - default
+        - default
       description: 普通用户
 
