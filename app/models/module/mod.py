@@ -64,7 +64,8 @@ class Module:
         self.status = "unused"
         # 移除settings的设置
         if self.name in settings.value["mods"]:
-            del settings.value["mods"][self.name]
+            ls:list = settings.value["mods"]
+            ls.remove(self.name)
             settings.value.update()
             # 加log
             with open("app/log.py", "a") as f:

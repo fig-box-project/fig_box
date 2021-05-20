@@ -18,7 +18,6 @@ def get_module_list():
 def read_mods(mods: list):
     mod_strs: list = settings.value['mods']
     for s in mod_strs:
-        print(s)
         import_str = f'from app.insmodes.{s} import {s} as mod'
         # try:
         exec(import_str)
@@ -26,4 +25,3 @@ def read_mods(mods: list):
         exec(append_str)
         # except Exception:
         #     print(f'读[{s}]模组时出错')
-    print(mods)
