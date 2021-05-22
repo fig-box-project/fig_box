@@ -27,12 +27,10 @@ class FileDict:
         return ItemDict(self.__dict, self.__path)
 
 
-
-#
 class ItemDict:
     """此类只能够监控第一层的输入行为(测试完成)"""
 
-    def __init__(self, data: dict, path:str):
+    def __init__(self, data: dict, path: str):
         self.__data = data
         self.__path = path
 
@@ -46,7 +44,6 @@ class ItemDict:
     def update(self):
         with open(self.__path, "w") as f:
             yaml.dump(self.__data, f)
-
 
 
 # 单例

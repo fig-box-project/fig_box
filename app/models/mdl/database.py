@@ -14,6 +14,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 # Dependency, 从路由获取数据库操作权时要调用这个
 def get_db():
     db = SessionLocal()

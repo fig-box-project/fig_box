@@ -31,3 +31,7 @@ class Tools:
         if request is not None:
             is_https = request.headers.get('referer') == 'https'
         return is_https
+
+    @staticmethod
+    def get_user_ip(request: Request) -> str:
+        return request.client.host

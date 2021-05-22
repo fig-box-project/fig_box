@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
@@ -49,6 +49,49 @@ class Module(metaclass=ABCMeta):
 
     def is_need_ip_filter(self):
         return False
+
+
+class AuthItem:
+    """始终留意:0是未分配的值(遇到当报错), 1是admin绝对权限, 2是default默认权限"""
+
+    def __init__(self, is_default_auth: bool = False):
+        self.is_default_auth = is_default_auth
+        self.__auth_key = 0
+
+    def set_auth_key(self, auth_key: int):
+        self.__auth_key = auth_key
+
+    def check_auth(self, auth_key: int) -> bool:
+        """此处用于检查权限, 可以通过则返回True, 否则返回False"""
+        if auth_key == 1:
+            return True
+        elif auth_key == 1 and self.is_default_auth:
+            return True
+        elif auth_key == self.__auth_key:
+            return True
+        elif auth_key == 0:
+            raise HTTPException(500, '未注册的权限')
+        return False
+
+    def into_auth(self, auth_key: int):
+        request = self.check_auth(auth_key)
+        if not request:
+            raise HTTPException(403, '权限不足')
+
+
+class AuthModule(Module, metaclass=ABCMeta):
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
+    def get_auth_items(self) -> List[AuthItem]:
+        """在这里返回需要注册的权限"""
+        ...
+
+    @abstractmethod
+    def auth_register_callback(self):
+        """在这里替换掉静态变量"""
+        ...
 
 
 class ApiModule(Module, metaclass=ABCMeta):

@@ -55,10 +55,10 @@ def user_api_route(bp):
 def user_page_route(pg_bp, p):
     def profile_creator():
         rt = Html('用户页面')
-        rt.body.addElement('欢迎 {{ user.username }} 光临')
+        rt.body.addElement('名称 {{ user.username }} ')
         return rt
 
-    @pg_bp.get('/profile/{params:path}', description='对外显示的用户页面')
+    @pg_bp.get('/profile/{params:path}', description='对外显示的用户profile(用户信息首页),输入ID')
     @p.wrap()
     def profile_page(pc: ParamsContainer, id: str):
         id = int(id)
