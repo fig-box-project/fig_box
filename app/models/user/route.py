@@ -10,14 +10,14 @@ from ..system.check_token import token
 def user_api_route(bp):
     @bp.get('/check', description='检查用户名是否存在')
     def check(username, db: Session = Depends(database.get_db)):
-        if not crud.isloged_user(db, username):
+        if not crud.check_user_name(db, username):
             return '不存在,可注册'
         else:
             raise HTTPException(status_code=404, detail='存在')
 
     @bp.post('/register', description='注册', response_model=orm.User)
     def create_user(user: orm.UserCreate, db: Session = Depends(database.get_db)):
-        if not crud.isloged_user(db, user.username):
+        if not crud.check_user_name(db, user.username):
             return crud.create_user(db, user)
         else:
             raise HTTPException(status_code=409, detail='User already exists')
