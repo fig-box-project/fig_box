@@ -22,7 +22,7 @@ def user_api_route(bp):
         if not UserCrud.check_user_name(db, user.username):
             return UserCrud.create_user(db, user)
         else:
-            raise HTTPException(status_code=409, detail='User already exists')
+            raise HTTPException(status_code=409, detail='用户已存在')
 
     @bp.post('/login', description='登录')
     def login(user: orm.UserLogin, db: Session = Depends(database.get_db)):
