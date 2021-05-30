@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
-from app.models.mdl.page import PageMdl
+from app.models.mdl import PageMdl
 from app.models.module.route import module_route
 from app.models.page.crud import PageRouter
 

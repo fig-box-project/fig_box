@@ -1,5 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
-from app.models.mdl.page import PageMdl
+from app.models.mdl import PageMdl
 
 
 class Category(PageMdl):

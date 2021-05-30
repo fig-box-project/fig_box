@@ -54,6 +54,11 @@ def user_api_route(bp):
             , db: Session = Depends(database.get_db)):
         return user
 
+    @bp.get('/logs', description='获取用户log')
+    def get_logs():
+        with open('')
+
+
 
 def user_page_route(pg_bp, p):
     def profile_creator():

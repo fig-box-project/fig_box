@@ -10,7 +10,7 @@ from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import JSONResponse, PlainTextResponse
 
-from app.models.log.log import Log
+from app.models.log.log_tools import LogTools
 from app.models.settings.crud import settings
 
 
@@ -19,13 +19,13 @@ def run(app: FastAPI):
         @app.exception_handler(Exception)
         async def all_exception_handler(request, exc: Exception):
             """截取代码运行错误,并返回详细信息"""
-            Log.e()
+            LogTools.e()
             return PlainTextResponse(f'{traceback.format_exc()}', 500)
 
         @app.exception_handler(HTTPException)
         async def custom_http_exception_handler(request: Request, exc: HTTPException):
             """过滤主动抛出的错误"""
-            Log.e()
+            LogTools.e()
             print(f'主动抛出{exc.status_code}错误')
             return await http_exception_handler(request, exc)
 

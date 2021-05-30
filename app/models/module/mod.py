@@ -56,7 +56,7 @@ class Module:
             settings.value["mods"].append(self.name)
             settings.value.update()
             # 加下log让服务重启
-            with open("app/log.py", "a") as f:
+            with open("app/log_tools.py", "a") as f:
                 f.write(f"# {str(datetime.now())} {self.name} used\n")
 
     # 禁用
@@ -68,7 +68,7 @@ class Module:
             ls.remove(self.name)
             settings.value.update()
             # 加log
-            with open("app/log.py", "a") as f:
+            with open("app/log_tools.py", "a") as f:
                 f.write(f"# {str(datetime.now())} {self.name} unused\n")
 
 

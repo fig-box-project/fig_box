@@ -75,6 +75,8 @@ class GetListDepend:
         }
 
 
+
+
 class AuthDepender:
     def __init__(self, auth: int, type: str = 'user_login'):
         ...

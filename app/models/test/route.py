@@ -6,9 +6,9 @@ from app.models.assets.input_assets_connector import *
 from fastapi import APIRouter, HTTPException, Depends
 
 from app.models.category import mdl
-from app.models.log.log import Log
+from app.models.log.log_tools import LogTools
 from app.models.mdl import database
-from app.models.mdl.page import PageMdl
+from app.models.mdl import PageMdl
 from app.models.settings.crud import settings
 
 
@@ -62,4 +62,4 @@ def test_route(bp: APIRouter):
     #
     @bp.get('/log')
     def log():
-        Log.test()
+        LogTools.test()
