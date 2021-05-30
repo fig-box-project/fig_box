@@ -3,28 +3,30 @@ from html_builder import Html
 from sqlalchemy.orm import Session
 from . import orm, crud, mdl
 from app.models.mdl import database
+from .crud import UserCrud
 from ..page.crud import PageRouter, ParamsContainer, RequestItem
 from ..system.check_token import token
+from ..tools import GetListDepend
 
 
 def user_api_route(bp):
     @bp.get('/check', description='检查用户名是否存在')
     def check(username, db: Session = Depends(database.get_db)):
-        if not crud.check_user_name(db, username):
+        if not UserCrud.check_user_name(db, username):
             return '不存在,可注册'
         else:
             raise HTTPException(status_code=404, detail='存在')
 
     @bp.post('/register', description='注册', response_model=orm.User)
     def create_user(user: orm.UserCreate, db: Session = Depends(database.get_db)):
-        if not crud.check_user_name(db, user.username):
-            return crud.create_user(db, user)
+        if not UserCrud.check_user_name(db, user.username):
+            return UserCrud.create_user(db, user)
         else:
             raise HTTPException(status_code=409, detail='User already exists')
 
     @bp.post('/login', description='登录')
     def login(user: orm.UserLogin, db: Session = Depends(database.get_db)):
-        b, token = crud.login_user(db, user)
+        b, token = UserCrud.login_user(db, user)
         if b:
             return {'token': token}
         else:
@@ -38,12 +40,13 @@ def user_api_route(bp):
     #     user.into_auth("user_all_edit")
     #     return crud.update_user_character(db,aim_user)
 
-    @bp.get('/view/all_user', description='查看所有用户')
+    @bp.get('/view/ls', description='查看所有用户')
     def view_all_user(
+            ls_depend: GetListDepend = Depends(),
             user: mdl.User = Depends(token.check_token),
             db: Session = Depends(database.get_db)):
         user.into_auth("user_all_edit")
-        return crud.get_users(db)
+        return ls_depend.get_request(db, mdl.User)
 
     @bp.get('/profile', description='获取用户主页信息,api')
     def profile_data(

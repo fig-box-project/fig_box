@@ -19,3 +19,6 @@ class Photo(ApiModule):
 
     def get_module_name(self) -> str:
         return 'photo'
+
+
+photo = Photo()

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class UserBase(BaseModel):
-    username: str = "admin"
+    username: str
 
 
 class UserCreate(UserBase):
@@ -12,7 +12,7 @@ class UserCreate(UserBase):
 
 
 class UserLogin(UserBase):
-    password: str = "admin"
+    password: str
 # class UserToken(UserBase):
 #     token: str
 

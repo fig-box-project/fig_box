@@ -51,7 +51,7 @@ class GetListDepend:
         return self.__data
 
     def get_request(self, db: Session, cls, filter_by=None):
-        """cls中放HasidMdl的class"""
+        """cls中放HasidMdl的class, 如果传入filter_by将会把它放入filter函数中"""
 
         if filter_by is None:
             count = db.query(func.count(cls.id)) \
@@ -73,3 +73,8 @@ class GetListDepend:
             'page_size': self.page_size,
             'page': self.page_index
         }
+
+
+class AuthDepender:
+    def __init__(self, auth: int, type: str = 'user_login'):
+        ...

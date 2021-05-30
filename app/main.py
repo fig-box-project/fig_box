@@ -6,7 +6,7 @@ from app.models.system.modules import get_module_list
 
 version = "α5.3"
 
-auto_list = get_module_list()
+mod_datas = get_module_list()
 
 # 初始化数据库, 创建数据表
 db: Session = create_database.run()
@@ -27,8 +27,10 @@ token.get_token_func()
 # 导入错误处理系统
 err_handle.run(app)
 
+
+
 # 导入系统模组的蓝图
-blueprint.run(app,auto_list)
+blueprint.run(app, mod_datas['all'])
 
 # 导入模组的蓝图
 # mod_blueprint.run(app)

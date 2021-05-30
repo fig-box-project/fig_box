@@ -27,3 +27,5 @@ class Category(ApiModule, PageModule):
     def __init__(self):
         ApiModule.__init__(self)
         PageModule.__init__(self)
+
+category = Category()
