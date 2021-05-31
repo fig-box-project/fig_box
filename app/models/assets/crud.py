@@ -1,7 +1,7 @@
 import requests
 from fastapi import HTTPException
 from fastapi.datastructures import UploadFile
-from app.models.user.mdl import User
+from app.models.user.mdl import UserMdl
 from app.models.settings.crud import settings
 from .input_assets_connector import *
 
@@ -25,7 +25,7 @@ class Assets:
         return f"{Assets.get_link_prefix(host)}/{path}"
 
     @staticmethod
-    async def upload_with_user(asset: UploadFile, filename: str, owner: User, prefix="", visibility=True, limit=0):
+    async def upload_with_user(asset: UploadFile, filename: str, owner: UserMdl, prefix="", visibility=True, limit=0):
         connector = InputUploadConnector(
             f"{prefix}user/{owner.id}", filename, asset, limit)
         await connector.packup()

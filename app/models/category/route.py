@@ -8,7 +8,7 @@ from app.models.category import orm, mdl
 from app.models.mdl import database
 from app.models.page.crud import PageRouter, ParamsContainer, RequestItem
 from app.models.system.check_token import token
-from app.models.user.mdl import User
+from app.models.user.mdl import UserMdl
 
 
 class CategoryServer:
@@ -47,7 +47,7 @@ class CategoryServer:
 def category_route(bp):
     @bp.post('/create/service')
     def create_categor(data: orm.CategoryCU, db: Session = Depends(database.get_db),
-                       now_user: User = Depends(token.check_token), ):
+                       now_user: UserMdl = Depends(token.check_token), ):
         # 查找有无相同的服务
         if data.title in ls_service(db):
             raise HTTPException(403, '已存在同名服务')
@@ -74,7 +74,7 @@ def category_route(bp):
 
     @bp.post('/{service}/create')
     def create_category(service: str, data: orm.CategoryCU, db: Session = Depends(database.get_db),
-                        now_user: User = Depends(token.check_token), ):
+                        now_user: UserMdl = Depends(token.check_token), ):
         server = CategoryServer(db, service)
         if data.father_id == 0:
             data.father_id = server.get_id()
@@ -85,13 +85,13 @@ def category_route(bp):
         return {'id': data.id}
 
     @bp.delete('/{service}/delete')
-    def delete_category(id: int, db: Session = Depends(database.get_db), now_user: User = Depends(token.check_token), ):
+    def delete_category(id: int, db: Session = Depends(database.get_db), now_user: UserMdl = Depends(token.check_token), ):
         db.query(mdl.Category).filter_by(id=id).delete()
         db.commit()
 
     @bp.put('/{service}/update')
     def update_json(service: str, id: int, data: orm.CategoryCU, db: Session = Depends(database.get_db),
-                    now_user: User = Depends(token.check_token), ):
+                    now_user: UserMdl = Depends(token.check_token), ):
         server = CategoryServer(db, service)
         if data.father_id == 0:
             data.father_id = server.get_id()

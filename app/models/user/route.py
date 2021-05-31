@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from html_builder import Html
 from sqlalchemy.orm import Session
+from starlette.requests import Request
+
 from . import orm, crud, mdl
 from app.models.mdl import database
 from .crud import UserCrud
@@ -18,9 +20,11 @@ def user_api_route(bp):
             raise HTTPException(status_code=404, detail='存在')
 
     @bp.post('/register', description='注册', response_model=orm.User)
-    def create_user(user: orm.UserCreate, db: Session = Depends(database.get_db)):
+    def create_user(user: orm.UserCreate,
+                    request: Request,
+                    db: Session = Depends(database.get_db), ):
         if not UserCrud.check_user_name(db, user.username):
-            return UserCrud.create_user(db, user)
+            return UserCrud.create_user(db, user, request)
         else:
             raise HTTPException(status_code=409, detail='用户已存在')
 
@@ -43,21 +47,20 @@ def user_api_route(bp):
     @bp.get('/view/ls', description='查看所有用户')
     def view_all_user(
             ls_depend: GetListDepend = Depends(),
-            user: mdl.User = Depends(token.check_token),
+            user: mdl.UserMdl = Depends(token.check_token),
             db: Session = Depends(database.get_db)):
         user.into_auth("user_all_edit")
-        return ls_depend.get_request(db, mdl.User)
+        return ls_depend.get_request(db, mdl.UserMdl)
 
     @bp.get('/profile', description='获取用户主页信息,api')
     def profile_data(
-            user: mdl.User = Depends(token.check_token)
+            user: mdl.UserMdl = Depends(token.check_token)
             , db: Session = Depends(database.get_db)):
         return user
 
-    @bp.get('/logs', description='获取用户log')
-    def get_logs():
-        with open('')
-
+    # @bp.get('/logs', description='获取用户log')
+    # def get_logs():
+    #     with open('')
 
 
 def user_page_route(pg_bp, p):
@@ -71,7 +74,7 @@ def user_page_route(pg_bp, p):
     def profile_page(pc: ParamsContainer, id: str):
         id = int(id)
         if id > 2:
-            user = pc.db.query(mdl.User).get(id)
+            user = pc.db.query(mdl.UserMdl).get(id)
             if user is None:
                 # return 404, '找不到用户'
                 return RequestItem.with404('找不到用户')

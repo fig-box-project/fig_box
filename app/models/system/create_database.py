@@ -1,3 +1,6 @@
+from typing import List
+
+from app.models.module import TableModule
 from app.models.settings.crud import settings
 from app.models.mdl import database
 from sqlalchemy.orm import sessionmaker
@@ -6,11 +9,12 @@ from app.models.user import mdl as user
 from app.models.category import mdl as tree_mdl
 
 
-def run():
-    mods: dict = settings.value["mods"]
+def run(mods: List[TableModule]):
     # 默认表
-    tables_strs = ["user.User.__table__", "tree_mdl.Category.__table__"]
     tables = []
+    for m in mods:
+        for t in m.get_table():
+            tables.append(t.__table__)
 
     # 自动引用安装的库
     # for k in mods.keys():
@@ -23,8 +27,8 @@ def run():
     #                 "{}_mdl.{}.__table__".format(k, k.capitalize()))
 
     # 录入到tables中
-    for t in tables_strs:
-        exec("tables.append({})".format(t))
+    # for t in tables_strs:
+    #     exec("tables.append({})".format(t))
 
     # もしテーブルを選びたい時： create_all(bind=engine, tables=[User.__table__])
     # もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
@@ -33,17 +37,17 @@ def run():
     # database.Base.metadata.query
     # 初始化数据库
     db = sessionmaker(bind=database.engine)()
-    if db.query(user.User).count() == 0:
+    if db.query(user.UserMdl).count() == 0:
         print("---create datas---")
         # add admin
-        admin_user = user.User(
+        admin_user = user.UserMdl(
             username="admin",
             character="master"
         )
         admin_user.hash_password("admin")
         db.add(admin_user)
         # add test user
-        test_user = user.User(
+        test_user = user.UserMdl(
             username="test",
             character="normal"
         )

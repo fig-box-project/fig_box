@@ -10,6 +10,7 @@ from app.models.log.log_tools import LogTools
 from app.models.mdl import database
 from app.models.mdl import PageMdl
 from app.models.settings.crud import settings
+from app.models.tools import Tools
 
 
 def test_route(bp: APIRouter):
@@ -63,3 +64,7 @@ def test_route(bp: APIRouter):
     @bp.get('/log')
     def log():
         LogTools.test()
+
+    @bp.get('/ip')
+    def ip(request:Request):
+        return Tools.get_ip_description(request)

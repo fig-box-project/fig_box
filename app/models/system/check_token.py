@@ -13,14 +13,14 @@ class Token:
         self.__db = db
 
     def get_token_func(self):
-        if self.__db is not None:
-            return self.check_token
+        return self.check_token
 
+    # TODO:把这个搬移到UserMdl中,其实db可以从函数中获取
     def check_token(self, token: Optional[str] = Header(None)):
         # 在测试模式时总是进入管理员
         if settings.value['auth_test_mode']:
-            user_o = self.__db.query(user.User).filter(
-                user.User.id == 1).first()
+            user_o = self.__db.query(user.UserMdl).filter(
+                user.UserMdl.id == 1).first()
             return user_o
         # 否则检查token合法性
         else:
@@ -28,7 +28,7 @@ class Token:
             if user_id is None:
                 raise HTTPException(status_code=400, detail='token error')
             else:
-                return self.__db.query(user.User).filter_by(id=user_id).first()
+                return self.__db.query(user.UserMdl).filter_by(id=user_id).first()
 
     def verify_token(self, token):
         try:

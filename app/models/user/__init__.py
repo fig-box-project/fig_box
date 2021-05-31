@@ -1,15 +1,19 @@
 from typing import List
 
 from requests import Session
+from .mdl import UserMdl
 
-from app.models.module import ApiModule, PageModule, PageItem
+from app.models.module import ApiModule, PageModule, PageItem, TableModule
 from app.models.user.route import user_api_route, user_page_route
 
 # 不要删
 from . import mdl
 
 
-class User(ApiModule, PageModule):
+class User(ApiModule, PageModule, TableModule):
+    def get_table(self):
+        return [UserMdl]
+
     def __init__(self):
         ApiModule.__init__(self)
         PageModule.__init__(self)

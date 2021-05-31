@@ -18,19 +18,15 @@ class LogTools:
         logger.info('----------------')
 
     @staticmethod
-    def user_log(status: int, user_id: int, request: Request, db:Session):
+    def user_log(status: str, user_id: int,
+                 ip:str, address1: str, address2: str):
         """status 0 注册, 1 登录, 其它数字 其它意思"""
+        # log到文件
         logger.remove()
         logger.add(f'{LogTools.PREFIX}/user/all.log', rotation='100 MB')
-        logger.add(f'{LogTools.PREFIX}/user/byid/{user_id}.log', rotation='5 MB')
-        if status == 0:
-            status_str = ' register'
-        elif status == 1:
-            status_str = ' login'
-        else:
-            status_str = ' other'
-        logger.opt(lazy=True).info(f'ip: {Tools.get_user_ip(request)}'
-                                   f' status:{status_str} id: {user_id}')
+        logger.opt(lazy=True).info(f'ip: {ip}'
+                                   f' status:{status} id: {user_id}')
+
     TIMES = 0
 
     @staticmethod

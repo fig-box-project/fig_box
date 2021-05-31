@@ -41,11 +41,9 @@ class Tools:
         return request.client.host
 
     @staticmethod
-    def get_ip_description(rq: Request) -> dict:
-        rt = {}
-        # ip获取
-        ip = Tools.get_user_ip(rq)
-        rt['ip'] = ip
+    def get_ip_description(ip: str) -> tuple:
+        # rt = {}
+        # rt['ip'] = ip
         # 地址获取
         url = 'http://api.datasview.com/map'
         params = {'ip': ip}
@@ -53,17 +51,22 @@ class Tools:
         rq = response.json()
         if rq['status'] == 0:
             info = rq['result']['ad_info']
-            address = [
+            address1 = [
                 info['nation'],
                 info['province'],
+            ]
+            address2 = [
                 info['city'],
                 info['district']
             ]
-            address = ','.join(address)
+            address1 = ','.join(address1)
+            address2 = ','.join(address2)
         else:
-            address = '未知位置'
-        rt['address'] = address
-        return rt
+            address1 = '未知位置'
+            address2 = '未知位置'
+        # rt['address1'] = address1
+        # rt['address2'] = address2
+        return address1, address2
 
 
 class GetListDepend:

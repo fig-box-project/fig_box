@@ -9,7 +9,7 @@ version = "α5.3"
 mod_datas = get_module_list()
 
 # 初始化数据库, 创建数据表
-db: Session = create_database.run()
+db: Session = create_database.run(mod_datas['table_mods'])
 
 app = FastAPI(
     title="F-Mod",

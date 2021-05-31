@@ -7,7 +7,7 @@ import time
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(Base):
+class UserMdl(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String(32), index=True)

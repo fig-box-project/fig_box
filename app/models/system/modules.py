@@ -1,10 +1,13 @@
+from typing import Dict
+
 from app.models.assets import assets
 from app.models.category import category
 from app.models.character import character
 from app.models.editor import editor
 from app.models.homepage import homepage
 from app.models.jsonsaver import jsonsaver
-from app.models.module import moudle, AuthModule
+from app.models.log import log
+from app.models.module import moudle, AuthModule, TableModule
 from app.models.photo import photo
 from app.models.settings.crud import settings
 from app.models.test import test
@@ -13,17 +16,19 @@ from app.models.user import user
 
 def get_module_list() -> dict:
     # create module list
-    all_mods = [test, homepage, user, assets, photo, category, character, editor, moudle, jsonsaver]
+    all_mods = [log, test, homepage, user, assets, photo, category, character, editor, moudle, jsonsaver]
     read_mods(all_mods)
     # 分开
-    rt = {
+    rt: Dict[str, list] = {
         'all': all_mods,
+        'auth_mods': [],
+        'table_mods': []
     }
-    auth_mods = []
     for m in all_mods:
         if isinstance(m, AuthModule):
-            auth_mods.append(m)
-    rt['auth_mods'] = auth_mods
+            rt['auth_mods'].append(m)
+        if isinstance(m, TableModule):
+            rt['table_mods'].append(m)
     return rt
 
 

@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
 from app.models.mdl import PageMdl
+from app.models.mdl.database import Base
 from app.models.module.route import module_route
 from app.models.page.crud import PageRouter
 
@@ -77,6 +78,15 @@ class AuthItem:
         request = self.check_auth(auth_key)
         if not request:
             raise HTTPException(403, '权限不足')
+
+
+class TableModule(Module, metaclass=ABCMeta):
+    def __init__(self):
+        super().__init__()
+
+    @abstractmethod
+    def get_table(self) -> list:
+        """重写并返回表名"""
 
 
 class AuthModule(Module, metaclass=ABCMeta):
