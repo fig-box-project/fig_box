@@ -1,4 +1,6 @@
 # 防止循环调用,请不要从这里import太多其它模组
+import requests
+from requests import Response
 from sqlalchemy import func
 from sqlalchemy.orm import Query, Session
 from starlette.requests import Request
@@ -38,6 +40,31 @@ class Tools:
     def get_user_ip(request: Request) -> str:
         return request.client.host
 
+    @staticmethod
+    def get_ip_description(rq: Request) -> dict:
+        rt = {}
+        # ip获取
+        ip = Tools.get_user_ip(rq)
+        rt['ip'] = ip
+        # 地址获取
+        url = 'http://api.datasview.com/map'
+        params = {'ip': ip}
+        response: Response = requests.get(url, params, )
+        rq = response.json()
+        if rq['status'] == 0:
+            info = rq['result']['ad_info']
+            address = [
+                info['nation'],
+                info['province'],
+                info['city'],
+                info['district']
+            ]
+            address = ','.join(address)
+        else:
+            address = '未知位置'
+        rt['address'] = address
+        return rt
+
 
 class GetListDepend:
     def __init__(self, page_index: int, page_size: int):
@@ -73,8 +100,6 @@ class GetListDepend:
             'page_size': self.page_size,
             'page': self.page_index
         }
-
-
 
 
 class AuthDepender:
