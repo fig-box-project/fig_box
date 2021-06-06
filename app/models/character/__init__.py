@@ -5,6 +5,7 @@ from app.models.module import ApiModule
 
 
 class Character(ApiModule):
+
     def _register_api_bp(self, bp: APIRouter):
         character_router(bp)
 

@@ -39,11 +39,13 @@ class UserCrud:
         return db_user
 
     @staticmethod
-    def login_user(db: Session, user_data: orm.UserLogin):
+    def login_user(db: Session, user_data: orm.UserLogin, request:Request):
         user = db.query(mdl.UserMdl).filter_by(username=user_data.username).first()
         if not user:
             return False, "找不到用户"
         elif user.verify_password(user_data.password):
+            # log
+            UserLogMdl.user_log('登录', user.id, request, db)
             return True, user.get_token()
         else:
             return False, "密码不匹配"

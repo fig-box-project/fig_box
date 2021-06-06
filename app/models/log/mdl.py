@@ -14,6 +14,7 @@ class UserLogMdl(DateCreatedMdl):
     ip = Column(String(45))
     address1 = Column(String(64))
     address2 = Column(String(64))
+    user_agent = Column(String(200))
 
     @staticmethod
     def user_log(status: str, user_id: int,
@@ -26,7 +27,8 @@ class UserLogMdl(DateCreatedMdl):
                 'method_type': status,
                 'ip': ip,
                 'address1': address1,
-                'address2': address2}
+                'address2': address2,
+                'user_agent': request.headers['user-agent']}
         db.add(UserLogMdl(**item))
         db.commit()
         # log到文件

@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from fastapi import Header, HTTPException
 from app.models.settings.crud import settings
-from app.models.user import mdl as user
+
 
 
 class Token:
@@ -17,6 +17,7 @@ class Token:
 
     # TODO:把这个搬移到UserMdl中,其实db可以从函数中获取
     def check_token(self, token: Optional[str] = Header(None)):
+        from app.models.user import mdl as user
         # 在测试模式时总是进入管理员
         if settings.value['auth_test_mode']:
             user_o = self.__db.query(user.UserMdl).filter(

@@ -53,9 +53,10 @@ def test_route(bp: APIRouter):
     #
     #     return c.father
     #
-    # @bp.get('/rere')
-    # def rere(request: Request):
-    #     return request.headers
+    @bp.get('/rere')
+    def rere(request: Request):
+        return request.headers
+
     #
     # @bp.get('/settings')
     # def setting():
@@ -65,6 +66,6 @@ def test_route(bp: APIRouter):
     def log():
         LogTools.test()
 
-    @bp.get('/ip')
-    def ip(request:Request):
-        return Tools.get_ip_description(request)
+    # @bp.get('/ip')
+    # def ip(request:Request):
+    #     return Tools.get_ip_description(request)

@@ -1,17 +1,35 @@
+# 这些之间有依赖,安装依赖来改变版本号
 fastapi~=0.63.0
+starlette==0.13.6
+pydantic~=1.8.1
+
 uvicorn~=0.12.3
 SQLAlchemy~=1.3.20
-Werkzeug==1.0.1
+# Werkzeug==1.0.1
+
+# 生成token用
 pyjwt~=1.7.0
-async-exit-stack~=1.0.1
-async-generator~=1.10
-pytest~=6.1.2
+
+# async-exit-stack~=1.0.1
+# async-generator~=1.10
+
+# 模版
 jinja2~=2.11.2
-aiofiles~=0.6.0
+# aiofiles~=0.6.0
+
+# 流试上传
 python-multipart~=0.0.5
+
 requests~=2.25.0
+
+# 设置文件的读写
 pyyaml~=5.3.1
-pydantic~=1.8.1
-starlette~=0.13.6
+
+# 前端网页的生成
 html-builder==0.0.6
+
+# 生成log
 loguru~=0.5.3
+
+# 测试用,真实环境不需要
+pytest~=6.1.2

@@ -29,8 +29,10 @@ def user_api_route(bp):
             raise HTTPException(status_code=409, detail='用户已存在')
 
     @bp.post('/login', description='登录')
-    def login(user: orm.UserLogin, db: Session = Depends(database.get_db)):
-        b, token = UserCrud.login_user(db, user)
+    def login(user: orm.UserLogin,
+              request: Request,
+              db: Session = Depends(database.get_db), ):
+        b, token = UserCrud.login_user(db, user, request)
         if b:
             return {'token': token}
         else:
