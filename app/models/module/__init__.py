@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import List
+from typing import List, Set
 
 from fastapi import APIRouter, HTTPException
 from sqlalchemy.ext.declarative import DeclarativeMeta
@@ -53,40 +53,27 @@ class Module(metaclass=ABCMeta):
 
 
 class AuthItem:
-    """始终留意:0是未分配的值(遇到当报错), 1是admin绝对权限, 2是default默认权限"""
+    """传入一个模组里唯一的权限标识字符串,用于角色中的权限搜索"""
 
-    def __init__(self, is_default_auth: bool = False):
+    def __init__(self, auth_name: str, is_default_auth: bool = False):
         self.is_default_auth = is_default_auth
-        self.__auth_key = 0
+        self.auth_name = auth_name
 
-    def set_auth_key(self, auth_key: int):
-        self.__auth_key = auth_key
-
-    def check_auth(self, auth_key: int) -> bool:
+    def check_auth(self, auth_list: set) -> bool:
         """此处用于检查权限, 可以通过则返回True, 否则返回False"""
-        if auth_key == 1:
+        if self in auth_list:
             return True
-        elif auth_key == 1 and self.is_default_auth:
+        elif 'default' in auth_list and self.is_default_auth:
             return True
-        elif auth_key == self.__auth_key:
+        elif 'admin' in auth_list:
             return True
-        elif auth_key == 0:
-            raise HTTPException(500, '未注册的权限')
-        return False
+        else:
+            return False
 
-    def into_auth(self, auth_key: int):
-        request = self.check_auth(auth_key)
+    def into_auth(self, auth_list: set):
+        request = self.check_auth(auth_list)
         if not request:
-            raise HTTPException(403, '权限不足')
-
-
-class TableModule(Module, metaclass=ABCMeta):
-    def __init__(self):
-        super().__init__()
-
-    @abstractmethod
-    def get_table(self) -> list:
-        """重写并返回表名"""
+            raise HTTPException(403, '你的权限不足')
 
 
 class AuthModule(Module, metaclass=ABCMeta):
@@ -98,10 +85,14 @@ class AuthModule(Module, metaclass=ABCMeta):
         """在这里返回需要注册的权限"""
         ...
 
+
+class TableModule(Module, metaclass=ABCMeta):
+    def __init__(self):
+        super().__init__()
+
     @abstractmethod
-    def auth_register_callback(self):
-        """在这里替换掉静态变量"""
-        ...
+    def get_table(self) -> list:
+        """重写并返回表名"""
 
 
 class ApiModule(Module, metaclass=ABCMeta):
