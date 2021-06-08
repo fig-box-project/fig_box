@@ -3,6 +3,7 @@
 /downloads
 /tree.json
 /venv
+/tutorial-env
 settings.yml
 app/log.py
 app/modules.mods
