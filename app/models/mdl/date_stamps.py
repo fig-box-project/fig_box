@@ -12,6 +12,7 @@ class DateCreatedMdl(HasidMdl):
     def create_stamp(self):
         now = datetime.now()
         self.create_date = now
+        return self
 
 
 class DateCUMdl(DateCreatedMdl):

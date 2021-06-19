@@ -24,4 +24,4 @@ class AuthMdl(HasidMdl):
     __tablename__ = 'auth'
     # 唯一的权限名
     name = Column(String(128), index=True, unique=True)
-    characters = relationship('Character', secondary=character_auth)
+    characters = relationship('CharacterMdl', secondary=character_auth)

@@ -29,7 +29,8 @@ class UserLogMdl(DateCreatedMdl):
                 'address1': address1,
                 'address2': address2,
                 'user_agent': request.headers['user-agent']}
-        db.add(UserLogMdl(**item))
+        add_item = UserLogMdl(**item).create_stamp()
+        db.add(add_item)
         db.commit()
         # log到文件
         LogTools.user_log(status, user_id, ip, address1, address2)
