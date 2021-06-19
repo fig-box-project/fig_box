@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy.orm import relationship
 from app.models.mdl.database import Base
 from app.models.settings.crud import settings
 import jwt
@@ -13,8 +14,10 @@ class UserMdl(Base):
     username = Column(String(32), index=True)
     password_hash = Column(String(128))
 
-    character = Column(String(64), default=2)
     birth_date = Column(DateTime)
+
+    character_id = Column(Integer, ForeignKey('character.id'))
+    character = relationship('CharacterMdl', back_populates='users')
 
     def get_token(self, expires_in=3600):
         try:

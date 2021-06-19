@@ -58,12 +58,16 @@ class AuthItem:
     def __init__(self, auth_name: str, is_default_auth: bool = False):
         self.is_default_auth = is_default_auth
         self.auth_name = auth_name
+        self.name = ''
+
+    def set_mod_name(self, mod_name):
+        self.name = f'<{mod_name}>{self.auth_name}'
 
     def check_auth(self, auth_list: set) -> bool:
         """此处用于检查权限, 可以通过则返回True, 否则返回False"""
-        if self in auth_list:
+        if self.is_default_auth and 'default' in auth_list:
             return True
-        elif 'default' in auth_list and self.is_default_auth:
+        elif self in auth_list:
             return True
         elif 'admin' in auth_list:
             return True
@@ -99,7 +103,8 @@ class ApiModule(Module, metaclass=ABCMeta):
 
     def __init__(self):
         super().__init__()
-        self._api_bp = BluePrintSet(f'/api/v1/{self.get_module_name()}', self._get_tag())
+        self._api_bp = BluePrintSet(
+            f'/api/v1/{self.get_module_name()}', self._get_tag())
         self._register_api_bp(self._api_bp.get_bp())
 
     @abstractmethod
@@ -122,7 +127,8 @@ class PageItem:
 class PageModule(Module, metaclass=ABCMeta):
     def __init__(self):
         super().__init__()
-        self._page_bp = BluePrintSet(f'/{self.get_module_name()}', self._get_tag())
+        self._page_bp = BluePrintSet(
+            f'/{self.get_module_name()}', self._get_tag())
         self.page_router = PageRouter()
         self._register_page_bp(self._page_bp.get_bp(), self.page_router)
 
