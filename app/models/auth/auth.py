@@ -16,16 +16,19 @@ class AuthFilter:
         self.auth = auth
 
     def ca(self, token: Optional[str] = Header(None)) -> UserMdl:
-        with SessionLocal() as db:
-            # 在测试模式时总是进入管理员
-            if settings.value['auth_test_mode']:
-                user_o = db.query(UserMdl).filter(
-                    UserMdl.id == 1).first()
-                rt: UserMdl = user_o
-            # 否则检查token合法性
-            else:
-                user_id = jwt.decode(token,
-                                     settings.value['token_key'],
-                                     algorithms=['HS256'])['id']
-                rt: UserMdl = db.query(UserMdl).filter_by(id=user_id).first()
-            rt.character
+        db = SessionLocal()
+        # 在测试模式时总是进入管理员
+        if settings.value['auth_test_mode']:
+            user_o = db.query(UserMdl).filter(
+                UserMdl.id == 1).first()
+            rt: UserMdl = user_o
+        # 否则检查token合法性
+        else:
+            user_id = jwt.decode(token,
+                                 settings.value['token_key'],
+                                 algorithms=['HS256'])['id']
+            rt: UserMdl = db.query(UserMdl).filter_by(id=user_id).first()
+        self.auth.into_auth(rt.character.auths)
+        db.close()
+        return rt
+

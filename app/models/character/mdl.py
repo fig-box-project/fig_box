@@ -23,7 +23,7 @@ class CharacterMdl(DateCUMdl):
     users = relationship('UserMdl', back_populates='character')
     # 2是全部权限,1是默认权限,0是无权限
     auth_type = Column(Integer)
-    auths = relationship('AuthMdl', secondary=character_auth)
+    auths: list = relationship('AuthMdl', secondary=character_auth)
 
 
 class AuthMdl(HasidMdl):

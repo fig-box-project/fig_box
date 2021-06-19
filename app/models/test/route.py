@@ -5,6 +5,7 @@ from starlette.requests import Request
 from app.models.assets.input_assets_connector import *
 from fastapi import APIRouter, HTTPException, Depends
 
+from app.models.auth.auth import AuthFilter
 from app.models.category import mdl
 from app.models.log.log_tools import LogTools
 from app.models.mdl import database
@@ -13,7 +14,7 @@ from app.models.settings.crud import settings
 from app.models.tools import Tools
 
 
-def test_route(bp: APIRouter):
+def test_route(bp: APIRouter, test_auth):
     # @bp.get('/packup/directory', description='打包文件夹')
     # async def packup():
     #     connector = InputZipDirConnector(
@@ -65,6 +66,10 @@ def test_route(bp: APIRouter):
     @bp.get('/log')
     def log():
         LogTools.test()
+
+    @bp.get('/logint')
+    def login(user=Depends(AuthFilter(test_auth).ca)):
+        print(user.id)
 
     # @bp.get('/ip')
     # def ip(request:Request):

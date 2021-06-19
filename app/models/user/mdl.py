@@ -1,5 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
+
+# from app.models.character import CharacterMdl
 from app.models.mdl.database import Base
 from app.models.settings.crud import settings
 import jwt

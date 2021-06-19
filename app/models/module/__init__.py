@@ -63,7 +63,7 @@ class AuthItem:
     def set_mod_name(self, mod_name):
         self.name = f'<{mod_name}>{self.auth_name}'
 
-    def check_auth(self, auth_list: set) -> bool:
+    def check_auth(self, auth_list: list) -> bool:
         """此处用于检查权限, 可以通过则返回True, 否则返回False"""
         if self.is_default_auth and 'default' in auth_list:
             return True
@@ -74,7 +74,7 @@ class AuthItem:
         else:
             return False
 
-    def into_auth(self, auth_list: set):
+    def into_auth(self, auth_list: list):
         request = self.check_auth(auth_list)
         if not request:
             raise HTTPException(403, '你的权限不足')
