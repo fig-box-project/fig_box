@@ -45,7 +45,7 @@ class Tools:
         # rt = {}
         # rt['ip'] = ip
         # 地址获取
-        url = 'http://api.datasview.com/map'
+        url = 'http://bc.leesinhao.com:3000/api/v1/ipaddress'
         params = {'ip': ip}
         try:
             response: Response = requests.get(url, params, timeout=(3, 27))
