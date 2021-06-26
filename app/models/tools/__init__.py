@@ -47,7 +47,10 @@ class Tools:
         # 地址获取
         url = 'http://api.datasview.com/map'
         params = {'ip': ip}
-        response: Response = requests.get(url, params, )
+        try:
+            response: Response = requests.get(url, params, timeout=(3, 27))
+        except:
+            return '服务错误', '服务错误'
         rq = response.json()
         if rq['status'] == 0:
             info = rq['result']['ad_info']
