@@ -13,7 +13,7 @@ db: Session = create_database.run(mod_datas['table_mods'])
 
 app = FastAPI(
     title="F-Mod",
-    description="这是自由、易管理的高速模组化cms system.",
+    description="这是自由、易管理的高速多模组化后端系统",
     version=version,
     # 关闭文档
     # docs_url=None,
