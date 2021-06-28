@@ -4,10 +4,10 @@ from app.models.test.route import test_route
 
 
 class Test(ApiModule):
-    testAuth = AuthItem('test', True)
+    testAuth = AuthItem('test', False)
 
     def _register_api_bp(self, bp):
-        test_route(bp,self.testAuth)
+        test_route(bp, self.testAuth)
 
     def _get_tag(self) -> str:
         return '测试'
