@@ -4,7 +4,7 @@ from app.models.system import err_handle, create_database, blueprint
 from app.models.system.check_token import token
 from app.models.system.modules import get_module_list
 
-version = "α5.3"
+version = "α6.28"
 
 mod_datas = get_module_list()
 
