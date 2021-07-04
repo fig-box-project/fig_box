@@ -1,5 +1,8 @@
 # 防止循环调用,请不要从这里import太多其它模组
+from json import JSONDecodeError
+
 import requests
+from fastapi import HTTPException
 from requests import Response
 from sqlalchemy import func
 from sqlalchemy.orm import Query, Session
@@ -45,28 +48,40 @@ class Tools:
         # rt = {}
         # rt['ip'] = ip
         # 地址获取
-        url = 'http://bc.leesinhao.com:3000/api/v1/ipaddress'
+        url = 'http://bc.leesinhao.com:3001/api1/v1/ipaddress'
         params = {'ip': ip}
         try:
             response: Response = requests.get(url, params, timeout=(3, 27))
-        except:
+        except requests.exceptions.ConnectionError:
+            # 连接错误
             return '服务错误', '服务错误'
-        rq = response.json()
-        if rq['status'] == 0:
-            info = rq['result']['ad_info']
-            address1 = [
-                info['nation'],
-                info['province'],
-            ]
-            address2 = [
-                info['city'],
-                info['district']
-            ]
-            address1 = ','.join(address1)
-            address2 = ','.join(address2)
-        else:
-            address1 = '未知位置'
-            address2 = '未知位置'
+
+        try:
+            rq = response.json()
+        except JSONDecodeError:
+            # json字段错误
+            raise HTTPException(500, f'{response.text}不是合法的json')
+
+        try:
+            rq = rq['dat']
+            if rq['status'] == 0:
+                info = rq['result']['ad_info']
+                address1 = [
+                    info['nation'],
+                    info['province'],
+                ]
+                address2 = [
+                    info['city'],
+                    info['district']
+                ]
+                address1 = ','.join(address1)
+                address2 = ','.join(address2)
+            else:
+                address1 = '未知位置'
+                address2 = '未知位置'
+        except KeyError:
+            # 键错误
+            return '键问题', '键问题'
         # rt['address1'] = address1
         # rt['address2'] = address2
         return address1, address2
