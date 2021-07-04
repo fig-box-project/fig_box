@@ -16,7 +16,7 @@ from app.models.user import user
 
 def get_module_list() -> dict:
     # create module list
-    all_mods = [log, test, homepage, user, assets, photo, category, character, editor, moudle, jsonsaver]
+    all_mods = [moudle, test, log, homepage, user, assets, photo, category, character, editor, jsonsaver]
     read_mods(all_mods)
     # 分开
     rt: Dict[str, list] = {
@@ -33,10 +33,11 @@ def get_module_list() -> dict:
 
 
 def read_mods(mods: list):
+    """往模组里插入settings文件中引用的模组（不要删未用的arg）"""
     mod_strs: list = settings.value['mods']
     for s in mod_strs:
         import_str = f'from app.insmodes.{s} import {s} as mod'
-        append_str = 'mods.append(mod)'
+        append_str = 'mods.insert(1,mod)'
         try:
             exec(import_str)
             exec(append_str)

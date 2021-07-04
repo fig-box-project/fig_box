@@ -53,7 +53,7 @@ class Module:
     def use(self):
         self.status = "used"
         if self.name not in settings.value["mods"]:
-            settings.value["mods"].append(self.name)
+            settings.value["mods"].insert(0, self.name)  # .append(self.name)
             settings.value.update()
             # 加下log让服务重启
             with open("app/log_tools.py", "a") as f:
