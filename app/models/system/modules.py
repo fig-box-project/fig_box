@@ -9,6 +9,7 @@ from app.models.jsonsaver import jsonsaver
 from app.models.log import log
 from app.models.module import moudle, AuthModule, TableModule
 from app.models.photo import photo
+from app.models.schedule import schedule
 from app.models.settings.crud import settings
 from app.models.test import test
 from app.models.user import user
@@ -16,7 +17,7 @@ from app.models.user import user
 
 def get_module_list() -> dict:
     # create module list
-    all_mods = [moudle, test, log, homepage, user, assets, photo, category, character, editor, jsonsaver]
+    all_mods = [moudle, schedule, test, log, homepage, user, assets, photo, category, character, editor, jsonsaver]
     read_mods(all_mods)
     # 分开
     rt: Dict[str, list] = {

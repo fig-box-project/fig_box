@@ -31,6 +31,9 @@ html-builder==0.0.6
 # 生成log
 loguru~=0.5.3
 
+# 定时任务
+apscheduler==3.7.0
+
 # 测试用,真实环境不需要
 pytest~=6.1.2
 html2text==2020.1.16
