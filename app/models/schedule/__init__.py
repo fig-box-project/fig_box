@@ -1,16 +1,7 @@
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.triggers.cron import CronTrigger
 from fastapi import APIRouter
 
 from app.models.module import ApiModule
-
-ScheduleTool = AsyncIOScheduler(
-    jobstores={
-        'default': SQLAlchemyJobStore(url='sqlite:///schedule.sqlite')
-    }
-)
-ScheduleTool.start()
+from app.models.schedule.schedule_tool import ScheduleTool
 
 
 def test_job():
