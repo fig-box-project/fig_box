@@ -86,6 +86,16 @@ class Tools:
         # rt['address2'] = address2
         return address1, address2
 
+    @staticmethod
+    def get_machine_ip():
+        """to get ip address"""
+        get_ip_url = 'https://domains.google.com/checkip'
+        import requests
+        response = requests.get(get_ip_url)
+        if response.status_code == 200:
+            print('liu-708 ip: ' + response.text)
+            return response.text
+
 
 class GetListDepend:
     def __init__(self, page_index: int, page_size: int):
