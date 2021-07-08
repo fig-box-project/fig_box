@@ -40,6 +40,17 @@ class Schedule(ApiModule):
             print('liu-708' + response.text)
             return response.text
         
+    def check_ip_to_update_domain(self):
+        """check the ip and when it changed, update to domain sever (https://username:password@domains.google.com/nic/update?hostname=subdomain.yourdomain.com&myip=1.2.3.4)"""
+        import requests
+        old_ip = '12.12.12.12'
+        now_ip = self.get_machine_ip()
+        if now_ip != old_ip:
+            url = f'https://{username}:{password}@domains.google.com/nic/update?hostname={full_domain}&myip={now_ip}'
+            response = requests.get(url)
+            print('liu-708 reback' + response.text)
+            
+        
 
 
 schedule = Schedule()
