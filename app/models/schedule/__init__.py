@@ -30,6 +30,15 @@ class Schedule(ApiModule):
 
     def get_module_name(self) -> str:
         return 'schedule'
+    
+    def auto_get_ip(self):
+        get_ip_url = 'https://domains.google.com/checkip'
+        import requests
+        response = requests.get(get_ip_url)
+        if response.status_code == 200:
+            print('liu-708' + response.text)
+            return response.text
+        
 
 
 schedule = Schedule()
