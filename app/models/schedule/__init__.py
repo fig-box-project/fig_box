@@ -31,7 +31,8 @@ class Schedule(ApiModule):
     def get_module_name(self) -> str:
         return 'schedule'
     
-    def auto_get_ip(self):
+    def get_machine_ip(self):
+        """to get ip address"""
         get_ip_url = 'https://domains.google.com/checkip'
         import requests
         response = requests.get(get_ip_url)
