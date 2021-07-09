@@ -7,7 +7,7 @@ import requests
 
 
 def test_job():
-    trquests.get(http://pi.datasview.com:8081)
+    trquests.get('http://pi.datasview.com:8081')
 
 
 
