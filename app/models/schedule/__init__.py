@@ -46,7 +46,7 @@ class Schedule(ApiModule):
         password = 'CrCAkky5R62HhqVA'
         full_domain = 'pi.datasview.com'
         now_ip = Tools.get_machine_ip()
-        if now_ip != old_ip:
+        if now_ip != self.old_ip:
             url = f'https://{username}:{password}@domains.google.com/nic/update?hostname={full_domain}&myip={now_ip}'
             response = requests.get(url)
             print('liu-708 reback:' + response.text)
