@@ -7,7 +7,7 @@ from app.models.settings.crud import settings
 import jwt
 import time
 
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class UserMdl(Base):
