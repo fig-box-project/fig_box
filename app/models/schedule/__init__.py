@@ -3,10 +3,11 @@ from fastapi import APIRouter
 from app.models.module import ApiModule
 from app.models.schedule.schedule_tool import ScheduleTool
 from app.models.tools import Tools
+import requests
 
 
 def test_job():
-    print('ran job')
+    trquests.get(http://pi.datasview.com:8081)
 
 
 
@@ -41,7 +42,7 @@ class Schedule(ApiModule):
     def check_ip_to_update_domain(self):
         """check the ip and when it changed, update to domain sever (
         https://username:password@domains.google.com/nic/update?hostname=subdomain.yourdomain.com&myip=1.2.3.4) """
-        import requests
+        
         username = 'ld6wd7WaJbFQpORY'
         password = 'CrCAkky5R62HhqVA'
         full_domain = 'pi.datasview.com'
