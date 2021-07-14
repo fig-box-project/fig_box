@@ -59,9 +59,9 @@ git clone https://github.com/normidar/my_fastapi
 cd my_fastapi
 python3.8 -m venv tutorial-env
 source tutorial-env/bin/activate
-pip3.8 install --upgrade pip
-pip3.8 install --upgrade setuptools
-pip3.8 install -r requirements.txt
+pip3 install --upgrade pip
+pip3 install --upgrade setuptools
+pip3 install -r requirements.txt
 
 uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
 uvicorn app.main:app --port 333 --host 0.0.0.0 --reload

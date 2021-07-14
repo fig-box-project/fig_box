@@ -10,9 +10,9 @@ def test_job():
     trquests.get('http://pi.datasview.com:8081')
 
 
-
 class Schedule(ApiModule):
     old_ip = '12.12.12.12'
+
     def _register_api_bp(self, bp: APIRouter):
         @bp.get('/all', description='获取所有运行中的任务')
         def get_all():
@@ -27,11 +27,10 @@ class Schedule(ApiModule):
                 .add_job(test_job, 'interval', minutes=1,
                          id='1', replace_existing=True)
             return job.id
-        
+
         @bp.get('/update', )
         def update():
-            return self.check_ip_to_update_domain()
-        
+            return self.check_ip_to_update_domain(False)
 
     def _get_tag(self) -> str:
         return '预定任务'
@@ -39,20 +38,23 @@ class Schedule(ApiModule):
     def get_module_name(self) -> str:
         return 'schedule'
 
-    def check_ip_to_update_domain(self):
+    def check_ip_to_update_domain(self, is_use_default: bool = True):
         """check the ip and when it changed, update to domain sever (
         https://username:password@domains.google.com/nic/update?hostname=subdomain.yourdomain.com&myip=1.2.3.4) """
-        
+
         username = 'ld6wd7WaJbFQpORY'
         password = 'CrCAkky5R62HhqVA'
         full_domain = 'pi.datasview.com'
         now_ip = Tools.get_machine_ip()
         if now_ip != self.old_ip:
-            url = f'https://{username}:{password}@domains.google.com/nic/update?hostname={full_domain}&myip={now_ip}'
+            url = f'https://{username}:{password}@domains.google.com/nic/update?hostname={full_domain}'
+            if not is_use_default:
+                url += f'&myip={now_ip}'
+            print('liu-714 send:' + url)
             response = requests.get(url)
-            print('liu-708 reback:' + response.text)
-            return response.text
+            # print('liu-708 reback:' + response.text)
             self.old_ip = now_ip
+            return response.text
 
 
 schedule = Schedule()

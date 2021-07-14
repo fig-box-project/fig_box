@@ -89,7 +89,8 @@ class Tools:
     @staticmethod
     def get_machine_ip():
         """to get ip address"""
-        get_ip_url = 'https://domains.google.com/checkip'
+        # get_ip_url = 'https://domains.google.com/checkip'
+        get_ip_url = 'http://ip.json-json.com/'
         response = requests.get(get_ip_url)
         if response.status_code == 200:
             print('liu-708 ip: ' + response.text)
