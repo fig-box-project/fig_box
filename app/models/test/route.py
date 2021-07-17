@@ -1,3 +1,5 @@
+import time
+
 import html2text
 from starlette.requests import Request
 
@@ -73,8 +75,7 @@ def test_route(bp: APIRouter, test_auth):
 
     @bp.get('/ip')
     def get_ip():
-        return Tools.get_machine_ip()
-
+        print(time.strftime("%Y/%m/%d", time.localtime()))
     # @bp.get('/ip')
     # def ip(request:Request):
     #     return Tools.get_ip_description(request)

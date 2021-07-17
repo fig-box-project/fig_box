@@ -1,6 +1,9 @@
+from apscheduler.executors.pool import ProcessPoolExecutor
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
-from app.models.system import err_handle, create_database, blueprint
+from app.models.system import err_handle, create_database, blueprint, start_scheduler
 from app.models.system.check_token import token
 from app.models.system.modules import get_module_list
 
@@ -27,7 +30,7 @@ token.get_token_func()
 # 导入错误处理系统
 err_handle.run(app)
 
-
+start_scheduler.run(app)
 
 # 导入系统模组的蓝图
 blueprint.run(app, mod_datas['all'])

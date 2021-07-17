@@ -1,13 +1,17 @@
+import asyncio
+import datetime
+
 from fastapi import APIRouter
 
 from app.models.module import ApiModule
-from app.models.schedule.schedule_tool import ScheduleTool
+from app.models.system.start_scheduler import scheduler
 from app.models.tools import Tools
 import requests
 
 
 def test_job():
-    trquests.get('http://pi.datasview.com:8081')
+    # requests.get('http://0.0.0.0:8081')
+    print('running job')
 
 
 class Schedule(ApiModule):
@@ -16,16 +20,29 @@ class Schedule(ApiModule):
     def _register_api_bp(self, bp: APIRouter):
         @bp.get('/all', description='获取所有运行中的任务')
         def get_all():
-            return ScheduleTool.get_jobs()
+            ls = scheduler.get_jobs()
+            rt = {}
+            for i in ls :
+                rt[i.id] = i.name
+            return rt
 
         @bp.get('/start', )
         def start():
-            res = ScheduleTool.get_job(job_id='1')
-            if res:
-                return 'failed'
-            job = ScheduleTool \
-                .add_job(test_job, 'interval', minutes=1,
-                         id='1', replace_existing=True)
+            # res = ScheduleTool.get_job(job_id='1')
+            # if res:
+            #     return 'failed'
+            job = scheduler \
+                .add_job(test_job, 'interval', seconds=5,
+                         id='1', replace_existing=True,
+                         jobstore="default",
+                         executor="default",
+                         start_date=datetime.datetime.now(),
+                         end_date=datetime.datetime.now() + datetime.timedelta(seconds=240)
+                         )
+            # ScheduleTool.start()
+            # asyncio.get_event_loop().run_forever()
+            # loop = asyncio.new_event_loop()
+            # asyncio.set_event_loop(loop)
             return job.id
 
         @bp.get('/update', )
