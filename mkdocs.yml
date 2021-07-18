@@ -1,0 +1,8 @@
+site_name: Figbox
+site_author: normidar
+site_url: https://github.com/normidar/fig_box
+
+theme: readthedocs
+
+markdown_extensions:
+ - admonition
