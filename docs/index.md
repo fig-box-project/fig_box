@@ -32,9 +32,10 @@ At this point you can start to run the command written in the front, and you onl
 
 > We hope this part can be made simpler. Simplicity is our original intention. If you have the time and ability, I hope you can help us develop a launcher.
 
-## Project layout
+## The Api View
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+After starting the system, you can enter this link to view the API view of your system:
+
+```http://0.0.0.0:8080/docs```
+
+
