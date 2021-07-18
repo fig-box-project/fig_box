@@ -6,7 +6,9 @@ It relies on Fastapi, so it is very simple and easy to use. Even if you don't kn
 
 ## How to start it ?
 
-...
+Since Fastapi is used, you can use uvicorn to start it, for example:
+
+```uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload```
 
 ## Project layout
 

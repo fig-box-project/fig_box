@@ -5,4 +5,6 @@ Figbox 是一个简单快速的后台服务系统，它可以简单地安装在�
 
 # 如何开始它？
 
-。。。
+由于使用了Fastapi你可以使用uvicorn来启动它，比如：
+
+```uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload```
