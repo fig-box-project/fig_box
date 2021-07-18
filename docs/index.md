@@ -1,13 +1,12 @@
-# Welcome to MkDocs
+# Welcome to Figbox
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+> Figbox is a simple and fast background service system, it can be simply installed on the server and simply run.
 
-## Commands
+It relies on Fastapi, so it is very simple and easy to use. Even if you don't know how to program, you can use the already built modules to build your services for you.
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+## How to start it ?
+
+...
 
 ## Project layout
 
