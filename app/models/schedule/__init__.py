@@ -3,7 +3,7 @@ import datetime
 
 from fastapi import APIRouter
 
-from app.models.module import ApiModule
+from app.models.module import ApiModule, TableModule
 from app.models.schedule.route import schedule_route
 from app.models.system.start_scheduler import scheduler
 from app.models.tools import Tools
@@ -15,7 +15,10 @@ def test_job():
     print('running job')
 
 
-class Schedule(ApiModule):
+class Schedule(ApiModule, TableModule):
+    def get_table(self) -> list:
+        pass
+
     old_ip = '12.12.12.12'
 
     def _register_api_bp(self, bp: APIRouter):

@@ -12,6 +12,8 @@ def test_job():
 
 
 def schedule_route(bp: APIRouter):
+    trigger_route(bp)
+
     @bp.get('/all', description='获取所有运行中的任务')
     def get_all():
         ls = scheduler.get_jobs()
@@ -19,7 +21,7 @@ def schedule_route(bp: APIRouter):
         for i in ls:
             trigger = i.trigger
             job_type = {}
-            if isinstance(trigger,IntervalTrigger):
+            if isinstance(trigger, IntervalTrigger):
                 job_type['name'] = 'IntervalTrigger'
                 job_type['start_date'] = trigger.start_date
                 job_type['end_date'] = trigger.end_date
@@ -59,3 +61,12 @@ def schedule_route(bp: APIRouter):
     def update():
         """"""
         # return self.check_ip_to_update_domain(False)
+
+
+def trigger_route(bp: APIRouter):
+    @bp.get('/trigger/create/date', description='create a date trigger to trigger list')
+    def create_date_trigger(d: datetime.datetime):
+        return {
+            'insert': str(d),
+            'now': datetime.datetime.now()
+        }
