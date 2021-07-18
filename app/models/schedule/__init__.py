@@ -17,7 +17,7 @@ def test_job():
 
 class Schedule(ApiModule, TableModule):
     def get_table(self) -> list:
-        pass
+        return []
 
     old_ip = '12.12.12.12'
 
