@@ -4,6 +4,7 @@ from apscheduler.triggers.base import BaseTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import APIRouter
 
+from app.models.schedule.FigJob import FigJob
 from app.models.system.start_scheduler import scheduler
 
 
@@ -43,19 +44,20 @@ def schedule_route(bp: APIRouter):
         # res = ScheduleTool.get_job(job_id='1')
         # if res:
         #     return 'failed'
-        job = scheduler \
-            .add_job(test_job, 'interval', seconds=5,
-                     id='1', replace_existing=True,
-                     jobstore="default",
-                     executor="default",
-                     start_date=datetime.datetime.now(),
-                     end_date=datetime.datetime.now() + datetime.timedelta(seconds=240)
-                     )
+        # job = scheduler \
+        #     .add_job(test_job, 'interval', seconds=5,
+        #              id='1', replace_existing=True,
+        #              jobstore="default",
+        #              executor="default",
+        #              start_date=datetime.datetime.now(),
+        #              end_date=datetime.datetime.now() + datetime.timedelta(seconds=240)
+        #              )
+        FigJob().start_job()
         # ScheduleTool.start()
         # asyncio.get_event_loop().run_forever()
         # loop = asyncio.new_event_loop()
         # asyncio.set_event_loop(loop)
-        return job.id
+        return "job.id"
 
     @bp.get('/update', )
     def update():
