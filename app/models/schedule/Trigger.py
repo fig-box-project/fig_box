@@ -8,7 +8,7 @@ from fastapi import HTTPException
 
 
 class Trigger:
-    def __init__(self, name: str, corntab: str,
+    def __init__(self, name: str, crontab: str,
                  description: str = '',
                  start_date: datetime.datetime = None,
                  end_date: datetime.datetime = None):
@@ -16,9 +16,9 @@ class Trigger:
         see https://crontab.guru/ to know how to use
         or you can use [every day 0] to create a trigger to
         fire at 0 every day."""
-        if corntab[0:-1] == 'every day ':
-            corntab = f'0 {corntab[10:]} * * *'
-        self._trigger = CronTrigger.from_crontab(corntab)
+        if crontab[0:-1] == 'every day ':
+            crontab = f'0 {crontab[10:]} * * *'
+        self._trigger = CronTrigger.from_crontab(crontab)
         if start_date is not None:
             self._trigger.start_date = start_date
         if end_date is not None:
