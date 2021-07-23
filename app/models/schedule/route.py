@@ -20,7 +20,7 @@ def schedule_route(bp: APIRouter):
         ls = scheduler.get_jobs()
         rt = {}
         for i in ls:
-            trigger = i.trigger
+            trigger = i._trigger
             job_type = {}
             if isinstance(trigger, IntervalTrigger):
                 job_type['name'] = 'IntervalTrigger'
