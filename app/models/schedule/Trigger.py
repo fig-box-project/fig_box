@@ -5,6 +5,9 @@ from apscheduler.triggers.base import BaseTrigger
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.date import DateTrigger
 from fastapi import HTTPException
+from sqlalchemy.orm import Session
+
+from app.models.schedule.mdl_trigger import TriggerMdl
 
 
 class Trigger:
@@ -19,10 +22,13 @@ class Trigger:
         if crontab[0:-1] == 'every day ':
             crontab = f'0 {crontab[10:]} * * *'
         self._trigger = CronTrigger.from_crontab(crontab)
+        self._logic = f'c {crontab}'
         if start_date is not None:
             self._trigger.start_date = start_date
+            self._start_date = start_date
         if end_date is not None:
             self._trigger.end_date = end_date
+            self._end_date = end_date
         self._description = description
         self.name = name
 
@@ -37,6 +43,7 @@ class Trigger:
         if isinstance(fire_date, str) and fire_date[:6] == 'after ':
             fire_date = cls.get_date_by_interval(fire_date)
         cls._trigger = DateTrigger(fire_date)
+        cls._logic = f'd {str(fire_date)}'
         cls._description = description
         cls.name = name
 
@@ -61,9 +68,28 @@ class Trigger:
         raise HTTPException(422, 'type err, check your fire_date')
 
     def get_trigger(self) -> BaseTrigger:
+        """default is every the 0:00 of every day"""
         if self._trigger is None:
-            self._trigger = CronTrigger.from_crontab('0 0 * * *')
+            crontab = '0 0 * * *'
+            self._trigger = CronTrigger.from_crontab(crontab)
+            self._logic = f'c {crontab}'
         return self._trigger
 
     def get_description(self):
         return self._description
+
+    def get_logic(self) -> str:
+        return self._logic
+
+    def insert_to_db(self, db: Session):
+        obj = TriggerMdl()
+        obj.name = self.name
+        obj.description = self.get_description()
+        obj.logic = self.get_logic()
+        if hasattr(self, '_start_date'):
+            obj.start_date = self._start_date
+        if hasattr(self, '_end_date'):
+            obj.end_date = self._end_date
+        obj.create_stamp()
+        db.add(obj)
+        db.commit()
