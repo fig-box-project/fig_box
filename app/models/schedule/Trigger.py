@@ -14,23 +14,32 @@ class Trigger:
     def __init__(self, name: str, crontab: str,
                  description: str = '',
                  start_date: datetime.datetime = None,
-                 end_date: datetime.datetime = None):
+                 end_date: datetime.datetime = None,
+                 is_by_once: bool = False):
         """create a trigger for every [day]
         see https://crontab.guru/ to know how to use
         or you can use [every day 0] to create a trigger to
         fire at 0 every day."""
-        if crontab[0:-1] == 'every day ':
-            crontab = f'0 {crontab[10:]} * * *'
-        self._trigger = CronTrigger.from_crontab(crontab)
-        self._logic = f'c {crontab}'
-        if start_date is not None:
-            self._trigger.start_date = start_date
-            self._start_date = start_date
-        if end_date is not None:
-            self._trigger.end_date = end_date
-            self._end_date = end_date
-        self._description = description
-        self.name = name
+        if is_by_once:
+            if isinstance(start_date, str) and start_date[:6] == 'after ':
+                start_date = self.get_date_by_interval(start_date)
+            self._trigger = DateTrigger(start_date)
+            self._logic = f'd {str(start_date)}'
+            self._description = description
+            self.name = name
+        else:
+            if crontab[0:-1] == 'every day ':
+                crontab = f'0 {crontab[10:]} * * *'
+            self._trigger = CronTrigger.from_crontab(crontab)
+            self._logic = f'c {crontab}'
+            if start_date is not None:
+                self._trigger.start_date = start_date
+                self._start_date = start_date
+            if end_date is not None:
+                self._trigger.end_date = end_date
+                self._end_date = end_date
+            self._description = description
+            self.name = name
 
     @classmethod
     def by_once(cls, name: str,
@@ -40,12 +49,7 @@ class Trigger:
         you can use [after 3d] to fire after 3days,
         you can use [after 4h] to fire after 4 hours,
         you can use [after 50m] to fire after 50 minutes,"""
-        if isinstance(fire_date, str) and fire_date[:6] == 'after ':
-            fire_date = cls.get_date_by_interval(fire_date)
-        cls._trigger = DateTrigger(fire_date)
-        cls._logic = f'd {str(fire_date)}'
-        cls._description = description
-        cls.name = name
+        return cls(name, '', description, fire_date, is_by_once=True)
 
     @staticmethod
     def get_date_by_interval(interval: str) -> datetime.datetime:

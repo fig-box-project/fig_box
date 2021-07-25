@@ -2,9 +2,12 @@ import datetime
 
 from apscheduler.triggers.base import BaseTrigger
 from apscheduler.triggers.interval import IntervalTrigger
-from fastapi import APIRouter
+from fastapi import APIRouter, Body, Depends
+from sqlalchemy.orm import Session
 
+from app.models.mdl import database
 from app.models.schedule.FigJob import FigJob
+from app.models.schedule.Trigger import Trigger
 from app.models.system.start_scheduler import scheduler
 
 
@@ -66,9 +69,13 @@ def schedule_route(bp: APIRouter):
 
 
 def trigger_route(bp: APIRouter):
-    @bp.get('/trigger/create/date', description='create a date trigger to trigger list')
-    def create_date_trigger(d: datetime.datetime):
+    @bp.post('/trigger/create/date', description='create a date trigger to trigger list')
+    def create_date_trigger(fire_date: datetime.datetime = Body(...),
+                            name: str = Body(...),
+                            description: str = Body(...),
+                            db: Session = Depends(database.get_db)):
+        tr = Trigger.by_once(name, fire_date, description)
+        tr.insert_to_db(db)
         return {
-            'insert': str(d),
-            'now': datetime.datetime.now()
+            'insert': '1'
         }

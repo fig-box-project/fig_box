@@ -4,6 +4,7 @@ import datetime
 from fastapi import APIRouter
 
 from app.models.module import ApiModule, TableModule
+from app.models.schedule.mdl_trigger import TriggerMdl
 from app.models.schedule.route import schedule_route
 from app.models.system.start_scheduler import scheduler
 from app.models.tools import Tools
@@ -17,7 +18,7 @@ def test_job():
 
 class Schedule(ApiModule, TableModule):
     def get_table(self) -> list:
-        return []
+        return [TriggerMdl]
 
     old_ip = '12.12.12.12'
 
