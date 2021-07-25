@@ -71,6 +71,21 @@ class Trigger:
                 return aim_date
         raise HTTPException(422, 'type err, check your fire_date')
 
+    @staticmethod
+    def get_all_from_database(db: Session):
+        return db.query(TriggerMdl).all()
+
+    @staticmethod
+    def delete_trigger(db: Session, id: str):
+        try:
+            id = int(id)
+            rt = db.query(TriggerMdl).filter_by(id=id).delete()
+            db.commit()
+        except ValueError:
+            rt = db.query(TriggerMdl).filter_by(name=id).delete()
+            db.commit()
+        return rt
+
     def get_trigger(self) -> BaseTrigger:
         """default is every the 0:00 of every day"""
         if self._trigger is None:

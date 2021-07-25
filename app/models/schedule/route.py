@@ -79,3 +79,13 @@ def trigger_route(bp: APIRouter):
         return {
             'insert': '1'
         }
+
+    @bp.get('/trigger/ls', description='get all of triggers')
+    def get_all_triggers(db: Session = Depends(database.get_db)):
+        return Trigger.get_all_from_database(db)
+
+    @bp.delete('/trigger/delete', description='delete trigger by id, you can also input a trigger name')
+    def delete_trigger(id: str, db: Session = Depends(database.get_db)):
+        return {
+            'count': Trigger.delete_trigger(db, id)
+        }
