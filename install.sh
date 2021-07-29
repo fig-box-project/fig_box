@@ -9,6 +9,7 @@ fi
 
 if [[ $(uname) == 'Linux' ]]; then
     source /etc/os-release
+    echo ID
     case $ID in
     debian|ubuntu|devuan)
         echo "apt-get"
