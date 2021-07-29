@@ -17,10 +17,10 @@ if [[ $(uname) == 'Linux' ]]; then
         ;;
     centos|fedora|rhel)
         yumdnf="yum"
-        if test "$(echo "$VERSION_ID >= 22" | bc)" -ne 0; then
-            yumdnf="dnf"
-        fi
-        echo yumdnf
+#        if test "$(echo "$VERSION_ID >= 22" | bc)" -ne 0; then
+#            yumdnf="dnf"
+#        fi
+        echo $yumdnf
 #        sudo $yumdnf install -y redhat-lsb-core
         ;;
     *)
