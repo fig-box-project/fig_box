@@ -70,6 +70,7 @@ fi
 echo $pgkey
 updatePg $pgkey
 installGitProject $pgkey
+installPackages $pgkey
 
 #yum install -y git
 #yum install -y python3.8
