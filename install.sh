@@ -16,11 +16,12 @@ if [[ $(uname) == 'Linux' ]]; then
 #        sudo apt-get install lsb-release
         ;;
     centos|fedora|rhel)
-        yumdnf="yum"
+        pgkey="yum"
+        echo "$pgkey"
+        installGitProject $pgkey
 #        if test "$(echo "$VERSION_ID >= 22" | bc)" -ne 0; then
 #            yumdnf="dnf"
 #        fi
-        echo $yumdnf
 #        sudo $yumdnf install -y redhat-lsb-core
         ;;
     *)
@@ -29,6 +30,10 @@ if [[ $(uname) == 'Linux' ]]; then
     esac
 fi
 
+installGitProject(){
+  $1 -y install git
+  git clone https://github.com/normidar/fig_box
+}
 
 #yum install -y git
 #yum install -y python3.8
