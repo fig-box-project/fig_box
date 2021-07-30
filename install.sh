@@ -9,6 +9,33 @@ installGitProject(){
   $1 -y install git
   git clone https://github.com/normidar/fig_box
 }
+installPython(){
+  echo "python3 install start"
+  $1 -y install python3.8
+}
+installPackages(){
+  case "$(python3 --version 2>&1)" in
+    *" 3.6"*)
+        echo "do not need to install python3"
+        ;;
+    *" 3.7"*)
+        echo "do not need to install python3"
+        ;;
+    *" 3.8"*)
+        echo "do not need to install python3"
+        ;;
+    *" 3.9"*)
+        echo "do not need to install python3"
+        ;;
+    *)
+        installPython "$1"
+        ;;
+  esac
+  $1 -y install screen
+}
+
+# package tool string
+pgkey="null"
 
 # check system
 if [[ $(uname) == 'Darwin' ]]; then
@@ -21,25 +48,28 @@ if [[ $(uname) == 'Linux' ]]; then
     echo "$ID"
     case $ID in
     debian|ubuntu|devuan|raspbian)
-        echo "apt-get"
+        pgkey="apt-get"
+
 #        sudo apt-get install lsb-release
         ;;
     centos|fedora|rhel)
         pgkey="yum"
-        echo "$pgkey"
-        installGitProject $pgkey
+
 #        if test "$(echo "$VERSION_ID >= 22" | bc)" -ne 0; then
 #            yumdnf="dnf"
 #        fi
 #        sudo $yumdnf install -y redhat-lsb-core
         ;;
     *)
+        echo "can't find system type'"
         exit 1
         ;;
     esac
 fi
 
-
+echo $pgkey
+updatePg $pgkey
+installGitProject $pgkey
 
 #yum install -y git
 #yum install -y python3.8
