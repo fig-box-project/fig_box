@@ -1,6 +1,15 @@
 # yes | source /install.sh
 # git config --global credential.helper store
 
+# methods
+updatePg(){
+  $1 -y update
+}
+installGitProject(){
+  $1 -y install git
+  git clone https://github.com/normidar/fig_box
+}
+
 # check system
 if [[ $(uname) == 'Darwin' ]]; then
     echo "Mac OS"
@@ -30,10 +39,7 @@ if [[ $(uname) == 'Linux' ]]; then
     esac
 fi
 
-installGitProject(){
-  $1 -y install git
-  git clone https://github.com/normidar/fig_box
-}
+
 
 #yum install -y git
 #yum install -y python3.8
