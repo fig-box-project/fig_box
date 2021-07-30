@@ -8,7 +8,7 @@ updatePg(){
 installGitProject(){
   $1 -y install git
   case "$(git clone https://github.com/normidar/fig_box)" in
-    *"fatal:"*)
+    "fatal:"*)
       echo "fig_box is existing"
       ;;
     *)
