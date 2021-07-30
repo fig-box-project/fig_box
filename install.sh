@@ -17,10 +17,6 @@ installGitProject(){
   esac
 }
 installPython(){
-  echo "python3 install start"
-  $1 -y install python3.8
-}
-installPackages(){
   case "$(python3 --version 2>&1)" in
     *" 3.6"*)
         echo "do not need to install python3"
@@ -35,10 +31,16 @@ installPackages(){
         echo "do not need to install python3"
         ;;
     *)
-        installPython "$1"
+        echo "python3 install start"
+        $1 -y install python3.8
         ;;
   esac
+
+}
+installScreen() {
+  yum -y install epel-release &>log.txt
   $1 -y install screen
+  echo "screen installed"
 }
 
 # package tool string
@@ -77,7 +79,8 @@ fi
 echo $pgkey
 updatePg $pgkey
 installGitProject $pgkey
-installPackages $pgkey
+installPython $pgkey
+installScreen $pgkey
 
 #yum install -y git
 #yum install -y python3.8
