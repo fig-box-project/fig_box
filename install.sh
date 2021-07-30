@@ -7,7 +7,14 @@ updatePg(){
 }
 installGitProject(){
   $1 -y install git
-  git clone https://github.com/normidar/fig_box
+  case "$(git clone https://github.com/normidar/fig_box)" in
+    *"fatal:"*)
+      echo "fig_box is existing"
+      ;;
+    *)
+      echo "install succeed"
+      ;;
+  esac
 }
 installPython(){
   echo "python3 install start"
