@@ -3,11 +3,12 @@
 
 # methods
 updatePg(){
+  echo "to be update packages"
   $1 -y update 1>log.txt
-  echo "to be update"
 }
 installGitProject(){
-  $1 -y install git
+  echo "to be install git"
+  $1 -y install git 1>log.txt
   case "$(git clone https://github.com/normidar/fig_box)" in
     "fatal:"*)
       echo "fig_box is existing"
@@ -21,22 +22,26 @@ installPython(){
   case "$(python3 --version 2>&1)" in
     *" 3.6"*)
         echo "do not need to install python3"
+        return 6
         ;;
     *" 3.7"*)
         echo "do not need to install python3"
+        return 7
         ;;
     *" 3.8"*)
         echo "do not need to install python3"
+        return 8
         ;;
     *" 3.9"*)
         echo "do not need to install python3"
+        return 9
         ;;
     *)
         echo "python3 install start"
         $1 -y install python3.8
+        return 8
         ;;
   esac
-
 }
 installScreen() {
   if [[ $(1) == 'yum' ]]; then
@@ -86,14 +91,19 @@ echo $pgkey
 updatePg $pgkey
 installGitProject $pgkey
 installPython $pgkey
+pythonNum="python3."${?}
+pipNum="pip3."${?}
+echo "$pythonNum"
+echo "$pipNum"
 installScreen $pgkey
 # into the git folder
 cd fig_box || exit
-python3 -m venv tutorial-env
+$pgkey -y install python3.8-venv
+$pythonNum -m venv tutorial-env
 source tutorial-env/bin/activate
-pip3 install --upgrade pip
-pip3 install --upgrade setuptools
-pip3 install -r requirements.txt
+$pipNum install --upgrade pip
+$pipNum install --upgrade setuptools
+$pipNum install -r requirements.txt
 screen_name="fig_box"
 screen -dmS $screen_name
 cmd="python3 main.py";
@@ -112,6 +122,7 @@ screen -x -S $screen_name -p 0 -X stuff '\n'
 #cd /my_dev
 #git clone https://github.com/normidar/my_fastapi
 #cd my_fastapi
+# apt install python3.8-venv
 #python3.8 -m venv tutorial-env
 #source tutorial-env/bin/activate
 #pip3.8 install --upgrade pip
