@@ -9,7 +9,7 @@ updatePg(){
 installGitProject(){
   echo "to be install git"
   $1 -y install git 1>log.txt
-  case "$(git clone https://github.com/normidar/fig_box)" in
+  case "$(git clone https://github.com/normidar/fig_box 1>log.txt)" in
     "fatal:"*)
       echo "fig_box is existing"
       ;;
@@ -91,8 +91,9 @@ echo $pgkey
 updatePg $pgkey
 installGitProject $pgkey
 installPython $pgkey
-pythonNum="python3."${?}
-pipNum="pip3."${?}
+num=$?
+pythonNum="python3."${num}
+pipNum="pip3."${num}
 echo "$pythonNum"
 echo "$pipNum"
 installScreen $pgkey
