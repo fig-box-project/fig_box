@@ -3,7 +3,8 @@
 
 # methods
 updatePg(){
-  $1 -y update
+  $1 -y update 1>log.txt
+  echo "to be update"
 }
 installGitProject(){
   $1 -y install git
@@ -38,9 +39,14 @@ installPython(){
 
 }
 installScreen() {
-  yum -y install epel-release &>log.txt
+  if [[ $(1) == 'yum' ]]; then
+    yum -y install epel-release &>log.txt
+  fi
   $1 -y install screen
   echo "screen installed"
+}
+createEvnAndInstall(){
+  python3
 }
 
 # package tool string
@@ -81,6 +87,18 @@ updatePg $pgkey
 installGitProject $pgkey
 installPython $pgkey
 installScreen $pgkey
+# into the git folder
+cd fig_box || exit
+python3 -m venv tutorial-env
+source tutorial-env/bin/activate
+pip3 install --upgrade pip
+pip3 install --upgrade setuptools
+pip3 install -r requirements.txt
+screen_name="fig_box"
+screen -dmS $screen_name
+cmd="python3 main.py";
+screen -x -S $screen_name -p 0 -X stuff "$cmd"
+screen -x -S $screen_name -p 0 -X stuff '\n'
 
 #yum install -y git
 #yum install -y python3.8
