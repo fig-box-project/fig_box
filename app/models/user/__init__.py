@@ -29,7 +29,7 @@ class User(ApiModule, PageModule, TableModule):
         pass
 
     def _get_tag(self) -> str:
-        return '用户'
+        return 'ユーザ管理'
 
     def get_module_name(self) -> str:
         return 'user'

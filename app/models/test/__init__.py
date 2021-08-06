@@ -10,7 +10,7 @@ class Test(ApiModule):
         test_route(bp, self.testAuth)
 
     def _get_tag(self) -> str:
-        return '测试'
+        return 'テスト用モジュール'
 
     def get_module_name(self) -> str:
         return 'test'

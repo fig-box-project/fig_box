@@ -9,6 +9,7 @@ updatePg(){
 installGitProject(){
   echo "to be install git"
   $1 -y install git 1>log.txt
+  echo "cloning Repository"
   case "$(git clone https://github.com/normidar/fig_box 1>log.txt)" in
     "fatal:"*)
       echo "fig_box is existing"

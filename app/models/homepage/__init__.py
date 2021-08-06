@@ -17,7 +17,7 @@ class Homepage(PageModule):
         return [PageItem('/', datetime.today())]
 
     def _get_tag(self) -> str:
-        return '首页'
+        return 'ホームページ'
 
     def get_module_name(self) -> str:
         return 'homepage'

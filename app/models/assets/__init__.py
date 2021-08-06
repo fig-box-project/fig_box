@@ -8,7 +8,7 @@ class Assets(ApiModule):
         assets_route(bp)
 
     def _get_tag(self) -> str:
-        return '资源,资源迁移'
+        return 'assets管理'
 
     def get_module_name(self) -> str:
         return 'assets'

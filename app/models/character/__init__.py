@@ -14,7 +14,7 @@ class Character(ApiModule, TableModule):
         character_router(bp)
 
     def _get_tag(self) -> str:
-        return '角色'
+        return 'キャラクター管理'
 
     def get_module_name(self) -> str:
         return 'character'

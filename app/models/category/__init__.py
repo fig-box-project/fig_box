@@ -19,7 +19,7 @@ class Category(ApiModule, PageModule):
         pass
 
     def _get_tag(self) -> str:
-        return '分类'
+        return 'カテゴリー管理'
 
     def get_module_name(self) -> str:
         return 'category'

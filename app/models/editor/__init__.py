@@ -9,7 +9,7 @@ class Editor(ApiModule):
         editor_route(bp)
 
     def _get_tag(self) -> str:
-        return '文件编辑'
+        return 'ファイルエディター'
 
     def get_module_name(self) -> str:
         return 'editor'

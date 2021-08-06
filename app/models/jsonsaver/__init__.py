@@ -9,7 +9,7 @@ class JsonSaver(ApiModule):
         json_saver(bp)
 
     def _get_tag(self) -> str:
-        return 'json储存'
+        return 'json保存代理'
 
     def get_module_name(self) -> str:
         return 'jsonsaver'

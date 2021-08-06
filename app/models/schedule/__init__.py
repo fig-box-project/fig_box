@@ -26,7 +26,7 @@ class Schedule(ApiModule, TableModule):
         schedule_route(bp)
 
     def _get_tag(self) -> str:
-        return '预定任务'
+        return 'バックエンドタスク管理'
 
     def get_module_name(self) -> str:
         return 'schedule'
