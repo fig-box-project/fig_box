@@ -7,7 +7,7 @@ from app.models.system import err_handle, create_database, blueprint, start_sche
 from app.models.system.check_token import token
 from app.models.system.modules import get_module_list
 
-version = "α6.28"
+version = "α8.7"
 
 mod_datas = get_module_list()
 
