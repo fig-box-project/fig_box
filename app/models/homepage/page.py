@@ -8,7 +8,11 @@ from app.models.page.crud import PageRouter, RequestItem
 def homepage_route(bp: APIRouter, p: PageRouter):
     def html_creator():
         rt = Html('homepage')
-        rt.body.addElement(Anchor('docs').text('转到API'))
+        rt.body.addElement(Anchor('docs').text(
+            '''to the API List Page<br>
+            API 可視化ページへ<br>
+            转到可视化API页面'''
+        ))
         return rt
 
     @bp.get('/')
