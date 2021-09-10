@@ -3,7 +3,7 @@ import time
 import html2text
 from starlette.requests import Request
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Body
 
 from app.models.auth.auth import AuthFilter
 from app.models.log.log_tools import LogTools
@@ -84,5 +84,5 @@ def test_route(bp: APIRouter, test_auth):
         return 'get success!'
 
     @bp.post('/post_test')
-    def post_test():
-        return 'post success!'
+    def post_test(username: str = Body(..., embed=True)):
+        return f'post success! username:{username}'
