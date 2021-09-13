@@ -5,7 +5,7 @@ from starlette.requests import Request
 
 from fastapi import APIRouter, HTTPException, Depends, Body
 
-from app.models.auth.auth import AuthFilter
+# from app.models.auth.auth import AuthFilter
 from app.models.log.log_tools import LogTools
 from app.models.tools import Tools
 
