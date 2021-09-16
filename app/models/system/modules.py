@@ -39,8 +39,8 @@ def read_mods(mods: list):
     for s in mod_strs:
         import_str = f'from app.insmodes.{s} import {s} as mod'
         append_str = 'mods.insert(1,mod)'
-        try:
-            exec(import_str)
-            exec(append_str)
-        except Exception:
-            print(f'error when read [{s}] module')
+        # try:
+        exec(import_str)
+        exec(append_str)
+        # except Exception:
+        #     print(f'error when read [{s}] module')

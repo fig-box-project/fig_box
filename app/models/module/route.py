@@ -3,8 +3,10 @@ from . import mod
 
 
 def module_route(bp):
+    # default store address デフォルトのストア
+    default_store = 'figbox'
     @bp.post('/download')
-    def download(module_name: str, store_name: str = 'fast-mode', ):
+    def download(module_name: str, store_name: str = default_store, ):
         mod.Module(module_name).download(store_name)
 
     @bp.post('/uninstall')
@@ -30,5 +32,5 @@ def module_route(bp):
     # store----------------------------------------------------------------
 
     @bp.get('/store/ls')
-    def view_store(organization_name: str = "fast-mode"):
+    def view_store(organization_name: str = default_store):
         return mod.store.store_ls(organization_name)
