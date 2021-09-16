@@ -95,15 +95,18 @@ class Store:
         self.data = {}
 
     # 获取商品列表
-    def store_ls(self, name: str):
-        url = f"https://api.github.com/orgs/{name}/repos"
+    def store_ls(self, store_address: str):
+        url = f"https://api.github.com/orgs/{store_address}/repos"
         # 注意,一小时只能调用60次githubapi
+        # 注：一時間にgithubをアクセスできるのは60回まで
         if time.time() - self.last_time > 120:
-            self.data[name] = Tool.get_json(url)
+            self.data[store_address] = Tool.get_json(url)
+            # 時間を再記録
             self.last_time = time.time()
-        if name in self.data:
+        if store_address in self.data:
+            # モジュールリストデータが存在する場合
             try:
-                j = self.data[name]
+                j = self.data[store_address]
                 insmodes_list = os.listdir("app/insmodes")
                 rt = []
                 for i in j:
@@ -147,5 +150,6 @@ class Tool:
     # get请求并转换为json
     @staticmethod
     def get_json(url: str):
+        """URL からjsonを獲得"""
         rt = requests.get(url).json()
         return rt

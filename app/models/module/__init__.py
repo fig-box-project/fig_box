@@ -42,10 +42,12 @@ class BluePrintSet:
 class Module(metaclass=ABCMeta):
     @abstractmethod
     def _get_tag(self) -> str:
+        """swaggerに表示するtagをリターンしてください"""
         ...
 
     @abstractmethod
     def get_module_name(self) -> str:
+        """このメソッドを実現してモジュールの名前をリターンしてください"""
         ...
 
     def is_need_ip_filter(self):
@@ -109,7 +111,8 @@ class ApiModule(Module, metaclass=ABCMeta):
 
     @abstractmethod
     def _register_api_bp(self, bp: APIRouter):
-        """重写此方法,并更改前缀和注册路由self._api_bp可以改前缀"""
+        """重写此方法,并更改前缀和注册路由self._api_bp可以改前缀
+        日本語：このメソッドを実現して @bp.get() でapiを作成する"""
         ...
 
     def get_api_bp_set(self) -> BluePrintSet:
