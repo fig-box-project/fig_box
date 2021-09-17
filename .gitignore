@@ -7,7 +7,7 @@
 settings.yml
 app/log.py
 app/modules.mods
-app/insmodes
+app/modules
 app/log_tools.py
 db.sqlite
 *.pyc

@@ -40,7 +40,7 @@ def set_prefs(prefs):
     prefs['save_objectdb'] = True
     prefs['compress_objectdb'] = False
 
-    # If `True`, rope analyzes each module when it is being saved.
+    # If `True`, rope analyzes each module_manager when it is being saved.
     prefs['automatic_soa'] = True
     # The depth of calls to follow in static object analysis
     prefs['soa_followed_calls'] = 0
@@ -80,8 +80,8 @@ def set_prefs(prefs):
     # appear in the importing namespace.
     prefs['ignore_bad_imports'] = False
 
-    # If `True`, rope will insert new module imports as
-    # `from <package> import <module>` by default.
+    # If `True`, rope will insert new module_manager imports as
+    # `from <package> import <module_manager>` by default.
     prefs['prefer_module_from_imports'] = False
 
     # If `True`, rope will transform a comma list of imports into
@@ -90,10 +90,10 @@ def set_prefs(prefs):
     prefs['split_imports'] = False
 
     # If `True`, rope will remove all top-level import statements and
-    # reinsert them at the top of the module when making changes.
+    # reinsert them at the top of the module_manager when making changes.
     prefs['pull_imports_to_top'] = True
 
-    # If `True`, rope will sort imports alphabetically by module name instead
+    # If `True`, rope will sort imports alphabetically by module_manager name instead
     # of alphabetically by import statement, with from imports after normal
     # imports.
     prefs['sort_imports_alphabetically'] = False
@@ -102,7 +102,7 @@ def set_prefs(prefs):
     # rope.base.oi.type_hinting.interfaces.ITypeHintingFactory In general
     # case, you don't have to change this value, unless you're an rope expert.
     # Change this value to inject you own implementations of interfaces
-    # listed in module rope.base.oi.type_hinting.providers.interfaces
+    # listed in module_manager rope.base.oi.type_hinting.providers.interfaces
     # For example, you can add you own providers for Django Models, or disable
     # the search type-hinting in a class hierarchy, etc.
     prefs['type_hinting_factory'] = (

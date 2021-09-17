@@ -3,22 +3,24 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
-from app.models.system import err_handle, create_database, blueprint, start_scheduler
-from app.models.system.check_token import token
-from app.models.system.modules import get_module_list
+from app.core.system import err_handle, create_database, blueprint, start_scheduler
+from app.core.system.check_token import token
+from app.core.system.modules import get_module_list
 
 version = "α8.7"
 
 mod_datas = get_module_list()
 
 # 初始化数据库, 创建数据表
+# データベースの初期化
 db: Session = create_database.run(mod_datas['table_mods'])
 
 app = FastAPI(
-    title="F-Mod",
-    description="这是自由、易管理的高速多模组化后端系统",
+    title="Figbox",
+    description="自由、管理しやすい高速APIエンジン",
     version=version,
     # 关闭文档
+    # ドキュメントを閉じる
     # docs_url=None,
     # redoc_url=None,
 )
