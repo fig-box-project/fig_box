@@ -6,11 +6,11 @@ from typing import Optional
 from sqlalchemy import Column, String
 from pydantic import BaseModel
 from fastapi import Query
-from . import DateCUMdl
+from . import DateCreateUpdateTable
 from ..tools import Tools
 
 
-class PageMdl(DateCUMdl):
+class PageMdl(DateCreateUpdateTable):
     __abstract__ = True
 
     # unique要改True, 暂时无用

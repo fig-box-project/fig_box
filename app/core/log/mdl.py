@@ -3,11 +3,11 @@ from sqlalchemy.orm import Session
 from starlette.requests import Request
 
 from app.core.log import LogTools
-from app.core.mdl import DateCreatedMdl
+from app.core.table_class import DateCreatedTable
 from app.core.tools import Tools
 
 
-class UserLogMdl(DateCreatedMdl):
+class UserLogTable(DateCreatedTable):
     __tablename__ = 'userlogs'
     user_id = Column(Integer, index=True)
     method_type = Column(String(10), index=True)
@@ -29,7 +29,7 @@ class UserLogMdl(DateCreatedMdl):
                 'address1': address1,
                 'address2': address2,
                 'user_agent': request.headers['user-agent']}
-        add_item = UserLogMdl(**item).create_stamp()
+        add_item = UserLogTable(**item).create_stamp()
         db.add(add_item)
         db.commit()
         # log到文件

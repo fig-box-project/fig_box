@@ -46,7 +46,7 @@ def test_route(bp: APIRouter, test_auth):
     #
     # @bp.get('/category')
     # def category(id: int, db: Session = Depends(database.get_db)):
-    #     c: mdl.Category = db.query(mdl.Category).filter_by(id=id).first()
+    #     c: table_class.Category = db.query(table_class.Category).filter_by(id=id).first()
     #
     #     return c.father
     #

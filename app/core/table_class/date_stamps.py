@@ -2,10 +2,10 @@ from datetime import datetime
 
 from sqlalchemy import Column, DateTime
 
-from app.core.mdl import HasidMdl
+from app.core.table_class import HasIdTable
 
 
-class DateCreatedMdl(HasidMdl):
+class DateCreatedTable(HasIdTable):
     __abstract__ = True
     create_date = Column(DateTime)
 
@@ -15,7 +15,8 @@ class DateCreatedMdl(HasidMdl):
         return self
 
 
-class DateCUMdl(DateCreatedMdl):
+class DateCreateUpdateTable(DateCreatedTable):
+    """can memo when data created and when data updated"""
     __abstract__ = True
     update_date = Column(DateTime)
 

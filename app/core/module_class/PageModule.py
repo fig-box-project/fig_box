@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
-from app.core.mdl import PageMdl
+from app.core.table_class import PageMdl
 from app.core.module_class import BluePrintSet, RouteAbleModule
 from app.core.page.crud import PageRouter
 

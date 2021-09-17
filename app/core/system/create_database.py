@@ -3,11 +3,11 @@ from typing import List
 from sqlalchemy import Table
 
 # from app.core.settings.crud import settings
-from app.core.mdl import database
+from app.core.table_class import db_core
 from sqlalchemy.orm import sessionmaker, Session
 # 引用一下mdl才能创建该数据表
-# from app.core.user import mdl as user
-# from app.core.category import mdl as tree_mdl
+# from app.core.user import table_class as user
+# from app.core.category import table_class as tree_mdl
 from app.core.module_class import TableModule
 
 
@@ -26,7 +26,7 @@ def run(mods: List[TableModule]):
     #     if "has_mdl" in mods[k]:
     #         if mods[k]["has_mdl"] == True:
     #             # 引用下
-    #             exec("from app.modules.{0} import mdl as {0}_mdl".format(k))
+    #             exec("from app.modules.{0} import table_class as {0}_mdl".format(k))
     #             # 加入下列表中等下读取
     #             tables_strs.append(
     #                 "{}_mdl.{}.__table__".format(k, k.capitalize()))
@@ -37,11 +37,11 @@ def run(mods: List[TableModule]):
 
     # もしテーブルを選びたい時： create_all(bind=engine, tables=[User.__table__])
     # もし改めてテーブルを作りたい時： create_all(bind=engine, checkfirst=False)
-    database.Base.metadata.create_all(bind=database.engine, tables=tables)
+    db_core.Base.metadata.create_all(bind=db_core.engine, tables=tables)
 
     # database.Base.metadata.query
     # 初始化数据库
-    db: Session = sessionmaker(bind=database.engine)()
+    db: Session = sessionmaker(bind=db_core.engine)()
     # if db.query(user.UserMdl).count() == 0:
     #     print("---create datas---")
         # add auth

@@ -5,7 +5,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import APIRouter, Body, Depends
 from sqlalchemy.orm import Session
 
-from app.core.mdl import database
+from app.core.table_class import db_core
 from app.core.schedule.FigJob import FigJob
 from app.core.schedule.Trigger import Trigger
 from app.core.system.start_scheduler import scheduler
@@ -73,7 +73,7 @@ def trigger_route(bp: APIRouter):
     def create_date_trigger(fire_date: datetime.datetime = Body(...),
                             name: str = Body(...),
                             description: str = Body(...),
-                            db: Session = Depends(database.get_db)):
+                            db: Session = Depends(db_core.get_db)):
         tr = Trigger.by_once(name, fire_date, description)
         tr.insert_to_db(db)
         return {
@@ -81,11 +81,11 @@ def trigger_route(bp: APIRouter):
         }
 
     @bp.get('/trigger/ls', description='get all of triggers')
-    def get_all_triggers(db: Session = Depends(database.get_db)):
+    def get_all_triggers(db: Session = Depends(db_core.get_db)):
         return Trigger.get_all_from_database(db)
 
     @bp.delete('/trigger/delete', description='delete trigger by id, you can also input a trigger name')
-    def delete_trigger(id: str, db: Session = Depends(database.get_db)):
+    def delete_trigger(id: str, db: Session = Depends(db_core.get_db)):
         return {
             'count': Trigger.delete_trigger(db, id)
         }

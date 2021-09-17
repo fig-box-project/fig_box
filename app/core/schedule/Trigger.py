@@ -7,7 +7,7 @@ from apscheduler.triggers.date import DateTrigger
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.core.schedule.mdl_trigger import TriggerMdl
+from app.core.schedule.mdl_trigger import TriggerTable
 
 
 class Trigger:
@@ -73,16 +73,16 @@ class Trigger:
 
     @staticmethod
     def get_all_from_database(db: Session):
-        return db.query(TriggerMdl).all()
+        return db.query(TriggerTable).all()
 
     @staticmethod
     def delete_trigger(db: Session, id: str):
         try:
             id = int(id)
-            rt = db.query(TriggerMdl).filter_by(id=id).delete()
+            rt = db.query(TriggerTable).filter_by(id=id).delete()
             db.commit()
         except ValueError:
-            rt = db.query(TriggerMdl).filter_by(name=id).delete()
+            rt = db.query(TriggerTable).filter_by(name=id).delete()
             db.commit()
         return rt
 
@@ -101,7 +101,7 @@ class Trigger:
         return self._logic
 
     def insert_to_db(self, db: Session):
-        obj = TriggerMdl()
+        obj = TriggerTable()
         obj.name = self.name
         obj.description = self.get_description()
         obj.logic = self.get_logic()

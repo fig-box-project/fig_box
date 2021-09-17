@@ -4,7 +4,7 @@ from typing import Callable
 from fastapi.templating import Jinja2Templates
 from fastapi import HTTPException, Request, Depends
 from sqlalchemy.orm import Session
-from app.core.mdl import database
+from app.core.table_class import db_core
 from functools import wraps
 import os
 import sys
@@ -60,7 +60,7 @@ def page(func):
     # page(db,request,link)link 当作元组传入
     # func 中将传入(db, link)
     # func 请返回(tamplate, data, [default html]: Html)
-    def wrap(params: str, request: Request, db: Session = Depends(database.get_db)):
+    def wrap(params: str, request: Request, db: Session = Depends(db_core.get_db)):
         params = params.split("/")
         # 判断函数可接受的参数与前端传来的参数数量
         if func.__code__.co_argcount - 1 == len(params):
@@ -80,7 +80,7 @@ def const_page(func):
     # page(db,request,link)link 当作元组传入
     # func 中将传入(db)
     # func 请返回(tamplate_path, data, [default html]: Html)
-    def wrap(request: Request, db: Session = Depends(database.get_db)):
+    def wrap(request: Request, db: Session = Depends(db_core.get_db)):
         rt: RequestItem = func(ParamsContainer(db, request))
         rt.set_request(request)
         return rt.get_response()
