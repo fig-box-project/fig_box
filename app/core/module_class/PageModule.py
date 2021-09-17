@@ -7,7 +7,8 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
 from app.core.mdl import PageMdl
-from app.core.module_class import Module, BluePrintSet
+from app.core.module_class import Module
+from app.core.module_class.BluePrintSet import BluePrintSet
 from app.core.page.crud import PageRouter
 
 
@@ -22,14 +23,14 @@ class PageItem:
 class PageModule(Module, metaclass=ABCMeta):
     def __init__(self):
         super().__init__()
-        self._page_bp = BluePrintSet(
+        self.__page_bp = BluePrintSet(
             f'/{self.get_module_name()}', self._get_tag())
         self.page_router = PageRouter()
-        self._register_page_bp(self._page_bp.get_bp(), self.page_router)
+        self._register_page_bp(self.__page_bp.get_bp(), self.page_router)
 
     @abstractmethod
     def _register_page_bp(self, bp: APIRouter, page_router: PageRouter):
-        """重写此方法,并更改前缀和注册路由"""
+        """重写此方法,并注册路由"""
         ...
 
     def get_pages(self, db: Session) -> List[PageItem]:
@@ -59,4 +60,4 @@ class PageModule(Module, metaclass=ABCMeta):
         ...
 
     def get_page_bp_set(self):
-        return self._page_bp
+        return self.__page_bp

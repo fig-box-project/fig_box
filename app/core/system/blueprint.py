@@ -1,7 +1,7 @@
 # 引用内在的蓝图
 from typing import List
 
-from app.core.module_class import Module, PageModule, ApiModule
+from app.core.module_class import Module, PageModule, ApiModule, RouteAbleModule
 from app.core.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
 
@@ -15,7 +15,8 @@ def check_ip(request: Request):
 
 
 def run(app: FastAPI, auto_list: List[Module]):
-    # 循环注册
+    # 循环注册模组
+    # ループしてモジュールのルーティングを入れる
     for m in auto_list:
         if m is not None:
             dependencies = None
@@ -33,7 +34,16 @@ def run(app: FastAPI, auto_list: List[Module]):
                 bp_set = m.get_api_bp_set()
                 app.include_router(
                     bp_set.get_bp(),
-                    prefix=bp_set.get_prefix(),
+                    prefix="/api/v1" + bp_set.get_prefix(),
                     tags=bp_set.get_tags(),
                     dependencies=dependencies
                 )
+            if isinstance(m, RouteAbleModule):
+                free_prefix_map = m.get_free_prefix_map()
+                for k, v in free_prefix_map.items():
+                    app.include_router(
+                        v.get_bp(),
+                        prefix=v.get_prefix(),
+                        tags=v.get_tags(),
+                        deprecated=dependencies
+                    )

@@ -42,16 +42,20 @@ def run(app: FastAPI):
             # )
             rt = f'''
             发生了422错误,请对照文档和输入的参数,错误详情:
+            422 エラーが発生しました、パラメータをチェックしてください
             {exc.errors()}
             -----
             
             你的body参数:
+            bodyパラメータ：
             {exc.body}
             ---
             你的quary参数:
+            quaryパラメータ:
             [{str(request.query_params)}]
             ---
             你的path参数:
+            pathパラメータ：
             {request.path_params}
             '''
             return PlainTextResponse(rt, 422)
