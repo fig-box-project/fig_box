@@ -13,8 +13,6 @@ class RouteAbleModule(Module, metaclass=ABCMeta):
         super().__init__()
         # 任意なプレフィックスのBluePrintSetのディクショナリ
         self.__free_prefix_map = {}
-        self._api_bp = BluePrintSet(
-            f'/{self.get_module_name()}', self._get_tag())
 
     def _register_free_prefix(self, prefix: str, unique_key: str) -> APIRouter:
         """呼び出し用、任意なプレフィックス(接頭辞)ルーターを獲得する"""
@@ -28,6 +26,3 @@ class RouteAbleModule(Module, metaclass=ABCMeta):
     def get_free_prefix_map(self) -> Dict[str, BluePrintSet]:
         """このメソッドをオーバーライドしないで"""
         return self.__free_prefix_map
-
-    def get_api_bp_set(self) -> BluePrintSet:
-        return self._api_bp
