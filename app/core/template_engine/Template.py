@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 
 
 class Template:
-    __ROOT_PATH = 'files/templates'
+    __ROOT_PATH = 'app/modules'
     __PATH_404 = '404.html'
     __ENGINE: Jinja2Templates = Jinja2Templates(__ROOT_PATH)
     # 设置是否在404页面不存在时自动创建404,TODO:创建自动创建器并改为True.
@@ -26,15 +26,17 @@ class Template:
         return f'{Template.get_root()}/{template_path}'
 
     @staticmethod
-    def response(path: str, data: dict, get_creator_func=None) -> Response:
+    def response(path: str, data: dict) -> Response:
         """输入相对路径,要绑定的数据,html构筑函数,
+
+        :path
+            相対的なパスを入れる、例えば：/sample/sample.html
+
+        :data
+            requestが入れ済のディクショナリ
+
         :return 获取用于返回给前端的对象"""
-        # 存在就直接返回
         if os.path.exists(Template.get_full_path(path)):
-            return Template.__ENGINE.TemplateResponse(path, data)
-        # 不存在时确认有无传入自动创建器
-        if get_creator_func is not None:
-            Template.auto_create_html(path, get_creator_func)
             return Template.__ENGINE.TemplateResponse(path, data)
         return Template.response_404(data['request'], f'template path: {path} un exists.')
 

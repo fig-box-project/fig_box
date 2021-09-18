@@ -9,7 +9,7 @@ from functools import wraps
 import os
 import sys
 
-from app.core.template.Template import Template
+from app.core.template_engine.Template import Template
 
 tempath_prefix = "files/templates"
 tem_engine = Jinja2Templates(tempath_prefix)

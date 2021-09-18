@@ -10,24 +10,22 @@ from . import DateCreateUpdateTable
 from ..tools import Tools
 
 
-class PageMdl(DateCreateUpdateTable):
+class PageTable(DateCreateUpdateTable):
     __abstract__ = True
 
     # unique要改True, 暂时无用
     link = Column(String, unique=False, index=True)
     title = Column(String(64), index=True)
+    keywords = Column(String(256))
     content = Column(String)
 
-    image = Column(String)
+    # image = Column(String)
     description = Column(String(200))
-    seo_title = Column(String(40))
-    seo_keywords = Column(String(256))
-    seo_description = Column(String(400))
 
-    def reset_image_url(self, request: Request):
-        """将image重设为完整网址"""
-        # TODO: 上线后改为https
-        self.image = Tools.get_assets_url(self.image, request)
+    # def reset_image_url(self, request: Request):
+    #     """将image重设为完整网址"""
+    #     # TODO: 上线后改为https
+    #     self.image = Tools.get_assets_url(self.image, request)
 
 
 class PageOrm(BaseModel):

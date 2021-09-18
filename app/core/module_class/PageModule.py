@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.orm import Session
 
-from app.core.table_class import PageMdl
+from app.core.table_class import PageTable
 from app.core.module_class import BluePrintSet, RouteAbleModule
 from app.core.page.crud import PageRouter
 
@@ -42,12 +42,12 @@ class PageModule(RouteAbleModule, metaclass=ABCMeta):
             if isinstance(i, PageItem):
                 # 当其是一个可返回的元素时
                 rt.append(i)
-            elif isinstance(i, DeclarativeMeta) and PageMdl in i.__mro__:
+            elif isinstance(i, DeclarativeMeta) and PageTable in i.__mro__:
                 # 当其是一个类时,利用db来自动搜索并创建
-                data: List[PageMdl] = db.query(i).all()
+                data: List[PageTable] = db.query(i).all()
                 for d in data:
                     rt.append(PageItem(d.link, d.update_date))
-            elif isinstance(i, PageMdl):
+            elif isinstance(i, PageTable):
                 # 当其是搜索结果时
                 rt.append(PageItem(i.link, i.update_date))
         return rt
