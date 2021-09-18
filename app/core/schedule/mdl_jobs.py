@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, DateTime
 
-from app.core.table_class import DateCreatedTable
+from app.core.table_class import DateCreateTable
 
 
-class TriggerTable(DateCreatedTable):
+class TriggerTable(DateCreateTable):
     __tablename__ = 'schedule_trigger'
     name = Column(String(21), index=True)
     logic = Column(String(64))

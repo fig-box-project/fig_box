@@ -1,11 +1,10 @@
 import datetime
 
-from apscheduler.triggers.base import BaseTrigger
 from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import APIRouter, Body, Depends
 from sqlalchemy.orm import Session
 
-from app.core.table_class import db_core
+from app.core.database_engine import db_core
 from app.core.schedule.FigJob import FigJob
 from app.core.schedule.Trigger import Trigger
 from app.core.system.start_scheduler import scheduler

@@ -1,11 +1,11 @@
 from typing import Type
 
-from fastapi import HTTPException, Request, Depends
+from fastapi import Request, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import Response
 
 from app.core.table_class import PageTable
-from app.core.table_class.db_core import get_db
+from app.core.database_engine.db_core import get_db
 from app.core.template_engine.Template import Template
 
 
@@ -23,9 +23,8 @@ class PageAdaptor:
         if page_row is None:
             return Template.response_404(self.request, '404 cannot find data in database')
         # get a dict from row
-        page_data = {}
-        for column in page_row.__table__.columns:
-            page_data[column.name] = str(getattr(page_row, column.name))
+
+        page_data = page_row.get_dict()
         page_data['request'] = self.request
         # use Template tool to get response
         return Template.response(template_path, page_data)

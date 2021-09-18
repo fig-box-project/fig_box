@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy import Table
 
 # from app.core.settings.crud import settings
-from app.core.table_class import db_core
+from app.core.database_engine import db_core
 from sqlalchemy.orm import sessionmaker, Session
 # 引用一下mdl才能创建该数据表
 # from app.core.user import table_class as user

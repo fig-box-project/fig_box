@@ -1,13 +1,10 @@
-import types
 from typing import Callable
 
 from fastapi.templating import Jinja2Templates
 from fastapi import HTTPException, Request, Depends
 from sqlalchemy.orm import Session
-from app.core.table_class import db_core
-from functools import wraps
+from app.core.database_engine import db_core
 import os
-import sys
 
 from app.core.template_engine.Template import Template
 

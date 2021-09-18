@@ -3,11 +3,11 @@ from sqlalchemy.orm import Session
 from starlette.requests import Request
 
 from app.core.log import LogTools
-from app.core.table_class import DateCreatedTable
+from app.core.table_class import DateCreateTable
 from app.core.tools import Tools
 
 
-class UserLogTable(DateCreatedTable):
+class UserLogTable(DateCreateTable):
     __tablename__ = 'userlogs'
     user_id = Column(Integer, index=True)
     method_type = Column(String(10), index=True)

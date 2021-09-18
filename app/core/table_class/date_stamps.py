@@ -5,7 +5,7 @@ from sqlalchemy import Column, DateTime
 from app.core.table_class import HasIdTable
 
 
-class DateCreatedTable(HasIdTable):
+class DateCreateTable(HasIdTable):
     __abstract__ = True
     create_date = Column(DateTime)
 
@@ -15,7 +15,7 @@ class DateCreatedTable(HasIdTable):
         return self
 
 
-class DateCreateUpdateTable(DateCreatedTable):
+class DateCreateUpdateTable(DateCreateTable):
     """can memo when data created and when data updated"""
     __abstract__ = True
     update_date = Column(DateTime)

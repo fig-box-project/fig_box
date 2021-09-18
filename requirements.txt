@@ -1,5 +1,5 @@
 # 这些之间有依赖,安装依赖来改变版本号
-fastapi~=0.63.0
+fastapi~=0.68.1
 starlette==0.13.6
 pydantic~=1.8.1
 
