@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  figbox_api:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command:  uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
+    volumes:
+    - .:/server
+    ports:
+    - 8000:8000
