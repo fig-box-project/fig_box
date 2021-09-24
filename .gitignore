@@ -9,6 +9,6 @@ app/log.py
 app/modules.mods
 app/modules
 app/log_tools.py
-db.sqlite
+*.sqlite
 *.pyc
 /.idea
