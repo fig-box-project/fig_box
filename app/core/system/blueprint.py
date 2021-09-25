@@ -2,6 +2,7 @@
 from typing import List
 
 from app.core.module_class import Module, PageModule, ApiModule, RouteAbleModule
+from app.core.module_class.SecurityModule import SecurityModule
 from app.core.settings.crud import settings
 from fastapi import FastAPI, Depends, Request, HTTPException
 
@@ -16,25 +17,25 @@ def check_ip(request: Request):
 
 def run(app: FastAPI, auto_list: List[Module]):
     # ループで全部のセキュリティモジュールを獲得する
-    security_modules = []
+    security_modules: List[SecurityModule] = []
     for m in auto_list:
         if m is not None:
             if isinstance(m, SecurityModule):
-                ...
+                security_modules.append(m)
     # 循环注册模组
     # ループしてモジュールのルーティングを入れる
     for m in auto_list:
         if m is not None:
-            dependencies = None
-            if m.is_need_ip_filter():
-                dependencies = [Depends(check_ip)]
+            # dependencies = None
+            # if m.is_need_ip_filter():
+            #     dependencies = [Depends(check_ip)]
             if isinstance(m, PageModule):
                 bp_set = m.get_page_bp_set()
                 app.include_router(
                     bp_set.get_bp(),
                     prefix=bp_set.get_prefix(),
                     tags=bp_set.get_tags(),
-                    dependencies=dependencies
+                    # dependencies=dependencies
                 )
             if isinstance(m, ApiModule):
                 bp_set = m.get_api_bp_set()
@@ -42,8 +43,9 @@ def run(app: FastAPI, auto_list: List[Module]):
                     bp_set.get_bp(),
                     prefix="/api/v1" + bp_set.get_prefix(),
                     tags=bp_set.get_tags(),
-                    dependencies=dependencies
+                    dependencies=get_dependencies(security_modules,m)
                 )
+            # 自由なプレフィックスを利用するモジュールの為
             if isinstance(m, RouteAbleModule):
                 free_prefix_map = m.get_free_prefix_map()
                 for k, v in free_prefix_map.items():
@@ -51,5 +53,14 @@ def run(app: FastAPI, auto_list: List[Module]):
                         v.get_bp(),
                         prefix=v.get_prefix(),
                         tags=v.get_tags(),
-                        deprecated=dependencies
+                        # deprecated=dependencies
                     )
+
+
+def get_dependencies(security_modules: List[SecurityModule], target: Module):
+    dependencies = []
+    for i in security_modules:
+        depends = i.filter(target)
+        for j in depends:
+            dependencies.append(Depends(j))
+    return dependencies

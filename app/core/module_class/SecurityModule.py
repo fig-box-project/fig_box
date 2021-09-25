@@ -1,4 +1,7 @@
 from abc import ABCMeta, abstractmethod
+from typing import List, Callable
+
+from app.core.module_class import Module
 
 
 class SecurityModule(Module, metaclass=ABCMeta):
