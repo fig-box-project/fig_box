@@ -15,7 +15,10 @@ class RouteAbleModule(Module, metaclass=ABCMeta):
         self.__free_prefix_map = {}
 
     def _register_free_prefix(self, prefix: str, unique_key: str) -> APIRouter:
-        """呼び出し用、任意なプレフィックス(接頭辞)ルーターを獲得する"""
+        """呼び出し用、任意なプレフィックス(接頭辞)ルーターを獲得する
+            :unique_key
+                モジュール内のユニークな文字列
+        """
         if unique_key not in self.__free_prefix_map:
             bps = BluePrintSet(prefix, self._get_tag())
             self.__free_prefix_map[unique_key] = bps
