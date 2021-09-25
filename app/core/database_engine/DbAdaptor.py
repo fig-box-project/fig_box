@@ -28,6 +28,10 @@ class DbAdaptor:
         rt = self.db.query(self.TbClass).filter_by(id=id).first()
         return rt
 
+    def read_by(self, **kwargs) -> HasIdTable:
+        rt = self.db.query(self.TbClass).filter_by(**kwargs).first()
+        return rt
+
     def read_all(self) -> list:
         return self.db.query(self.TbClass).all()
 
