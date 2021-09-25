@@ -15,6 +15,12 @@ def check_ip(request: Request):
 
 
 def run(app: FastAPI, auto_list: List[Module]):
+    # ループで全部のセキュリティモジュールを獲得する
+    security_modules = []
+    for m in auto_list:
+        if m is not None:
+            if isinstance(m, SecurityModule):
+                ...
     # 循环注册模组
     # ループしてモジュールのルーティングを入れる
     for m in auto_list:
