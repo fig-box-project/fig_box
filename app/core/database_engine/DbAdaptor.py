@@ -17,6 +17,7 @@ class DbAdaptor:
         return self
 
     def add(self, data_element: HasIdTable, is_commit: bool = True) -> dict:
+        """データを追加する"""
         if isinstance(data_element, DateCreateTable):
             data_element.create_stamp()
         self.db.add(data_element)
@@ -25,10 +26,12 @@ class DbAdaptor:
         return data_element.get_dict()
 
     def read_by_id(self, id: int) -> HasIdTable:
+        """IDを使ってデータを読み出す"""
         rt = self.db.query(self.TbClass).filter_by(id=id).first()
         return rt
 
     def read_by(self, **kwargs) -> HasIdTable:
+        """簡単なイコール条件を使ってデータを読み出す"""
         rt = self.db.query(self.TbClass).filter_by(**kwargs).first()
         return rt
 
@@ -37,7 +40,7 @@ class DbAdaptor:
         return self.db.query(self.TbClass).all()
 
     def update(self, data_element: HasIdTable, is_commit: bool = True) -> dict:
-        """エレメントで更新する（まず[read_...]を使ってそのエレメントを獲得してから）
+        """エレメントでデータを更新する
             :data_element
                 [read_...]を使ってこのエレメントを獲得
             :is_commit
@@ -59,4 +62,8 @@ class DbAdaptor:
         """指定した条件でデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(**kwargs).delete()
         return {'deleted count': count}
+
+    def commit(self):
+        """コミット、つまり変更を実際のデータベースに入れる"""
+        self.db.commit()
 
