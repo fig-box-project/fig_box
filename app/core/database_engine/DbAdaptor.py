@@ -33,14 +33,30 @@ class DbAdaptor:
         return rt
 
     def read_all(self) -> list:
+        """データベースの全部を取る"""
         return self.db.query(self.TbClass).all()
 
-    def update(self, data_element: HasIdTable) -> dict:
+    def update(self, data_element: HasIdTable, is_commit: bool = True) -> dict:
+        """エレメントで更新する（まず[read_...]を使ってそのエレメントを獲得してから）
+            :data_element
+                [read_...]を使ってこのエレメントを獲得
+            :is_commit
+                これをFalseに変えたらコミットはしない
+                最後の変更処理ではない時はFalseにする
+        """
         if isinstance(data_element, DateCreateUpdateTable):
             data_element.update_stamp()
-        self.db.commit()
+        if is_commit:
+            self.db.commit()
         return data_element.get_dict()
 
     def delete(self, id: int) -> dict:
+        """IDでデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(id=id).delete()
         return {'deleted count': count}
+
+    def delete_by(self, **kwargs) -> dict:
+        """指定した条件でデータを削除する"""
+        count = self.db.query(self.TbClass).filter_by(**kwargs).delete()
+        return {'deleted count': count}
+
