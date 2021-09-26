@@ -26,7 +26,7 @@ def run(app: FastAPI):
         async def custom_http_exception_handler(request: Request, exc: HTTPException):
             """过滤主动抛出的错误"""
             LogTools.e()
-            print(f'主动抛出{exc.status_code}错误')
+            # print(f'主动抛出{exc.status_code}错误')
             return await http_exception_handler(request, exc)
 
         @app.exception_handler(RequestValidationError)
