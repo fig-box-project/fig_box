@@ -12,3 +12,4 @@ app/log_tools.py
 *.sqlite
 *.pyc
 /.idea
+/.vscode
