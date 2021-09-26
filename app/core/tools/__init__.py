@@ -119,10 +119,10 @@ class GetListDepend:
                 .limit(self.page_size).all()
         else:
             count = db.query(func.count(cls.id)) \
-                .filter(filter_by) \
+                .get_filters(filter_by) \
                 .scalar()
             data = db.query(cls) \
-                .filter(filter_by) \
+                .get_filters(filter_by) \
                 .offset((self.page_index - 1) * self.page_size) \
                 .limit(self.page_size).all()
         return {

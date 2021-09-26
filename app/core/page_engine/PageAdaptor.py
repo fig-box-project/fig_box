@@ -19,7 +19,7 @@ class PageAdaptor:
         :template_path
             相対的なテンプレートパスを入れる（モジュール名も入れる）、例えば：/sample/sample.html
         """
-        page_row = self.db.query(table_class).filter(table_class.link == link).first()
+        page_row = self.db.query(table_class).get_filters(table_class.link == link).first()
         if page_row is None:
             return Template.response_404(self.request, '404 cannot find data in database')
         # get a dict from row

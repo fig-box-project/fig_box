@@ -20,7 +20,7 @@ class Token:
         from app.core.user import mdl as user
         # 在测试模式时总是进入管理员
         if settings.value['auth_test_mode']:
-            user_o = self.__db.query(user.UserMdl).filter(
+            user_o = self.__db.query(user.UserMdl).get_filters(
                 user.UserMdl.id == 1).first()
             return user_o
         # 否则检查token合法性

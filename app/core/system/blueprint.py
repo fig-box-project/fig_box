@@ -60,7 +60,7 @@ def run(app: FastAPI, auto_list: List[Module]):
 def get_dependencies(security_modules: List[SecurityModule], target: Module):
     dependencies = []
     for i in security_modules:
-        depends = i.filter(target)
+        depends = i.get_filters(target)
         for j in depends:
             dependencies.append(Depends(j))
     return dependencies

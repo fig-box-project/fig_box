@@ -9,5 +9,5 @@ class SecurityModule(Module, metaclass=ABCMeta):
         super().__init__()
 
     @abstractmethod
-    def filter(self, module: Module) -> List[Callable]:
+    def get_filters(self, module: Module) -> List[Callable]:
         ...
