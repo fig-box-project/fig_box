@@ -56,12 +56,12 @@ class DbAdaptor:
     def delete(self, id: int) -> dict:
         """IDでデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(id=id).delete()
-        return {'deleted count': count}
+        return {'count': count}
 
     def delete_by(self, **kwargs) -> dict:
         """指定した条件でデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(**kwargs).delete()
-        return {'deleted count': count}
+        return {'count': count}
 
     def commit(self):
         """コミット、つまり変更を実際のデータベースに入れる"""

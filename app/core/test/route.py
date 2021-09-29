@@ -1,16 +1,29 @@
 import time
+from typing import Optional
 
-import html2text
-from starlette.requests import Request
-
-from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi import APIRouter, HTTPException, Depends, Body, Response
 
 # from app.core.auth.auth import AuthFilter
+from starlette.requests import Request
+
 from app.core.log.log_tools import LogTools
 from app.core.tools import Tools
 
 
 def test_route(bp: APIRouter, test_auth):
+    @bp.get('/cookies', )
+    def cookie(request: Request, response: Response, key: Optional[str] = None):
+        if key is not None:
+            response.set_cookie(key='security_key', value=key)
+            return "set cookie success"
+        else:
+            key = request.cookies['security_key']
+            return f'get cookie: {key}'
+
+    @bp.get('/domain')
+    def domain(request: Request):
+        return request.base_url.scheme
+
     # @bp.get('/packup/directory', description='打包文件夹')
     # async def packup():
     #     connector = InputZipDirConnector(
