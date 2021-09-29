@@ -1,9 +1,7 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 
 from app.core.adaptor.ListAdaptor import ListAdaptor
 from app.core.log import UserLogTable
-from app.core.database_engine import db_core
 from app.core.module_class import TableModule, ApiModule
 
 

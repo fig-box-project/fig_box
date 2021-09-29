@@ -9,7 +9,7 @@ from app.core.table_class import HasIdTable
 
 
 class ListAdaptor:
-    def __init__(self, page_index: int, page_size: int, db: Session = Depends(get_db)):
+    def __init__(self, page_index: int = 1, page_size: int = 5, db: Session = Depends(get_db)):
         self.page_index = page_index
         self.page_size = page_size
         self.__db = db
