@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.core.adaptor.ListAdaptor import ListAdaptor
 from app.core.log import UserLogTable
 from app.core.database_engine import db_core
 from app.core.module_class import TableModule, ApiModule
-from app.core.tools import GetListDepend
 
 
 class Log(ApiModule, TableModule):
@@ -18,11 +18,11 @@ class Log(ApiModule, TableModule):
         """"""
 
         @bp.get('/user', description='获取用户的logs')
-        def get_user_logs(db: Session = Depends(db_core.get_db),
-                          ls_depend: GetListDepend = Depends()):
+        def get_user_logs(ls_depend: ListAdaptor = Depends()):
             """"""
-            condition = 0
-            return ls_depend.get_request(db, UserLogTable, condition)
+            # condition = 0
+            return ls_depend.search(UserLogTable)
+            # return ls_depend.get_request(db, UserLogTable, condition)
 
     def _get_tag(self) -> str:
         """"""

@@ -97,40 +97,7 @@ class Tools:
             return response.text
 
 
-class GetListDepend:
-    def __init__(self, page_index: int, page_size: int):
-        self.page_index = page_index
-        self.page_size = page_size
-        self.__data = None
 
-    def search(self, query: Query) -> list:
-        self.__data = query.offset((self.page_index - 1) * self.page_size) \
-            .limit(self.page_size).all()
-        return self.__data
-
-    def get_request(self, db: Session, cls, filter_by=None):
-        """cls中放HasidMdl的class, 如果传入filter_by将会把它放入filter函数中"""
-
-        if filter_by is None:
-            count = db.query(func.count(cls.id)) \
-                .scalar()
-            data = db.query(cls) \
-                .offset((self.page_index - 1) * self.page_size) \
-                .limit(self.page_size).all()
-        else:
-            count = db.query(func.count(cls.id)) \
-                .get_filters(filter_by) \
-                .scalar()
-            data = db.query(cls) \
-                .get_filters(filter_by) \
-                .offset((self.page_index - 1) * self.page_size) \
-                .limit(self.page_size).all()
-        return {
-            'data': data,
-            'count': count,
-            'page_size': self.page_size,
-            'page': self.page_index
-        }
 
 
 class AuthDepender:
