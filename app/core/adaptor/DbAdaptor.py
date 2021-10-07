@@ -9,11 +9,11 @@ from app.core.table_class import HasIdTable, DateCreateTable, DateCreateUpdateTa
 
 class DbAdaptor:
     def __init__(self, table_class: Type[HasIdTable]):
-        self.db = None
+        self.db: Session = None
         self.TbClass = table_class
 
     def dba(self, db: Session = Depends(get_db)):
-        self.db = db
+        self.db: Session = db
         return self
 
     def add(self, data_element: HasIdTable, is_commit: bool = True) -> dict:
@@ -22,7 +22,7 @@ class DbAdaptor:
             data_element.create_stamp()
         self.db.add(data_element)
         if is_commit:
-            self.db.commit()
+            self.commit()
         return data_element.get_dict()
 
     def read_by_id(self, id: int) -> HasIdTable:
@@ -50,20 +50,21 @@ class DbAdaptor:
         if isinstance(data_element, DateCreateUpdateTable):
             data_element.update_stamp()
         if is_commit:
-            self.db.commit()
+            self.commit()
         return data_element.get_dict()
 
     def delete(self, id: int) -> dict:
         """IDでデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(id=id).delete()
+        self.commit()
         return {'count': count}
 
     def delete_by(self, **kwargs) -> dict:
         """指定した条件でデータを削除する"""
         count = self.db.query(self.TbClass).filter_by(**kwargs).delete()
+        self.commit()
         return {'count': count}
 
     def commit(self):
         """コミット、つまり変更を実際のデータベースに入れる"""
         self.db.commit()
-

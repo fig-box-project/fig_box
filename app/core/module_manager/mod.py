@@ -111,13 +111,13 @@ class Store:
                 for i in j:
                     i = i["name"]
                     if i in insmodes_list:
-                        rt.append({"name": i, "installed": True})
+                        rt.append({"name": i, "is_downloaded": True})
                     else:
-                        rt.append({"name": i, "installed": False})
+                        rt.append({"name": i, "is_downloaded": False})
                 return rt
             except:
                 pass
-        return [{"name": "nothing", "installed": False}]
+        return [{"name": "nothing", "is_downloaded": False}]
 
 
 store = Store()
