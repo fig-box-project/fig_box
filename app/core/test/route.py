@@ -1,5 +1,6 @@
 import time
 from typing import Optional
+import sys
 
 from fastapi import APIRouter, HTTPException, Depends, Body, Response
 
@@ -8,6 +9,25 @@ from starlette.requests import Request
 
 from app.core.log.log_tools import LogTools
 from app.core.tools import Tools
+
+built_in_pkg = {'ab', 'ap', 'app', 'apschedule', 'arra', 'as', 'asynci', 'asyncio', 'atexi', 'base6',
+                'binasci', 'bisec', 'builtin', 'bz', 'calenda', 'certif', 'certifi', 'charde', 'chardet', 'clic',
+                'click', 'codec', 'collection', 'collections', 'colorsy', 'concurren', 'concurrent', 'configparse',
+                'contextli', 'contextvar', 'cop', 'copyre', 'cs', 'cython_runtim', 'dataclasse', 'datetim', 'decima',
+                'di', 'emai', 'email', 'encoding', 'encodings', 'enu', 'errn', 'fastap', 'fnmatc', 'functool',
+                'genericpat', 'glo', 'gr', 'greenle', 'greenlet', 'h1', 'h11', 'hashli', 'heap', 'hma', 'htm', 'html',
+                'htt', 'http', 'i', 'idn', 'idna', 'importli', 'importlib', 'inspec', 'ipaddres', 'itertool', 'jinja',
+                'jso', 'json', 'jw', 'jwt', 'keywor', 'linecach', 'local', 'loggin', 'logging', 'logur', 'lzm', 'mai',
+                'markupsaf', 'markupsafe', 'marsha', 'mat', 'mimetype', 'multipar', 'multipart', 'multiprocessin',
+                'multiprocessing', 'ntpat', 'number', 'o', 'opcod', 'operato', 'os', 'pathli', 'pickl', 'pkg_resource',
+                'pkg_resources', 'pkguti', 'platfor', 'plistli', 'posi', 'posixpat', 'pprin', 'pw', 'pydanti', 'pyexpa',
+                'pyexpat', 'pyt', 'pytz', 'queu', 'quopr', 'r', 'rando', 'reprli', 'request', 'requests', 'runp',
+                'selec', 'selector', 'shle', 'shuti', 'si', 'signa', 'sit', 'socke', 'socketserve', 'sqlalchem',
+                'sqlite', 'sqlite3', 'sre_compil', 'sre_constant', 'sre_pars', 'ss', 'sta', 'starlett', 'strin',
+                'stringpre', 'struc', 'subproces', 'sy', 'sysconfi', 'tempfil', 'textwra', 'threadin', 'tim', 'toke',
+                'tokeniz', 'tracebac', 'type', 'typin', 'typing', 'typing_extension', 'tzloca', 'tzlocal', 'u',
+                'unicodedat', 'urlli', 'urllib', 'urllib3', 'uui', 'uvicor', 'warning', 'weakre', 'xm', 'xml', 'yam',
+                'yaml', 'zipfil', 'zipimpor', 'zli'}
 
 
 def test_route(bp: APIRouter, test_auth):
@@ -23,6 +43,20 @@ def test_route(bp: APIRouter, test_auth):
     @bp.get('/domain')
     def domain(request: Request):
         return request.base_url.scheme
+
+    @bp.get('/packages')
+    def packages():
+        rt = set()
+        ls = list(sys.modules.keys())
+        for i in ls:
+            if i[0] != '_':
+                ele = i[:i.find('.')]
+                if ele in built_in_pkg:
+                    continue
+                rt.add(ele)
+        rt = list(rt)
+        rt.sort()
+        return rt
 
     # @bp.get('/packup/directory', description='打包文件夹')
     # async def packup():
