@@ -13,23 +13,19 @@ class PackageManager:
                         'fnmatc', 'functool', 'genericpat', 'glo', 'gr', 'greenle', 'greenlet', 'h1', 'h11', 'hashli',
                         'heap', 'hma', 'htm', 'html', 'htt', 'http', 'i', 'idn', 'idna', 'importli', 'importlib',
                         'inspec', 'ipaddres', 'itertool', 'jinja', 'jso', 'json', 'jw', 'jwt', 'keywor', 'linecach',
-                        'local', 'loggin', 'logging', 'logur', 'lzm',
-                        'mai',
+                        'local', 'loggin', 'logging', 'logur', 'lzm', 'mai', 'multiprocessin',
                         'markupsaf', 'markupsafe', 'marsha', 'mat', 'mimetype', 'multipar', 'multipart',
-                        'multiprocessin',
                         'multiprocessing', 'ntpat', 'number', 'o', 'opcod', 'operato', 'os', 'pathli', 'pickl',
-                        'pkg_resource',
+                        'pkg_resource', 'pyexpa', 'runp', 'tzlocal', 'u',
                         'pkg_resources', 'pkguti', 'platfor', 'plistli', 'posi', 'posixpat', 'pprin', 'pw', 'pydanti',
-                        'pyexpa',
                         'pyexpat', 'pyt', 'pytz', 'queu', 'quopr', 'r', 'rando', 'reprli', 'request', 'requests',
-                        'runp',
                         'selec', 'selector', 'shle', 'shuti', 'si', 'signa', 'sit', 'socke', 'socketserve', 'sqlalchem',
                         'sqlite', 'sqlite3', 'sre_compil', 'sre_constant', 'sre_pars', 'ss', 'sta', 'starlett', 'strin',
                         'stringpre', 'struc', 'subproces', 'sy', 'sysconfi', 'tempfil', 'textwra', 'threadin', 'tim',
                         'toke', 'tokeniz', 'tracebac', 'type', 'typin', 'typing', 'typing_extension', 'tzloca',
-                        'tzlocal', 'u',
                         'unicodedat', 'urlli', 'urllib', 'urllib3', 'uui', 'uvicor', 'warning', 'weakre', 'xm', 'xml',
-                        'yam', 'yaml', 'zipfil', 'zipimpor', 'zli', "ctype", "ctypes", "nump", }
+                        'yam', 'yaml', 'zipfil', 'zipimpor', 'zli', "ctype", "ctypes", "nump", "secret",
+                        "six", "panda", "mma", "g", "gzi", "cmat", "dateuti", "dateutil", }
 
     @staticmethod
     def get_packages_set() -> set:
