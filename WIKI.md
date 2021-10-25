@@ -57,7 +57,7 @@ yum install git
 yum install python3.8
 git clone https://github.com/normidar/my_fastapi
 cd my_fastapi
-python3.8 -m venv tutorial-env
+python3.8 -m venv venv
 source tutorial-env/bin/activate
 pip3 install --upgrade pip
 pip3 install --upgrade setuptools
