@@ -17,7 +17,7 @@ class ListAdaptor:
     def search(self, table_class: Type[HasIdTable], map_filter: Callable = None) -> dict:
         """ map_filter is a function to filter all the data, it has one input and one output,
         it means old_data and new_data.
-         map_filterは関数です、一個パdirtのデータが入る、結果（新しいデータ）をリターンしてください"""
+         map_filterは関数です、データベースの毎行をdirtにしてパラメータに入れる、結果（新しいdirtデータ）をリターンしてください"""
         count = self.__db.query(func.count(table_class.id)).scalar()
         data = self.__db.query(table_class).offset((self.page_index - 1) * self.page_size) \
             .limit(self.page_size).all()
