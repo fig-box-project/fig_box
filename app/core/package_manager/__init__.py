@@ -1,6 +1,6 @@
 import subprocess
 import sys
-from typing import Optional
+from typing import Optional, List
 
 
 class PackageManager:
@@ -40,11 +40,11 @@ class PackageManager:
         return rt
 
     @staticmethod
-    def install_package(package: str, imp_str: Optional[str] = None):
-        """パッケージを動的インストールする"""
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    def install_package(package: List[str], imp_str: Optional[str] = None):
+        """パッケージを動的インストールする, packageはリストを入れて"""
+        for i in package:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", i])
         if imp_str is None:
-            exec('import ' + package)
+            exec('import ' + package[0])
         else:
             exec('import ' + imp_str)
-
