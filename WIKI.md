@@ -1,5 +1,3 @@
-
-
 ### 状态码
 
 ```
@@ -47,6 +45,7 @@ firewall-cmd --list-ports  查看开放了的端口
 
 ----------------------------------------------------------------
 centOS配置一条龙
+
 ```
 sudo passwd  # 设置密码
 su root # 进入root
@@ -57,7 +56,7 @@ yum install git
 yum install python3.8
 git clone https://github.com/normidar/my_fastapi
 cd my_fastapi
-python3.8 -m venv venv
+python3 -m venv venv
 source tutorial-env/bin/activate
 pip3 install --upgrade pip
 pip3 install --upgrade setuptools
@@ -68,39 +67,36 @@ uvicorn app.main:app --port 333 --host 0.0.0.0 --reload
 uvicorn app.main:app --port 369 --host 0.0.0.0 --reload
 ```
 
-
 ----------------------------------------------------------------
->sudo python3 -m venv tutorial-env 
+> sudo python3 -m venv tutorial-env
 
->source tutorial-env/bin/activate 
+> source tutorial-env/bin/activate
 
->yum install python3-devel
->pip3 install -r requirements.txt 
+> yum install python3-devel
+> pip3 install -r requirements.txt
 
->mkdir files
+> mkdir files
 
 //安装screen请使用apt:
-apt-get update
-apt-get install screen
+apt-get update apt-get install screen
 
-screen -S name  //创建 名为name的 screen
-screen -ls  //列出所有screen
-screen -d -r [pid(名字前的数字)]  //进入screen tt
+screen -S name //创建 名为name的 screen screen -ls //列出所有screen screen -d -r [pid(名字前的数字)]  //进入screen tt
 
-rm -rf files 强行删除文件夹
-mkdir files 创建文件夹
+rm -rf files 强行删除文件夹 mkdir files 创建文件夹
 
 > ctrl a d 退出screen
 > exit 关闭screen窗口
 
 # git 强制更新
-sudo git fetch --all
-sudo git reset --hard origin/master
+
+sudo git fetch --all sudo git reset --hard origin/master
 
 # 获取库的下载地址
+
 https://github.com/normidar/my_fastapi/archive/master.zip
 
 # 获取github中所有的tag
+
 https://api.github.com/repos/normidar/my_fastapi/tags
 
 > 检查包的信息<br>
