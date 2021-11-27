@@ -14,3 +14,7 @@ class Module(metaclass=ABCMeta):
 
     def is_need_ip_filter(self):
         return False
+    
+    def get_module_directory(self):
+        """モジュールのディレクトリを獲得する"""
+        return "app/modules/" + self.get_module_name()
