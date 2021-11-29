@@ -17,7 +17,9 @@ pyjwt~=1.7.0
 
 # 模版
 jinja2~=2.11.2
-# aiofiles~=0.6.0
+
+# assert aiofiles is not None, "'aiofiles' must be installed to use FileResponse"
+aiofiles~=0.6.0
 
 # 流试上传
 python-multipart~=0.0.5
