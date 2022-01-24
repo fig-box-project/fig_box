@@ -30,7 +30,17 @@ CMSの機能は文章やコンテンツを管理する。<br/>
 
 > サービスをダウンロードできるのは事前にコードを書いてgithubに保存して置くと、このシステムでそれを使いたい時に自動的ダウンロードして使える。
 
-以上
+使い方
+
+```
+git clone https://github.com/fig-box-project/fig_box
+cd fig_box
+screen -S figbox
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
+```
 
 
 
