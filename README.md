@@ -35,8 +35,8 @@ CMSの機能は文章やコンテンツを管理する。<br/>
 ```
 git clone https://github.com/fig-box-project/fig_box
 cd fig_box
-screen -S figbox
-python3 -m venv venv
+screen -S figbox (or you can use tumx)
+python3 -m venv ( --without-pip ) venv
 source venv/bin/activate
 pip3 install -r requirements.txt
 uvicorn app.main:app --port 8080 --host 0.0.0.0 --reload
