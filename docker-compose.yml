@@ -5,8 +5,8 @@ services:
     build:
         context: .
         dockerfile: Dockerfile
-    command:  uvicorn app.main:app --port 8000 --host 0.0.0.0 --reload
+    command:  uvicorn app.main:app --port 8773 --host 0.0.0.0 --reload
     volumes:
     - .:/server
     ports:
-    - 8000:8000
+    - 8773:8773
