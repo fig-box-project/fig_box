@@ -1,10 +1,10 @@
 # 这些之间有依赖,安装依赖来改变版本号
-fastapi~=0.68.2
-starlette==0.14.2
-pydantic~=1.8.1
+fastapi~=0.74.1
+starlette==0.17.1
+pydantic~=1.9.0
 
 uvicorn~=0.12.3
-SQLAlchemy~=1.4.23
+SQLAlchemy~=1.4.31
 
 # WSGI
 Werkzeug==1.0.1
